@@ -19,12 +19,26 @@
 <br>
 
 ## Added/Updated Tests?
-_We encourage you to keep the code coverage percentage at 80% and above._
 
 - [ ] Yes
-- [ ] No, and this is why: 
+- [ ] No
+
+Comments:
+
+<br>
+
+## Code Coverage Value?
+
+- [ ] 80% or higher
+- [ ] Below 80%
+
+Comments:
+
+<br>
 
 ## Any Future Tasks to Perform?
 
 - [ ] Yes
 - [ ] No
+
+Comments:
