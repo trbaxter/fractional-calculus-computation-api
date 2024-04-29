@@ -25,7 +25,16 @@
 
 Comments:
 
+<br>
+
 ## Code Coverage Value?
+
+- [ ] 80% or higher
+- [ ] Below 80%
+
+Comments:
+
+<br>
 
 ## Any Future Tasks to Perform?
 
