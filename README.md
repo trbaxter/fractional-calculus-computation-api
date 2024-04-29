@@ -31,7 +31,7 @@ For 3, x >= 0, and K is an element of the positive integers (including zero).
 
 
 
-flowchart LR
+flowchart TB
     
     %% Sim Start %%
     A([Start]):::start
@@ -79,14 +79,37 @@ flowchart LR
     I1 --> Z
     I2 --> Z
 
-    
-    
+%% Class Colors %%
+    classDef start stroke: #0f0, stroke-width: 2.5px;
+    classDef finish stroke: #f00, stroke-width: 2.5px;
+    classDef decision stroke: #cc5500, stroke-width: 2.5px;
+    classDef action stroke: #196de3, stroke-width: 2.5px;
+    classDef input stroke: #ca14de, stroke-width: 2.5px;
+    classDef output stroke: #ede205 , stroke-width: 2.5px;
+    classDef empty width: 0px, height: 0px;
+```
 
-    %% Class Colors %%
-    classDef start stroke:#0f0,stroke-width:2px;
-    classDef finish stroke:#f00, stroke-width:2px;
-    classDef decision stroke:#cc5500, stroke-width:2px;
-    classDef action stroke:#33FF, stroke-width:2px;
-    classDef input stroke:#ca14de, stroke-width:2px;
-    classDef output stroke:#ede205 , stroke-width:2px;
+## Diagram Legend
+
+```mermaid
+
+flowchart TD
+
+%% Diagram Legend Shapes %%    
+    L1([" App start  "]):::start
+    L2["&nbsp Program &nbsp \n Action "]:::action
+    L3[/" Program Output "/]:::output
+    L4[/" User Input "/]:::input
+    L5{"Decision"}:::decision
+    L6([" App finish "]):::finish
+%% Links %%        
+    L1 ~~~ L2 ~~~ L3 ~~~ L4 ~~~ L5 ~~~ L6
+%% Class Colors %%
+    classDef start stroke: #0f0, stroke-width: 2.5px;
+    classDef finish stroke: #f00, stroke-width: 2.5px;
+    classDef decision stroke: #cc5500, stroke-width: 2.5px;
+    classDef action stroke: #196de3, stroke-width: 2.5px;
+    classDef input stroke: #ca14de, stroke-width: 2.5px;
+    classDef output stroke: #ede205 , stroke-width: 2.5px;
+    classDef empty width: 0px, height: 0px;
 ```
