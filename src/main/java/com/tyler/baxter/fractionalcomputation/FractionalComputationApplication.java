@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class FractionalComputationApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(FractionalComputationApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(FractionalComputationApplication.class, args);
+  }
 }
