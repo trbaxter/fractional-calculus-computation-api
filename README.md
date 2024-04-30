@@ -22,34 +22,25 @@ the derivative / integral of that expression to arbitrary order.
 For 1 and 2, k >= 0.
 For 3, x >= 0, and K is an element of the positive integers (including zero).
 
-
-
 ## Design Diagram
-
 
 ```mermaid
 
 
 
 flowchart TB
-    
-    %% Sim Start %%
+
+%% Sim Start %%
     A([Start]):::start
-    
-    %% Sim End %% 
+%% Sim End %% 
     Z([Finish]):::finish
-    
-    %% Sim Actions %%
+%% Sim Actions %%
     AA[Parse\n &nbspUser Input &nbsp]:::action
     AAA[&nbsp Determine &nbsp\nResult]:::action
-
-    
-    %% Sim Decisions %%
+%% Sim Decisions %%
     B{Derivative\nor\nIntegral?}:::decision
     E{Type\nof\nExpression?}:::decision
-    
-    
-    %% Input %%
+%% Input %%
     C1[/&nbsp Derivative &nbsp/]:::input
     C2[/&nbsp Integral &nbsp/]:::input
     F1[/&nbsp Constant &nbsp/]:::input
@@ -58,16 +49,10 @@ flowchart TB
     F4[/&nbsp Logarithmic &nbsp/]:::input
     F5[/&nbsp Exponential &nbsp/]:::input
     F6[/&nbsp Inverse\nTrigonometric &nbsp/]:::input
-    
-    
-    
-    %% Output %%
-    I1[\ &nbsp Display &nbsp &nbsp\n &nbsp Result &nbsp\]:::output
-    I2[\ &nbsp Result is &nbsp&nbsp&nbsp&nbsp\n &nbsp &nbsp always 0 &nbsp \]:::output
-    
-
-    
-    %% Links %%
+%% Output %%
+    I1[\&nbsp Display &nbsp &nbsp\n &nbsp Result &nbsp\]:::output
+    I2[\&nbsp Result is &nbsp&nbsp&nbsp&nbsp\n &nbsp &nbsp always 0 &nbsp\]:::output
+%% Links %%
     A --> B
     B --- C1 & C2
     C1 & C2 --> E
@@ -78,7 +63,6 @@ flowchart TB
     AAA --> I1
     I1 --> Z
     I2 --> Z
-
 %% Class Colors %%
     classDef start stroke: #0f0, stroke-width: 2.5px;
     classDef finish stroke: #f00, stroke-width: 2.5px;
