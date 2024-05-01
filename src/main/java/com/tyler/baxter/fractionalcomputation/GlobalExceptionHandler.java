@@ -10,21 +10,21 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler(IllegalArgumentException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
-		return ResponseEntity.badRequest().body("Divide by zero error.");
-	}
+  @ExceptionHandler(IllegalArgumentException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
+    return ResponseEntity.badRequest().body("Divide by zero error.");
+  }
 
-	@ExceptionHandler(BadRequestException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<String> handleBadRequestException(BadRequestException e) {
-		return ResponseEntity.badRequest().body("Input not recognized.");
-	}
+  @ExceptionHandler(BadRequestException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<String> handleBadRequestException(BadRequestException e) {
+    return ResponseEntity.badRequest().body("Input not recognized.");
+  }
 
-	@ExceptionHandler(NumberFormatException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<String> handleNumberFormatException(NumberFormatException e) {
-		return ResponseEntity.badRequest().body("Input not recognized.");
-	}
+  @ExceptionHandler(NumberFormatException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<String> handleNumberFormatException(NumberFormatException e) {
+    return ResponseEntity.badRequest().body("Input not recognized.");
+  }
 }
