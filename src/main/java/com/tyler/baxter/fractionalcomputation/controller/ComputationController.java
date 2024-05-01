@@ -24,8 +24,7 @@ public class ComputationController {
 
   @GetMapping("/derivative")
   public ResponseEntity<String> derivative(
-      @RequestParam String expression, @RequestParam double order)
-      throws UnsupportedEncodingException {
+      @RequestParam String expression, @RequestParam double order) {
     return computationService.derivative(expression, order);
   }
 }

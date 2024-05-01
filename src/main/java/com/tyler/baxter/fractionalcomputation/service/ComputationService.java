@@ -10,68 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ComputationService {
 
-	// ------- Old derivative ----- !>
-
-	// public ResponseEntity<String> derivative(String expression, String order)
-	// throws UnsupportedEncodingException {
-	//
-	// if (expression == null || expression.isEmpty()) {
-	// throw new IllegalArgumentException(
-	// "Input error - please review input expression and order value.");
-	// }
-	//
-	// if (Double.parseDouble(order) < 0) {
-	// throw new IllegalArgumentException("Operation order must be greater than
-	// equal to zero.");
-	// }
-	//
-	// List<String> terms = parseExpression(expression);
-	// String finalExpression = reassembleExpression(terms);
-	//
-	// String encodedExpression = URLEncoder.encode(finalExpression, "UTF-8");
-	//
-	// return ResponseEntity.ok(encodedExpression);
-	// }
-	//
-	// private List<String> parseExpression(String expression) {
-	// List<String> terms = new ArrayList<>();
-	// StringBuilder term = new StringBuilder();
-	//
-	// for (int i = 0; i < expression.length(); i++) {
-	// char c = expression.charAt(i);
-	// if (c == '+' || c == '-') {
-	// // Add the current term to the list
-	// terms.add(term.toString());
-	// // Reset the term StringBuilder for the next term
-	// term = new StringBuilder();
-	// } else {
-	// // Append the character to the current term
-	// term.append(c);
-	// }
-	// }
-	//
-	// // Add the last term
-	// terms.add(term.toString());
-	//
-	// return terms;
-	// }
-	//
-	// private String reassembleExpression(List<String> terms) {
-	// StringBuilder reassembledExpression = new StringBuilder();
-	// for (int i = 0; i < terms.size(); i++) {
-	// String term = terms.get(i);
-	// // Append term
-	// reassembledExpression.append(term);
-	// // Append "+" if it's not the last term and not empty
-	// if (i < terms.size() - 1 && !term.isEmpty()) {
-	// reassembledExpression.append("+");
-	// }
-	// }
-	// return reassembledExpression.toString();
-	// }
-
-	// --------- old
-
 	public ResponseEntity<String> derivative(String expression, double order) {
 		if (expression == null || expression.isEmpty()) {
 			throw new IllegalArgumentException("Input error - please review input expression and order value.");
@@ -161,13 +99,13 @@ public class ComputationService {
 				}
 			}
 			// Set coefficients, variables, and exponents
-			if (coefficientBuilder.length() > 0) {
+			if (!coefficientBuilder.isEmpty()) {
 				coefficient = Double.parseDouble(coefficientBuilder.toString());
 			}
 			if (variable == ' ') {
 				coefficient = 0.0; // Reassign coefficient to 0 if the term has an empty variable
 			}
-			if (exponentBuilder.length() > 0) {
+			if (!exponentBuilder.isEmpty()) {
 				exponent = Double.parseDouble(exponentBuilder.toString());
 			}
 
