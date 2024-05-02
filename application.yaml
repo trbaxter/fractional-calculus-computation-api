@@ -1,0 +1,16 @@
+server:
+  port: 8080
+  tomcat:
+    relaxed-query-chars: '^'
+
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+
+spring:
+  main:
+    banner-mode: "off"
+  application: fractional-computation
+
