@@ -1,15 +1,33 @@
-# Fractional Calculus Computational App
+# Fractional Calculus Computational App (in progress)
 
-(Current work in progress)
+## Overview
+
+This application is a computational program that calculates derivatives or integrals using fractional
+calculus techniques based on user input.  
+
+
+## What's fractional calculus?
+
+You may recall from your experiences in calculus that the derivative is normally expressed as follows:
+
+$$\dfrac{d}{dx}\Big(f(x) \Big)$$
+
+Where $\dfrac{d}{dx}$ is the derivative operator, 
+and $f(x)$ is the function the derivative is applied to.  
+
+
 
 What is the π-th derivative of log(x)? Or the √3-th order integral of x²? Rarely are these questions addressed in
 high school or university calculus courses.
 
-The goal of this program is to provide the user with the answers to those questions by accepting a mathematical
-expression from the user, then providing  
-the derivative / integral of that expression to arbitrary order.
+The goal of this program is to provide the user the solutions by accepting a mathematical
+expression from the user, then providing the derivative / integral of that expression to arbitrary order.
 
 <br>
+
+
+
+
 
 (Plan on rewriting these using LaTeX):
 
@@ -22,7 +40,7 @@ the derivative / integral of that expression to arbitrary order.
 For 1 and 2, k >= 0.
 For 3, x >= 0, and K is an element of the positive integers (including zero).
 
-## Design Diagram
+## (Intended) Design Diagram 
 
 ```mermaid
 

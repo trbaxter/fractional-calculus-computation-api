@@ -17,11 +17,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ComputationController.class)
 public class ControllerTest {
 
-  @Autowired private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-  @MockBean private ComputationService computationService;
+	@MockBean
+	private ComputationService computationService;
 
-  @Test
+	@Test
   public void testDerivativeEndpoint() throws Exception {
 
     when(computationService.derivative("2x+5", 1)).thenReturn(ResponseEntity.ok("2"));
