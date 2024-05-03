@@ -8,10 +8,10 @@
         <version>3.2.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.tyler.baxter</groupId>
-    <artifactId>fractional-computation</artifactId>
+    <groupId>com.trbaxter.github</groupId>
+    <artifactId>fractional-computation-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>fractional-computation</name>
+    <name>fractional-computation-api</name>
     <description>An API for solving fractional derivatives and integrals</description>
     <properties>
         <java.version>22</java.version>
@@ -48,6 +48,14 @@
             <version>5.11.0</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.32</version>
+            <scope>provided</scope>
+        </dependency>
+
 
     </dependencies>
 

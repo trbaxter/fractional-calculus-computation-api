@@ -1,13 +1,12 @@
-package com.tyler.baxter.fractionalcomputation.exception;
+package com.trbaxter.github.fractionalcomputationapi.exception;
 
 import org.apache.coyote.BadRequestException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.tyler.baxter.fractionalcomputation.GlobalExceptionHandler;
-
-import static org.junit.Assert.assertEquals;
+import com.trbaxter.github.fractionalcomputationapi.GlobalExceptionHandler;
 
 public class GlobalExceptionHandlerTest {
 
@@ -18,8 +17,9 @@ public class GlobalExceptionHandlerTest {
 		IllegalArgumentException exception = new IllegalArgumentException("Test exception message");
 
 		ResponseEntity<String> responseEntity = exceptionHandler.handleIllegalArgumentException(exception);
-		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-		assertEquals("Input error - please review input expression and order value.", responseEntity.getBody());
+		Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+		Assertions.assertEquals("Input error - please review input expression and order value.",
+				responseEntity.getBody());
 	}
 
 	@Test
@@ -27,8 +27,8 @@ public class GlobalExceptionHandlerTest {
 		BadRequestException exception = new BadRequestException("Test exception message");
 
 		ResponseEntity<String> responseEntity = exceptionHandler.handleBadRequestException(exception);
-		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-		assertEquals("Input not recognized.", responseEntity.getBody());
+		Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+		Assertions.assertEquals("Input not recognized.", responseEntity.getBody());
 	}
 
 	@Test
@@ -37,7 +37,7 @@ public class GlobalExceptionHandlerTest {
 
 		ResponseEntity<String> responseEntity = exceptionHandler.handleNumberFormatException(exception);
 
-		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-		assertEquals("Input not recognized.", responseEntity.getBody());
+		Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+		Assertions.assertEquals("Input not recognized.", responseEntity.getBody());
 	}
 }

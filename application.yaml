@@ -12,5 +12,5 @@ logging:
 spring:
   main:
     banner-mode: "off"
-  application: fractional-computation
+  application: fractional-computation-api
 
