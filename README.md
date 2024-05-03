@@ -1,27 +1,27 @@
-# Fractional Calculus Computational App (in progress)
+# Fractional Calculus Computation API (in progress)
 
 ## Overview
 
-This application is a computational program that calculates derivatives or integrals using fractional
-calculus techniques based on user input.  
+This is a computational API that calculates derivatives or integrals using fractional
+calculus techniques based on user input.
 
+## Background
 
-## What's fractional calculus?
+With ordinary calculus, the number of times we differentiate or integrate a function is typically referred to as the 
+_**order**_ of the operation. This order value is restricted to positive integers only.
 
-You may recall from your experiences in calculus that the derivative is normally expressed as follows:
+Fractional calculus is not bound to this restriction; we are free to take the 4.687-th integral of a function, or the 
+π-th derivative if we wish. This grants a much greater precision with which we can analyze the behavior of complex functions in 
+the real world.
 
-$$\dfrac{d}{dx}\Big(f(x) \Big)$$
+## Some Real-World Applications of Fractional Calculus
 
-Where $\dfrac{d}{dx}$ is the derivative operator, 
-and $f(x)$ is the function the derivative is applied to.  
+- Conservation of mass in fluid flow [Wheatcraft and Meerschaert (2008)]
+- Analysis of groundwater flow [Atangana et al. (2013-2014)]
+- Modeling viscoelastic dampening in polymer materials [Mainardi (2010)]
+- Propagation of acoustical waves in complex media (biological tissue) [Holm & Näsholm (2011)]
+- Expanding the solution of the Schrödinger equation in quantum mechanics [Bhrawy & Zaky (2017)]
 
-
-
-What is the π-th derivative of log(x)? Or the √3-th order integral of x²? Rarely are these questions addressed in
-high school or university calculus courses.
-
-The goal of this program is to provide the user the solutions by accepting a mathematical
-expression from the user, then providing the derivative / integral of that expression to arbitrary order.
 
 <br>
 
@@ -40,7 +40,7 @@ expression from the user, then providing the derivative / integral of that expre
 For 1 and 2, k >= 0.
 For 3, x >= 0, and K is an element of the positive integers (including zero).
 
-## (Intended) Design Diagram 
+## (Intended) Design Diagram
 
 ```mermaid
 

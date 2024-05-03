@@ -1,4 +1,4 @@
-package com.tyler.baxter.fractionalcomputation.service;
+package com.trbaxter.github.fractionalcomputationapi.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,15 +72,15 @@ public class ComputationService {
 	private void fillOutLists(List<String> terms, List<Double> coefficients, List<Character> variables,
 			List<Double> exponents) {
 		for (String term : terms) {
-			double coefficient = 0.0; // Default coefficient is 0.0
+			double coefficient = 1.0; // Default coefficient is 0.0
 			char variable = ' ';
 			double exponent = 0.0; // Default exponent is 0.0 if no character variable is found
 
 			// Loop through characters in the term
 			StringBuilder coefficientBuilder = new StringBuilder();
 			StringBuilder exponentBuilder = new StringBuilder();
-			boolean variableFound = false; // Flag to track if variable is found
-			boolean exponentFound = false; // Flag to track if exponent is found
+			boolean variableFound = false;
+			boolean exponentFound = false;
 			for (int i = 0; i < term.length(); i++) {
 				char c = term.charAt(i);
 				if ((Character.isDigit(c) || c == '.') && !variableFound) {
@@ -147,18 +147,19 @@ public class ComputationService {
 						if (newExponent == 0) {
 							newCoefficients.add(coefficient);
 							newExponents.add(newExponent);
-							break;
+							// break;
 						} else if (newExponent < 0) {
 							newCoefficients.add(0.0);
 							newExponents.add(0.0);
-							break;
+							// break;
 						} else {
 							// Calculate new coefficient using recursive gamma function
 							double newCoefficient = coefficient * (gammaFunction((int) (exponent)))
 									/ (gammaFunction((int) (newExponent)));
 							newCoefficients.add(newCoefficient);
+							newExponents.add(newExponent);
 						}
-						newExponents.add(newExponent);
+						// newExponents.add(newExponent);
 					}
 				}
 
@@ -173,18 +174,19 @@ public class ComputationService {
 						if (newExponent == 0) {
 							newCoefficients.set(i, coefficient);
 							newExponents.set(i, newExponent);
-							break;
+							// break;
 						} else if (newExponent < 0) {
 							newCoefficients.set(i, 0.0);
 							newExponents.set(i, 0.0);
-							break;
-//						} else {
-//							// Calculate new coefficient from old coefficient using recursive gamma function
-//							double newCoefficient = coefficient * (gammaFunction((int) (exponent)))
-//									/ (gammaFunction((int) (newExponent)));
-//							newCoefficients.set(i, newCoefficient);
+							// break;
+						} else {
+							// Calculate new coefficient from old coefficient using recursive gamma function
+							double newCoefficient = coefficient * (gammaFunction((int) (exponent)))
+									/ (gammaFunction((int) (newExponent)));
+							newCoefficients.set(i, newCoefficient);
+							newExponents.set(i, newExponent);
 						}
-//						newExponents.set(i, newExponent);
+						// newExponents.set(i, newExponent);
 					}
 				}
 
@@ -218,12 +220,12 @@ public class ComputationService {
 			if (coefficient != 0.0) {
 
 				if (!reassembledExpression.isEmpty()) {
-					reassembledExpression.append(coefficient >= 0 ? "+" : "");
+					reassembledExpression.append(coefficient >= 0 ? " + " : "");
 				}
 
 				if (coefficient % 1 == 0) {
-					int intValue = (int) Math.round(coefficient);
-					reassembledExpression.append(intValue);
+					int intCoefficientValue = (int) Math.round(coefficient);
+					reassembledExpression.append(intCoefficientValue);
 				} else {
 					reassembledExpression.append(coefficient);
 				}
@@ -231,12 +233,19 @@ public class ComputationService {
 
 			// Append variable
 			if (variable != ' ' & exponent > 0) {
+
 				reassembledExpression.append(variable);
 			}
 
 			// Append exponent if not 0
 			if (exponent != 0 && exponent != 1) {
-				reassembledExpression.append("^").append(exponent);
+
+				if (exponent % 1 == 0) {
+					int intExponentValue = (int) Math.round(exponent);
+					reassembledExpression.append("^").append(intExponentValue);
+				} else {
+					reassembledExpression.append("^").append(exponent);
+				}
 			}
 		}
 
