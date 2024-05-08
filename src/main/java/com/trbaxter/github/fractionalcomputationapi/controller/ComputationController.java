@@ -24,4 +24,9 @@ public class ComputationController {
 	public ResponseEntity<String> derivative(@RequestParam String expression, @RequestParam double order) {
 		return computationService.derivative(expression, order);
 	}
+
+	@GetMapping("/integral")
+	public ResponseEntity<String> integral(@RequestParam String expression, @RequestParam double order) {
+		return computationService.integral(expression, order);
+	}
 }
