@@ -7,8 +7,6 @@ import lombok.Generated;
 
 @SpringBootApplication
 public class Main {
-	@Generated
-	public static void main(String[] args) {
-		SpringApplication.run(Main.class, args);
+	public static void main(String[] args) {SpringApplication.run(Main.class, args);
 	}
 }
