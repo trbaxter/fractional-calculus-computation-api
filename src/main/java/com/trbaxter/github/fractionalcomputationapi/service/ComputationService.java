@@ -255,7 +255,12 @@ public class ComputationService {
 		return reassembledExpression.toString();
 	}
 
-
+	/**
+	 * Calculates the integral of a given expression.
+	 * @param expression The expression the user wants to take an integral of.
+	 * @param order The order of the integral operator.
+	 * @return The integral of the expression parameter as a string.
+	 */
 	public String integral(String expression, double order) {
 		if (expression == null || expression.isEmpty()) {
 			throw new IllegalArgumentException(
