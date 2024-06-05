@@ -36,7 +36,7 @@ the real world.
 In the subsections below, $D$ is the shorthand notation for the differentiation operator, and $\alpha$ represents the 
 order value of the differentiation. When applied to a variable, such as $x$, it means:
   
-$$D^{\alpha}(x) = \dfrac{d^{α}}{dx^{α^{\vphantom{Z}}}}(x)$$  
+$$D^{\alpha}(x) = \dfrac{d^{α}}{dx^{α}}(x)$$  
 
 For example, $D^{2}(x^{3}) = 6x$.  
 
@@ -54,7 +54,7 @@ This is no different from integer-order derivatives of constant values.
 
 Let $k$ represent a constant value. The fractional derivative of a power expression can be expressed, in general, as:  
 
-$$D^{α}(x^{k}) = \dfrac{Γ(1+k)}{Γ^{\vphantom{Z}(1+k-α)} x^{k - α}$$  
+$$D^{α}(x^{k}) = \dfrac{Γ(1+k)}{Γ(1+k-α)} x^{k - α}$$  
 
 Where $x ≥ 0, k ≠ -1, -2, -3 ...$ and $\Gamma$ is the Gamma function, defined for $n > 0$ as:  
 
@@ -62,6 +62,7 @@ $$\Gamma(n) = (n-1)!$$
 
 This extends to polynomial expressions consisting of multiple terms of varying powers. 
 
+<br/>
 
 
 [//]: # (&#40;Plan on rewriting these using LaTeX&#41;:)
