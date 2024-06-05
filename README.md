@@ -17,48 +17,62 @@ With ordinary calculus, the number of times we differentiate or integrate a func
 _**order**_ of the operation. This order value is restricted to positive integers only.
 
 Fractional calculus is not bound to this restriction; we are free to take the 4.687-th integral of a function, or the 
-π-th derivative if we wish. This grants a much greater precision with which we can analyze the behavior of complex functions in 
-the real world.
+π-th derivative if we wish. This grants a much greater precision with which we can analyze the behavior of complex 
+physical systems.
   
+<br/>
 
+## Real-World Applications of Fractional Calculus
 
-## Some Real-World Applications of Fractional Calculus
+Below is a small sample of academic papers utilizing fractional calculus techniques for analysis of various phenomena:
 
 - Conservation of mass in fluid flow [Wheatcraft and Meerschaert (2008)]
 - Analysis of groundwater flow [Atangana et al. (2013-2014)]
 - Modeling viscoelastic dampening in polymer materials [Mainardi (2010)]
 - Propagation of acoustical waves in complex media (biological tissue) [Holm & Näsholm (2011)]
 - Expanding the solution of the Schrödinger equation in quantum mechanics [Bhrawy & Zaky (2017)]
-  
+
+<br/>  
   
 ## How The Derivatives Are Calculated
 
 In the subsections below, $D$ is the shorthand notation for the differentiation operator, and $\alpha$ represents the 
 order value of the differentiation. When applied to a variable, such as $x$, it means:
   
-$$D^{\alpha}(x) = \dfrac{d^{α}}{dx^{α}}(x)$$  
+$$
+D^{α}(x) = \dfrac{d^{α}}{dx^{α}}(x)
+$$  
 
-For example, $D^{2}(x^{3}) = 6x$.  
+For example, $D^{2}(x^{3}) = 6x$. 
+
+<br/>
 
 
 ### Constants
 
 Let $c$ represent a constant. The factional derivative of a constant is defined as:
   
-$$D^{α}(c) = 0$$  
+$$
+D^{α}(c) = 0
+$$  
   
 This is no different from integer-order derivatives of constant values.  
   
+<br/>
 
 ### Power Expressions
 
 Let $k$ represent a constant value. The fractional derivative of a power expression can be expressed, in general, as:  
 
-$$D^{α}(x^{k}) = \dfrac{Γ(1+k)}{Γ(1+k-α)} x^{k - α}$$  
+$$
+D^{α}(x^{k}) = \dfrac{Γ(1+k)}{Γ(1+k-α)} x^{k - α}
+$$  
 
 Where $x ≥ 0, k ≠ -1, -2, -3 ...$ and $\Gamma$ is the Gamma function, defined for $n > 0$ as:  
 
-$$\Gamma(n) = (n-1)!$$
+$$
+Γ(n) = (n-1)!
+$$
 
 This extends to polynomial expressions consisting of multiple terms of varying powers. 
 
