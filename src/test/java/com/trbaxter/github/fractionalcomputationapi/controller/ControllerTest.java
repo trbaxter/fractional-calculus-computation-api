@@ -14,7 +14,7 @@ import com.trbaxter.github.fractionalcomputationapi.service.ComputationService;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
-@WebMvcTest(ComputationController.class)
+@WebMvcTest(IndexController.class)
 public class ControllerTest {
 
 	@Autowired
@@ -26,7 +26,7 @@ public class ControllerTest {
 	@Test
   public void testDerivativeEndpoint() throws Exception {
 
-    when(computationService.derivative("2x+5", 1)).thenReturn(ResponseEntity.ok("2"));
+    when(computationService.derivative("2x+5", 1)).thenReturn(String.valueOf(ResponseEntity.ok("2")));
 
     mockMvc
         .perform(MockMvcRequestBuilders.get("/calculate/derivative?expression=2x+5&order=1"))

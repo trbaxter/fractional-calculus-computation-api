@@ -10,8 +10,9 @@ public class ComputationServiceTest {
 
 	private final ComputationService computationService = new ComputationService();
 
-	// <------------------------------------------------- Exception Tests
-	// ------------------------------------------------->
+	/* -------------------------------------------- */
+	/*                 Exceptions                   */
+	/* -------------------------------------------- */
 
 	@Test
 	public void testDerivative_NullExpression() {
@@ -40,17 +41,16 @@ public class ComputationServiceTest {
 		assertThrows(IllegalArgumentException.class, () -> computationService.derivative(expression, order));
 	}
 
-	// <------------------------------------------------------------------------------------------------------------------->
 
-	// <================================================ Polynomial Tests
-	// =================================================>
+	/* -------------------------------------------- */
+	/*                 Polynomials                  */
+	/* -------------------------------------------- */
 	@Test
 	public void testDerivative_ZeroOrder() {
 		String expression = "2x^2+5";
 		double order = 0;
-		ResponseEntity<String> response = computationService.derivative(expression, order);
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertEquals("2x^2+5", response.getBody());
+		String response = computationService.derivative(expression, order);
+		assertEquals("2x^2+5", response);
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class ComputationServiceTest {
 		String expression = "2x^2+1";
 		double order = 1;
 
-		ResponseEntity<String> response = computationService.derivative(expression, order);
+		String response = computationService.derivative(expression, order);
 		assertNotNull(response);
 	}
 
@@ -67,7 +67,7 @@ public class ComputationServiceTest {
 		String expression = "2x+1";
 		double order = 1;
 
-		ResponseEntity<String> response = computationService.derivative(expression, order);
+		String response = computationService.derivative(expression, order);
 		assertNotNull(response);
 	}
 
@@ -76,7 +76,7 @@ public class ComputationServiceTest {
 		String expression = "2x^2+1";
 		double order = 2;
 
-		ResponseEntity<String> response = computationService.derivative(expression, order);
+		String response = computationService.derivative(expression, order);
 		assertNotNull(response);
 	}
 
@@ -85,7 +85,7 @@ public class ComputationServiceTest {
 		String expression = "2x^2+1";
 		double order = 3;
 
-		ResponseEntity<String> response = computationService.derivative(expression, order);
+		String response = computationService.derivative(expression, order);
 		assertNotNull(response);
 	}
 
@@ -93,37 +93,32 @@ public class ComputationServiceTest {
 	public void testDerivative_longerExpression_order2() {
 		String expression = "4x^2+4x+1";
 		double order = 2;
-		ResponseEntity<String> response = computationService.derivative(expression, order);
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertEquals("8", response.getBody());
+		String response = computationService.derivative(expression, order);
+		assertEquals("8", response);
 	}
 
 	@Test
 	public void testDerivative_longerExpression_v2() {
 		String expression = "4x^3+4x^2+x+1";
 		double order = 1;
-		ResponseEntity<String> response = computationService.derivative(expression, order);
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertEquals("12x^2 + 8x + 1", response.getBody());
+		String response = computationService.derivative(expression, order);
+		assertEquals("12x^2 + 8x + 1", response);
 	}
 
 	@Test
 	public void testDerivative_longerExpression_v3() {
 		String expression = "4x^3+4x^2+x+1";
 		double order = 2;
-		ResponseEntity<String> response = computationService.derivative(expression, order);
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertEquals("24x + 8", response.getBody());
+		String response = computationService.derivative(expression, order);
+		assertEquals("24x + 8", response);
 	}
 
 	@Test
 	public void testDerivative_longerExpression_v4() {
 		String expression = "4x^3+4x^2+x+1";
 		double order = 3;
-		ResponseEntity<String> response = computationService.derivative(expression, order);
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertEquals("24", response.getBody());
+		String response = computationService.derivative(expression, order);
+		assertEquals("24", response);
 	}
 }
-// <================================================ Polynomial Tests
-// =================================================>
+

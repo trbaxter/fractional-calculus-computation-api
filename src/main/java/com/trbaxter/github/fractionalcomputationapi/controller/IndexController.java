@@ -1,5 +1,6 @@
 package com.trbaxter.github.fractionalcomputationapi.controller;
 
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,22 +12,22 @@ import com.trbaxter.github.fractionalcomputationapi.service.ComputationService;
 
 @RestController
 @RequestMapping("/calculate")
-public class ComputationController {
+public class IndexController {
 
 	private final ComputationService computationService;
 
 	@Autowired
-	public ComputationController(ComputationService computationService) {
+	public IndexController (ComputationService computationService) {
 		this.computationService = computationService;
 	}
 
 	@GetMapping("/derivative")
-	public ResponseEntity<String> derivative(@RequestParam String expression, @RequestParam double order) {
-		return computationService.derivative(expression, order);
+	public ResponseEntity<String> derivative(@RequestParam @NotBlank String expression, @RequestParam double order) {
+		return ResponseEntity.ok(computationService.derivative(expression, order));
 	}
 
 	@GetMapping("/integral")
-	public ResponseEntity<String> integral(@RequestParam String expression, @RequestParam double order) {
-		return computationService.integral(expression, order);
+	public ResponseEntity<String> integral(@RequestParam @NotBlank String expression, @RequestParam double order) {
+		return ResponseEntity.ok(computationService.integral(expression, order));
 	}
 }
