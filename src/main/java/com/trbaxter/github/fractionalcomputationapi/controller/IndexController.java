@@ -1,14 +1,15 @@
 package com.trbaxter.github.fractionalcomputationapi.controller;
 
-import jakarta.validation.constraints.NotBlank;
+import com.trbaxter.github.fractionalcomputationapi.dto.ControllerRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.trbaxter.github.fractionalcomputationapi.service.ComputationService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.trbaxter.github.fractionalcomputationapi.service.ComputationService;
 
 @RestController
 @RequestMapping("/calculate")
@@ -21,13 +22,13 @@ public class IndexController {
 		this.computationService = computationService;
 	}
 
-	@GetMapping("/derivative")
-	public ResponseEntity<String> derivative(@RequestParam @NotBlank String expression, @RequestParam double order) {
-		return ResponseEntity.ok(computationService.derivative(expression, order));
+	@PostMapping("/derivative")
+	public ResponseEntity<String> derivative(@RequestBody @Valid ControllerRequest request) {
+		return ResponseEntity.ok(computationService.derivative(request.getExpression(), request.getOrder()));
 	}
 
-	@GetMapping("/integral")
-	public ResponseEntity<String> integral(@RequestParam @NotBlank String expression, @RequestParam double order) {
-		return ResponseEntity.ok(computationService.integral(expression, order));
+	@PostMapping("/integral")
+	public ResponseEntity<String> integral(@RequestParam @Valid ControllerRequest request) {
+    return ResponseEntity.ok(computationService.integral(request.getExpression(), request.getOrder()));
 	}
 }
