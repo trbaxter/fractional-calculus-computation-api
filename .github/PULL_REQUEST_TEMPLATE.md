@@ -6,39 +6,45 @@
 - [ ] Optimization
 - [ ] Documentation Update
 
+<br/>
+<hr/>
+
 ## Description
 
-<br>
+
+<br/>
+<hr>
 
 ## Related Tickets & Documents
 
-<br>
+<br/>
+<hr/>
 
 ## Instructions, Screenshots, Recordings
 
-<br>
+
+<br/>
+<hr/>
 
 ## Added/Updated Tests?
 
 - [ ] Yes
 - [ ] No
 
-Comments:
-
-<br>
+<br/>
+<hr/>
 
 ## Code Coverage Value?
 
 - [ ] 80% or higher
 - [ ] Below 80%
 
-Comments:
-
-<br>
+<br/>
+<hr/>
 
 ## Any Future Tasks to Perform?
 
 - [ ] Yes
 - [ ] No
 
-Comments:
+<br/>
