@@ -8,7 +8,6 @@ import com.trbaxter.github.fractionalcomputationapi.service.ComputationService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,8 +26,9 @@ public class IndexController {
 		return ResponseEntity.ok(computationService.derivative(request.getExpression(), request.getOrder()));
 	}
 
-	@PostMapping("/integral")
-	public ResponseEntity<String> integral(@RequestParam @Valid ControllerRequest request) {
-    return ResponseEntity.ok(computationService.integral(request.getExpression(), request.getOrder()));
-	}
+//	@PostMapping("/integral")
+//	public ResponseEntity<String> integral(@RequestBody @Valid ControllerRequest request) {
+//    return ResponseEntity.ok(computationService.integral(request.getExpression(), request.getOrder()));
+//	}
+// TODO: Create a single POST endpoint that can handle both functionalities, rather than two separate ones
 }

@@ -13,10 +13,10 @@ import lombok.Setter;
 @Getter
 public class ControllerRequest {
 
-    @NotBlank  // Only applies to String fields, doesn't work on number fields
+    @NotBlank
     private String expression;
 
-    @NotNull   // Only applies to non-primitive numerical fields
+    @NotNull
     private Double order;
 
 }

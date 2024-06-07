@@ -1,4 +1,4 @@
-package com.trbaxter.github.fractionalcomputationapi;
+package com.trbaxter.github.fractionalcomputationapi.exception;
 
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
