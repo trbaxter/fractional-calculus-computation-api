@@ -17,10 +17,14 @@ public class ExpressionParserServiceTest {
         String expression1 = "3x^2+2x-5";
         String expression2 = "3x^2 + 5x + 1";
         String expression3 = "3x^2      + 5x          +1";
+        String expression4 = "(3x^2)+(2x)-(5)";
+        String expression5 = "[(3x^2) + (2x)] - 5";
 
         List<String> terms1 = expressionParserService.parseExpression(expression1);
         List<String> terms2 = expressionParserService.parseExpression(expression2);
         List<String> terms3 = expressionParserService.parseExpression(expression3);
+        List<String> terms4 = expressionParserService.parseExpression(expression4);
+        List<String> terms5 = expressionParserService.parseExpression(expression5);
 
         List<String> expectedTerms = List.of("3x^2", "+5x", "+1");
     }
