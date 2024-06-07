@@ -47,6 +47,6 @@ public class ExpressionParserService {
 			}
 		}
 
-		return  terms;
+		return terms;
 	}
 }
