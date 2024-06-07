@@ -3,14 +3,13 @@ server:
   tomcat:
     relaxed-query-chars: '^'
 
-
-logging:
-  level:
-    root: INFO
-    org.springframework: INFO
-
 spring:
   main:
     banner-mode: "off"
   application: fractional-computation-api
 
+logging:
+  level:
+    root: INFO
+    com.trbaxter.github.fractionalcomputationapi: DEBUG
+    org.springframework: INFO
