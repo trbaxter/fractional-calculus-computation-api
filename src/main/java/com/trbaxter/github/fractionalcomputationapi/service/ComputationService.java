@@ -24,13 +24,11 @@ public class ComputationService {
 			throw new IllegalArgumentException(
 			"Input error - please review input expression and order value.");
 		}
-
 		else if (order < 0) {
 			throw new IllegalArgumentException(
 			"Operation order must be greater than equal to zero.");
 			// TODO: Expand this functionality in the future.
 		}
-
 		else if (order == 0) {
 			return expression;
 		}

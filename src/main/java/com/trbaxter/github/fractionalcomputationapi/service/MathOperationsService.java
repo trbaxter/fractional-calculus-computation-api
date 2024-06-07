@@ -7,11 +7,8 @@ import java.util.List;
 @Service
 public class MathOperationsService {
 
-    public void performCalculations(List<Double> coefficients,
-                                    List<Double> exponents,
-                                    double order,
-                                    List<Double> newCoefficients,
-                                    List<Double> newExponents) {
+    public void performCalculations(List<Double> coefficients, List<Double> exponents, double order,
+                                    List<Double> newCoefficients, List<Double> newExponents) {
         if (order % 1 == 0) {
 
             int numOfTerms = coefficients.size();
@@ -41,7 +38,6 @@ public class MathOperationsService {
                             newCoefficients.add(newCoefficient);
                             newExponents.add(newExponent);
                         }
-                        // newExponents.add(newExponent);
                     }
                 }
 
@@ -55,27 +51,25 @@ public class MathOperationsService {
                         if (newExponent == 0) {
                             newCoefficients.set(i, coefficient);
                             newExponents.set(i, newExponent);
-                            // break;
                         }
                         else if (newExponent < 0) {
                             newCoefficients.set(i, 0.0);
                             newExponents.set(i, 0.0);
-                            // break;
                         }
                         else {
                             // Calculate new coefficient from old coefficient using recursive gamma function
                             double newCoefficient = coefficient * (gammaFunction((int) (exponent)))
-                                    / (gammaFunction((int) (newExponent)));
+                            / (gammaFunction((int) (newExponent)));
                             newCoefficients.set(i, newCoefficient);
                             newExponents.set(i, newExponent);
                         }
-                        // newExponents.set(i, newExponent);
                     }
                 }
 
                 orderIndex++;
             }
         }
+
         else {
             throw new IllegalArgumentException("Only integer operations are allowed right now.");
             // TODO: Research on how to expand this to non-integer orders using other techniques.
@@ -83,6 +77,7 @@ public class MathOperationsService {
     }
 
     private long gammaFunction(int n) {
+
         if (n == 1) {
             return 1;
         }
@@ -131,7 +126,11 @@ public class MathOperationsService {
                 }
             }
         }
-        if (reassembledExpression.toString().isEmpty()) {reassembledExpression = new StringBuilder("0");}
+
+        if (reassembledExpression.toString().isEmpty()) {
+            reassembledExpression = new StringBuilder("0");
+        }
+
         return reassembledExpression.toString();
     }
 }
