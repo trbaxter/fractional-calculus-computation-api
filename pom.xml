@@ -100,7 +100,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
-                    <!--                    <argLine>-XX:+EnableDynamicAgentLoading</argLine>-->
                 </configuration>
             </plugin>
 
@@ -109,17 +108,13 @@
                 <artifactId>spotless-maven-plugin</artifactId>
                 <version>${spotless.version}</version>
                 <configuration>
-                    <!-- optional: limit format enforcement to just the files changed by this feature branch -->
                     <ratchetFrom>origin/main</ratchetFrom>
                     <formats>
-                        <!-- you can define as many formats as you want, each is independent -->
                         <format>
-                            <!-- define the files to apply to -->
                             <includes>
                                 <include>.gitattributes</include>
                                 <include>.gitignore</include>
                             </includes>
-                            <!-- define the steps to apply to those files -->
                             <trimTrailingWhitespace/>
                             <endWithNewline/>
                             <indent>
@@ -128,22 +123,18 @@
                             </indent>
                         </format>
                     </formats>
-                    <!-- define a language-specific format -->
                     <java>
-                        <!-- These are the defaults, you can override if you want -->
                         <includes>
                             <include>src/main/java/**/*.java</include>
                             <include>src/test/java/**/*.java</include>
                         </includes>
 
-                        <!-- Cleanthat will refactor your code, but it may break your style: apply it before your formatter -->
-                        <cleanthat/>        <!-- has its own section below -->
-
-                        <googleJavaFormat/> <!-- has its own section below -->
-                        <eclipse/>          <!-- has its own section below -->
+                        <cleanthat/>
+                        <googleJavaFormat/>
+                        <eclipse/>
 
                         <importOrder/> <!-- standard import order -->
-                        <importOrder>  <!-- or a custom ordering -->
+                        <importOrder>  <!-- custom ordering -->
                             <wildcardsLast>false
                             </wildcardsLast> <!-- Optional, default false. Sort wildcard import after specific imports -->
                             <order>java|javax,org,com,com.diffplug,,\#com.diffplug,\#
@@ -158,14 +149,11 @@
                                 <class>com.example.myClass</class>
                             </treatAsClass>
                         </importOrder>
-
-                        <removeUnusedImports/> <!-- self-explanatory -->
-
-                        <formatAnnotations/>  <!-- fixes formatting of type annotations, see below -->
+                        <removeUnusedImports/>
+                        <formatAnnotations/>
                     </java>
                 </configuration>
             </plugin>
-
 
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -184,7 +172,6 @@
                         </goals>
                     </execution>
 
-
                     <execution>
                         <id>report</id>
                         <phase>prepare-package</phase>
@@ -194,9 +181,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-
         </plugins>
     </build>
-
 </project>
