@@ -51,7 +51,10 @@ public class ComputationService {
 		if (expression == null || expression.isEmpty()) {
 			throw new IllegalArgumentException("Input error - please review input expression and order value.");
 		}
-		else if (order < 0) {
+		if (!expression.matches("[\\d+xX^+\\-*/().\\s]+")) {
+			throw new IllegalArgumentException("Invalid mathematical expression format.");
+		}
+		if (order < 0) {
 			throw new IllegalArgumentException("Operation order must be greater than equal to zero.");
 			// TODO: Expand this functionality in the future.
 		}
