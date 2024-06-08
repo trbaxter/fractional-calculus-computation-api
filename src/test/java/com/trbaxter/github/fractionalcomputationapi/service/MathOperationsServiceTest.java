@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-public class MathOperationServiceTest {
+public class MathOperationsServiceTest {
 
     @Autowired
     private MathOperationsService mathOperationsService;
