@@ -8,11 +8,11 @@ import java.util.List;
 @Service
 public class MathOperationsService {
 
-    private final GammaFunctionService gammaFunctionService;
+    private final GammaFunctionService gammaFunction;
 
     @Autowired
-    public MathOperationsService(GammaFunctionService gammaFunctionService) {
-        this.gammaFunctionService = gammaFunctionService;
+    public MathOperationsService(GammaFunctionService gammaFunction) {
+        this.gammaFunction = gammaFunction;
     }
 
     public void performCalculations(List<Double> coefficients, List<Double> exponents, double order,
@@ -38,8 +38,8 @@ public class MathOperationsService {
                             newExponents.add(0.0);
                         } else {
                             double newCoefficient = coefficient *
-                                    gammaFunctionService.calculateGammaFunction((int) exponent) /
-                                    gammaFunctionService.calculateGammaFunction((int) newExponent);
+                                    gammaFunction.calculateGammaFunction((int) exponent) /
+                                    gammaFunction.calculateGammaFunction((int) newExponent);
                             newCoefficients.add(newCoefficient);
                             newExponents.add(newExponent);
                         }
@@ -60,8 +60,8 @@ public class MathOperationsService {
                             newExponents.set(i, 0.0);
                         } else {
                             double newCoefficient = coefficient *
-                                    gammaFunctionService.calculateGammaFunction((int) exponent) /
-                                    gammaFunctionService.calculateGammaFunction((int) newExponent);
+                                    gammaFunction.calculateGammaFunction((int) exponent) /
+                                    gammaFunction.calculateGammaFunction((int) newExponent);
                             newCoefficients.set(i, newCoefficient);
                             newExponents.set(i, newExponent);
                         }
