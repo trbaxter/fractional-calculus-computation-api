@@ -1,12 +1,11 @@
 package com.trbaxter.github.fractionalcomputationapi.utils;
 
-import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
+@SpringBootTest(classes = MathUtils.class)
 public class MathUtilsTest {
 
     @Test
