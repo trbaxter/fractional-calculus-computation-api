@@ -1,9 +1,8 @@
 package com.trbaxter.github.fractionalcomputationapi.controller;
 
-import com.trbaxter.github.fractionalcomputationapi.dto.ControllerRequest;
-import jakarta.validation.Valid;
+import com.trbaxter.github.fractionalcomputationapi.model.ControllerRequest;
+import com.trbaxter.github.fractionalcomputationapi.model.ControllerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import com.trbaxter.github.fractionalcomputationapi.service.ComputationService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,21 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/calculate")
 public class IndexController {
 
-	private final ComputationService computationService;
-
 	@Autowired
-	public IndexController (ComputationService computationService) {
-		this.computationService = computationService;
-	}
+	private ComputationService computationService;
 
-	@PostMapping("/derivative")
-	public ResponseEntity<String> derivative(@RequestBody @Valid ControllerRequest request) {
-		return ResponseEntity.ok(computationService.derivative(request.getExpression(), request.getOrder()));
+	@PostMapping("/derivative/caputo")
+	public ControllerResponse caputoDerivative(@RequestBody ControllerRequest request) {
+		String expression = computationService.caputoFractionalDerivative(
+				request.getCoefficients(), request.getOrder());
+		return new ControllerResponse(expression);
 	}
-
-//	@PostMapping("/integral")
-//	public ResponseEntity<String> integral(@RequestBody @Valid ControllerRequest request) {
-//    return ResponseEntity.ok(computationService.integral(request.getExpression(), request.getOrder()));
-//	}
-// TODO: Create a single POST endpoint that can handle both functionalities, rather than two separate ones
 }

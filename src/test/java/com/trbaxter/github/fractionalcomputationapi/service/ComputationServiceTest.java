@@ -1,59 +1,28 @@
 package com.trbaxter.github.fractionalcomputationapi.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
 public class ComputationServiceTest {
 
-	@Autowired
-	private ComputationService computationService;
+    private ComputationService computationService;
 
-	@Test
-	public void testDerivative() {
-		String expression = "3x^2+2x-5";
-		double order = 1.0;
+    @BeforeEach
+    public void setUp() {
+        computationService = new ComputationService();
+    }
 
-		String result = computationService.derivative(expression, order);
-		assertEquals("6x + 2", result);
-	}
+    @Test
+    public void testCaputoFractionalDerivativeZeroCoefficients() {
+        double[] coefficients = {0.0, 0.0, 0.0};
+        double alpha = 0.5;
 
-	@Test
-	public void testDerivativeOrderZero() {
-		String expression = "3x^2+2x-5";
-		double order = 0.0;
+        String result = computationService.caputoFractionalDerivative(coefficients, alpha);
+        String expected = "";
 
-		String result = computationService.derivative(expression, order);
-		assertEquals(expression, result);
-	}
+        assertEquals(expected, result);
+    }
 
-	@Test
-	public void testDerivativeNullInput() {
-		double order = 1.0;
-
-		assertThrows(IllegalArgumentException.class,
-		() -> computationService.derivative(null, order));
-	}
-
-	@Test
-	public void TestDerivativeEmptyInput() {
-		String expression = "";
-		double order = 1.0;
-
-		assertThrows(IllegalArgumentException.class,
-		() -> computationService.derivative(expression, order));
-	}
-
-	@Test
-	public void testDerivativeNegativeInput() {
-		String expression = "3x^2+2x-5";
-		double order = -1.0;
-		assertThrows(IllegalArgumentException.class,
-		() -> computationService.derivative(expression, order));
-	}
 }
-
