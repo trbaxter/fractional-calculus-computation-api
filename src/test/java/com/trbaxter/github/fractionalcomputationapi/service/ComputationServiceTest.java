@@ -54,25 +54,25 @@ public class ComputationServiceTest {
 //        assertEquals(expected, result);
 //    }
 
-//    @Test
-//    public void testDerivativeDifferentAlpha() {
-//        double[] coefficients = {3.0, 0.0, 1.0}; // Represents the polynomial 3x^2 + 1
-//        double alpha = 1.5;
-//
-//        // Print the coefficients and alpha for debugging
-//        System.out.println("Testing Caputo Fractional Derivative for Different Alpha");
-//        System.out.println("Coefficients: 3.0, 0.0, 1.0");
-//        System.out.println("Alpha: " + alpha);
-//
-//        String result = computationService.caputoFractionalDerivative(coefficients, alpha);
-//        String expected = "3.000x^0.500 - 0.500x^-0.500"; // Adjusted expected result
-//
-//        // Print the result for debugging
-//        System.out.println("Result: " + result);
-//        System.out.println("Expected: " + expected);
-//
-//        assertEquals(expected, result);
-//    }
+    @Test
+    public void testDerivativeDifferentAlpha() {
+        double[] coefficients = {3.0, 0.0, 1.0}; // Represents the polynomial 3x^2 + 1
+        double alpha = 1.5;
+
+        // Print the coefficients and alpha for debugging
+        System.out.println("Testing Caputo Fractional Derivative for Different Alpha");
+        System.out.println("Coefficients: 3.0, 0.0, 1.0");
+        System.out.println("Alpha: " + alpha);
+
+        String result = computationService.caputoFractionalDerivative(coefficients, alpha);
+        String expected = "6.770x^0.500"; // Adjusted expected result
+
+        // Print the result for debugging
+        System.out.println("Result: " + result);
+        System.out.println("Expected: " + expected);
+
+        assertEquals(expected, result);
+    }
 
     @Test
     public void testDerivativeZeroCoefficients() {
