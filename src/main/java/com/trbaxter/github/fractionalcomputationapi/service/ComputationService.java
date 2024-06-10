@@ -16,15 +16,18 @@ public class ComputationService {
 		int degree = coefficients.length - 1;
 
 		for (int i = 0; i <= degree; i++) {
-			double coeff = coefficients[degree - i];  // Start from the highest degree term
+			double coeff = coefficients[i];  // Highest degree term comes first
 			if (coeff != 0) {
-				double gammaNumerator = MathUtils.gamma(i + 1);
-				double gammaDenominator = MathUtils.gamma(i + 1 - alpha);
+				double gammaNumerator = MathUtils.gamma(degree - i + 1);
+				double gammaDenominator = MathUtils.gamma(degree - i + 1 - alpha);
 				if (gammaDenominator != 0) {
 					double gammaCoefficient = gammaNumerator / gammaDenominator;
 					double newCoefficient = coeff * gammaCoefficient;
-					double newPower = i - alpha;
-					terms.add(new Term(newCoefficient, newPower));
+					double newPower = degree - i - alpha;
+					// Only add terms with non-negative power
+					if (newPower >= 0) {
+						terms.add(new Term(newCoefficient, newPower));
+					}
 				}
 			}
 		}
