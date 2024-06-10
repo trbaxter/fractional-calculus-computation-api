@@ -24,7 +24,6 @@ public class ComputationService {
 					double gammaCoefficient = gammaNumerator / gammaDenominator;
 					double newCoefficient = coefficient * gammaCoefficient;
 					double newPower = degree - i - alpha;
-					// Only add terms with non-negative power
 					if (newPower >= 0) {
 						terms.add(new Term(newCoefficient, newPower));
 					}
@@ -35,13 +34,13 @@ public class ComputationService {
 		// Sort terms by the power in descending order
 		terms.sort(Comparator.comparingDouble(Term::power).reversed());
 
-		// Build the result string
 		StringBuilder result = new StringBuilder();
 		for (int i = 0; i < terms.size(); i++) {
 			Term term = terms.get(i);
 			if (i > 0) {
 				if (term.coefficient() > 0) {
 					result.append(" + ");
+					result.append(String.format("%.3f", term.coefficient()));
 				} else {
 					result.append(" - ");
 					result.append(String.format("%.3f", Math.abs(term.coefficient())));
