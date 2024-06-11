@@ -1,6 +1,6 @@
 # Fractional Calculus Computation API
 
-A Java-based API for computing Caputo and Riemann-Liouville fractional derivatives of user-provided polynomial
+A Java-based API for computing Caputo fractional derivatives of user-provided polynomial
 expressions. 
 
 ## Table of Contents
@@ -10,8 +10,8 @@ expressions.
 4.) [Installation](#installation)  
 5.) [Usage](#usage)  
 6.) [API Reference](#api-reference)  
-7.) [Examples](#examples)
-8.) [Example Calculation](#example-calculation)
+7.) [Examples](#examples)  
+8.) [Example Calculation](#example-calculation)  
 9.) [FAQ](#faq)  
 10.) [Contributing](#contributing)  
 11.) [Changelog](#changelog)  
@@ -140,10 +140,31 @@ Output:
 
 ## Example Calculation
 
-Given the polynomial $f(x) = 3x^2 + 2x + 1$, and the order $\alpha = 0.5$, the Caputo fractional derivative 
-$\dfrac{C}{} D \dfrac{0.5}{} f(x)$ is computed as follows: 
+Given the polynomial $f(x) = 3x^2 + 2x + 1$, and the order $\alpha = 0.5$, the Caputo fractional derivative
+${}^{C} D^{0.5} f(x)$ is computed by applying the Caputo derivative formula to each term: 
+
+$$
+{}^{C} D^{0.5}[3x^2] = 3 \cdot \dfrac{\Gamma(3)}{\Gamma(3-0.5)} x^{2-0.5} = 3 \cdot \dfrac{2!}{\Gamma(2.5)} x^{1.5}
+$$  
 
 
+$$
+{}^{C} D^{0.5}[2x] = 2 \cdot \dfrac{\Gamma(2)}{\Gamma(2 - 0.5)} x^{1-0.5} = 3 \cdot \dfrac{1!}{\Gamma(1.5)} x^{0.5}
+$$
+
+$$
+{}^{C} D^{0.5}[1] = 0
+$$
+
+Simplifying and combining the terms:
+
+$$
+{}^{C} D^{0.5} f(x) = 3 \cdot \dfrac{2}{1.772} x^{1.5} + 2 \cdot \dfrac{1}{0.886} x^0.5
+$$
+
+$$
+\approx 3.386x^{1.5} + 2.257x^{0.5}
+$$
 
 
 ## High-level Design Diagram
