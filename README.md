@@ -186,7 +186,7 @@ ${}^{C} D^{0.5} f(x)$ is computed by applying the Caputo derivative formula to e
 Term $3x^2$:
 
 $$
-{}^{C} D^{0.5} [3x^2] = 3 \cdot \dfrac{\Gamma(3)}{\Gamma(3-0.5)} x^{2-0.5} = 3 \cdot \dfrac{2!}{\Gamma(2.5)} x^{1.5}
+{}^{C} D^{0.5}{\text{&nbsp;}}[3x^2] = 3 \cdot \dfrac{\Gamma(3)}{\Gamma(3-0.5)} x^{2-0.5} = 3 \cdot \dfrac{2!}{\Gamma(2.5)} x^{1.5}
 $$
 
 &nbsp;
@@ -196,7 +196,7 @@ Since $\Gamma(3) = 2$ amd $\Gamma(2.5) = \dfrac{3\sqrt{\pi}}{4}$:
 &nbsp;
 
 $$
-{}^{C} D^{0.5} [3x^2] = 3 \cdot \dfrac{2}{\dfrac{3\sqrt{\pi}}{4}}x^{1.5} = \dfrac{8}{\sqrt{\pi}}x^{1.5}
+{}^{C} D^{0.5}{\text{&nbsp;}}[3x^2] = 3 \cdot \dfrac{2}{\dfrac{3\sqrt{\pi}}{4}}x^{1.5} = \dfrac{8}{\sqrt{\pi}}x^{1.5}
 $$
 
 &nbsp;
@@ -204,17 +204,17 @@ $$
 Term $2x$:
 
 $$
-{}^{C} D^{0.5} [2x] = 2 \cdot \dfrac{\Gamma(2)}{\Gamma(2 - 0.5)} x^{1-0.5} = 2 \cdot \dfrac{1!}{\Gamma(1.5)} x^{0.5}
+{}^{C} D^{0.5}{\text{&nbsp;}}[2x] = 2 \cdot \dfrac{\Gamma(2)}{\Gamma(2 - 0.5)} x^{1-0.5} = 2 \cdot \dfrac{1!}{\Gamma(1.5)} x^{0.5}
 $$
 
 &nbsp;
 
-Since $\Gamma(2) = 1$ and $\Gamma(1.5) = \dfrac{\sqrt{(\pi)}}{2}$:
+Since $\Gamma(2) = 1$ and $\Gamma(1.5) = \dfrac{\sqrt{\pi}}{2}$:
 
 &nbsp;
 
 $$
-{}^{C} D^{0.5} [2x] = 2 \cdot \dfrac{1}{\dfrac{\sqrt{\pi}}{2}}x^{0.5} = \dfrac{4}{\sqrt{\pi}}x^{0.5}
+{}^{C} D^{0.5}{\text{&nbsp;}}[2x] = 2 \cdot \dfrac{1}{\dfrac{\sqrt{\pi}}{2}}x^{0.5} = \dfrac{4}{\sqrt{\pi}}x^{0.5}
 $$
 
 &nbsp;
@@ -222,7 +222,7 @@ $$
 Term $1$:
 
 $$
-{}^{C} D^{0.5} [1] = 0
+{}^{C} D^{0.5}{\text{&nbsp;}}[1] = 0
 $$
 
 &nbsp;
@@ -232,7 +232,7 @@ Simplifying and combining the terms:
 &nbsp;
 
 $$
-{}^{C} D^{0.5} f(x) = \dfrac{8}{\sqrt{\pi}}x^{1.5} + \dfrac{4}{\sqrt{\pi}}x^{0.5}
+{}^{C} D^{0.5}{\text{&nbsp;}}f(x) = \dfrac{8}{\sqrt{\pi}}x^{1.5} + \dfrac{4}{\sqrt{\pi}}x^{0.5}
 $$
 
 &nbsp;
@@ -247,70 +247,82 @@ $$
 
 ## FAQ
 
-**Q**: What is a fractional derivative?  
+<details>
+    <summary>&nbsp;<i>What is a fractional derivative?</i></summary>&nbsp;<br/>
+    A fractional derivative is a generalization of the traditional integer-order derivative extended to include non-integer values.
+</details>
 
-**A**: A fractional derivative is a generalization of the traditional integer-order derivative extended to non-integer
-values. 
-
-&nbsp;
-
-**Q**: Why is this important?  
-
-**A**: This type of analytical technique is particularly useful for investigating or modeling physical phenomena 
-that exhibit memory effects or hereditary properties in its behavior.
 
 &nbsp;
 
-**Q**: What is meant by "memory effects"?  
+<details>
+    <summary>&nbsp;<i>Why is this important?</i>&nbsp;<br/></summary>&nbsp;<br/>
+    This type of analytical technique is particularly useful for investigating or modeling physical phenomena 
+    that exhibit memory effects or hereditary properties in its behavior.
+</details>
 
-**A**: "Memory effects" refers to how a system's <u>_recent_</u> past influences its present behavior. In other words, 
-the system "remembers" its recent history.  
-
-For example, consider a rubber band that's been stretched and released multiple times. The current "stretchiness" of 
-the rubber band not only depends on how it's being stretched right now, _but also_ on how it was stretched recently.
-
-&nbsp;
-
-**Q**: What about "hereditary properties"?
-
-**A**: "Hereditary properties" refers to the characteristics of a system that depend on its <u>_entire_</u> history.
-
-As an example, consider a material that hardens over time, like concrete. The current "hardness" of concrete is a 
-comprehensive function of its entire history - the starting mix ratio of cement and water, the curing conditions, 
-the amount of cumulative elemental exposure - all of these historical factors represent the hereditary properties 
-of the material.
 
 &nbsp;
 
-**Q**: How does all this relate to the Caputo and Riemann-Liouville derivatives?
+<details>
+    <summary>&nbsp;<i>What is meant by "memory effects"?</i></summary>&nbsp;<br/>
+    "Memory effects" refers to how a system's <i><b>recent</i></b> past influences its present behavior. <br/> 
+    In other words, the system "remembers" its recent history. <br/><br/>
+    For example, consider a rubber band that's been stretched and released multiple times. The current "stretchiness" of 
+    the rubber band not only depends on how it's being stretched right now, but <i><b>also</b></i> on how it was stretched recently.
+</details>
 
-**A**: These two derivatives give us an option to select how much of a system's "memory" we wish to consider in 
-the mathematical analysis of a given phenomena.
-
-If only a portion of a system's "memory" is needed, then the Caputo derivative is used. 
-If the entire system's "memory" is needed, then the Riemann-Liouville derivative is used. 
 
 &nbsp;
 
-**Q**: There are multiple coefficients in my input, but the output doesn't show the same amount. Why?
+<details>
+    <summary>&nbsp;<i>What about "hereditary properties"?</i></summary>&nbsp;<br/>
+    "Hereditary properties" refers to the characteristics of a system that depend on its <i><b>entire</b></i> history. <br/><br/>
+    As an example, consider a material that hardens over time, like concrete. The current "hardness" of concrete is a 
+    comprehensive function of its entire history - the starting mix ratio of cement and water, the curing conditions, 
+    the amount of cumulative elemental exposure - all of these historical factors represent the hereditary properties 
+    of the material.
+</details>
 
-**A**: There are two reasons why this occurs:  
 
-1.) For an array with multiple coefficients, the right-most coefficient represents a constant term, and the fractional 
-derivative of a constant is always zero in either Caputo or Riemann-Liouville contexts.
+&nbsp;
 
-2.) For a Caputo derivative, if the exponent value of the term minus the order value is a negative number, then that 
-term's calculation will be omitted from the result. This is due to the way in which the Caputo derivative is designed 
-to handle "well-behaved" finite functions at t = 0. 
 
-Consider the following example where $f(x) = x$ and $\alpha = 2$: 
+<details>
+    <summary>&nbsp;<i>How does all this relate to the Caputo and Riemann-Liouville derivatives?</i></summary>&nbsp;<br/>
+    These two derivatives give us an option to select how much of a system's "memory" we wish to consider in 
+    the mathematical analysis of a given phenomena. <br/><br/>
+    If only a portion of a system's "memory" is needed, then the Caputo derivative is used. <br/>
+    If the entire system's "memory" is needed, then the Riemann-Liouville derivative is used. 
+</details>
 
-$$
-{}^{C} D^{2} [x] = \dfrac{\Gamma(2)}{\Gamma(2-2)}x^{1-2} = \dfrac{1}{\Gamma(0)}x^{-1}
-$$
 
-Since $\Gamma(0)$ is undefined (it tends to infinity), this result would be omitted from the output expression. This
-applies to negative values of the gamma function as well.
+&nbsp;
+
+<details>
+    <summary>&nbsp;<i>There are multiple coefficients in my input, but the output doesn't show the same amount. Why?</i></summary>&nbsp;<br/>
+    There are two reasons why this occurs:&nbsp;<br/><br/>
+    <details>
+        <summary>&nbsp; Fractional Derivatives of Constants</summary>&nbsp;<br/>
+        For an array with multiple coefficients, the right-most coefficient represents a constant term, and the fractional 
+        derivative of a constant is always zero in either Caputo or Riemann-Liouville contexts.
+    </details>
+    <details>
+        <summary>&nbsp; General Behavior of a Caputo Derivative</summary>&nbsp;<br/>
+        For a Caputo derivative, if the exponent value of the term minus the order value is a negative number, then that 
+        term's calculation will be omitted from the result. This is due to the way in which the Caputo derivative is designed 
+        to handle "well-behaved" finite functions. <br/><br/>
+        Consider the following example where $f(x) = x$ and $\alpha = 2$: <br/><br/>
+        ${}^{C} D^{2}{\text{&nbsp;}}[x] = \dfrac{\Gamma(2)}{\Gamma(2-2)}x^{1-2} = \dfrac{1}{\Gamma(0)}x^{-1}$
+        <br/><br/>
+        Since $\Gamma(0)$ is undefined (it tends to infinity), this result would be omitted from the output expression. <br/>
+        This applies to negative values of the gamma function as well.
+    </details>
+</details>
+
+
+
+
 
 <br/>
 
