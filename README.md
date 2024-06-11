@@ -1,99 +1,150 @@
-# Fractional Calculus Computation API (in progress)
+# Fractional Calculus Computation API
 
-## Overview
+A Java-based API for computing Caputo and Riemann-Liouville fractional derivatives of user-provided polynomial
+expressions. 
 
-This is a computational API that calculates derivatives or integrals using fractional
-calculus techniques.  
+## Table of Contents
+1.) [Project Status](#project-status)  
+2.) [Technologies Used](#technologies-used)  
+3.) [Getting Started](#getting-started)  
+4.) [Installation](#installation)  
+5.) [Usage](#usage)  
+6.) [API Reference](#api-reference)  
+7.) [Examples](#examples)
+8.) [Example Calculation](#example-calculation)
+9.) [FAQ](#faq)  
+10.) [Contributing](#contributing)  
+11.) [Changelog](#changelog)  
+12.) [Known Issues](#known-issues)  
+13.) [License](#license)  
+14.) [Acknowledgements](#acknowledgements)  
+15.) [Support](#support)  
+16.) [Contact Information](#contact-information)
+
+## Project Status
+
+This project is in active development with a current version of 1.0.0. Upcoming features include:  
+
+- Support for fractional integrals
   
-At the moment, the API supports valid responses for _integer-order polynomial expressions_.  
-(e.g. 4x³ + 0.5x² + 12x - 15)
+
+- Performance optimizations
+    
+## Technologies Used
+
+- Java 11 (or higher)
+- Maven
+
+  
+## Getting Started
+
+### Prerequisites
+
+1.) Clone the repository:  
+```sh
+git clone https://github.com/trbaxter/fractional-computation-api.git
+```
+
+2.) Navigate to the project directory: 
+```sh
+cd fractional-computation-api
+```
+
+3.) Build the project using Maven:
+```sh
+mvn clean install
+```
   
 
+## Usage
+
+### Application Start
+
+To start the application, use the following command:
+```sh
+mvn spring-boot:run
+```
+
+## API Reference
+
+### Caputo Fractional Derivative Endpoint  
+
+Endpoint URL: 
+```
+/calculate/derivative/caputo
+```
+
+Method: <b>POST</b>  
+
+Required request body:
+```
+{
+  "coefficients": [],
+  "order": 
+}
+```
+Parameters:
+
+```coefficients``` - An array of polynomial coefficients of type double.
+
+```order``` - The derivative order of type double.
+
+Response:
+```
+{
+    "expression": 
+}
+```
+Returns the closed-form expression of the Caputo derivative if successful.
+
+## Examples
+
+### Example 1: Caputo Derivative with Non-Zero Integer Coefficients
+
+Calculate the closed-form 0.35th Caputo derivative of $3x^2 + 2x + 1$.
+
+Input: 
+
+```
+{
+  "coefficients": [3,2,1],
+  "order": 0.35
+}
+```
+
+Output: 
+```
+{
+  "expression": "4.040x^1.650 + 2.222x^0.650"
+}
+```
+
+### Example 2: Caputo Derivative with Zero and Non-Zero Long-Type Coefficients
+
+Calculate the closed-form 1.23456th Caputo derivative of $14.6x^3 + 16.049x - 12$.
+
+Input:
+```
+{
+  "coefficients": [14.6, 0, 16.049, -12],
+  "order": 1.23456
+}
+```
+
+Output:
+```
+{
+    "expression": "53.778x^1.766"
+}
+```
+
+## Example Calculation
+
+Given the polynomial $f(x) = 3x^2 + 2x + 1$, and the order $\alpha = 0.5$, the Caputo fractional derivative 
+$\dfrac{C}{} D \dfrac{0.5}{} f(x)$ is computed as follows: 
 
 
-## Background
 
-With ordinary calculus, the number of times we differentiate or integrate a function is typically referred to as the 
-_**order**_ of the operation. This order value is restricted to positive integers only.
-
-Fractional calculus is not bound to this restriction; we are free to take the 4.687-th integral of a function, or the 
-π-th derivative if we wish. This grants a much greater precision with which we can analyze the behavior of complex 
-physical systems.
-  
-<br/>
-
-## Real-World Applications of Fractional Calculus
-
-Below is a small sample of academic papers utilizing fractional calculus techniques for analysis of various phenomena:
-
-- Conservation of mass in fluid flow [Wheatcraft and Meerschaert (2008)]
-- Analysis of groundwater flow [Atangana et al. (2013-2014)]
-- Modeling viscoelastic dampening in polymer materials [Mainardi (2010)]
-- Propagation of acoustical waves in complex media (biological tissue) [Holm & Näsholm (2011)]
-- Expanding the solution of the Schrödinger equation in quantum mechanics [Bhrawy & Zaky (2017)]
-
-<br/>  
-  
-## How The Derivatives Are Calculated
-
-In the subsections below, $D$ is the shorthand notation for the differentiation operator, and $\alpha$ represents the 
-order value of the differentiation. When applied to a variable, such as $x$, it means:
-  
-$$
-D^{α}(x) = \dfrac{d^{α}}{dx^{α}}(x)
-$$  
-
-For example, $D^{2}(x^{3}) = 6x$. 
-
-<br/>
-
-
-### Constants
-
-Let $c$ represent a constant. The factional derivative of a constant is defined as:
-  
-$$
-D^{α}(c) = 0
-$$  
-  
-This is no different from integer-order derivatives of constant values.  
-  
-<br/>
-
-### Power Expressions
-
-Let $k$ represent a constant value. The fractional derivative of a power expression can be expressed, in general, as:  
-
-$$
-D^{α}(x^{k}) = \dfrac{Γ(1+k)}{Γ(1+k-α)} x^{k - α}
-$$  
-
-Where $x ≥ 0, k ≠ -1, -2, -3 ...$ and $\Gamma$ is the Gamma function, defined for $n > 0$ as:  
-
-$$
-Γ(n) = (n-1)!
-$$
-
-This extends to polynomial expressions consisting of multiple terms of varying powers. 
-
-<br/>
-
-
-[//]: # (&#40;Plan on rewriting these using LaTeX&#41;:)
-
-[//]: # ()
-[//]: # (1.&#41; D^α&#40;x&#41; &#40;e^&#40;kx&#41;&#41; = k^α e^&#40;kx&#41;)
-
-[//]: # ()
-[//]: # (2.&#41; D^α&#40;x&#41; &#40;sin&#40;kx&#41;&#41; = k^α sin&#40;kx + απ/2&#41;)
-
-[//]: # ()
-[//]: # (3.&#41; D^α&#40;x&#41; x^k = Γ&#40;1+k&#41;/Γ&#40;1+k-α&#41;)
-
-[//]: # ()
-[//]: # (For 1 and 2, k >= 0.)
-
-[//]: # (For 3, x >= 0, and K is an element of the positive integers &#40;including zero&#41;.)
 
 ## High-level Design Diagram
 
@@ -146,27 +197,3 @@ flowchart TB
     classDef empty width: 0px, height: 0px;
 ```
 
-## Diagram Legend
-
-```mermaid
-
-flowchart TD
-
-%% Diagram Legend Shapes %%    
-    L1([" App start  "]):::start
-    L2["&nbsp Program &nbsp \n Action "]:::action
-    L3[/" Program Output "/]:::output
-    L4[/" User Input "/]:::input
-    L5{"Decision"}:::decision
-    L6([" App finish "]):::finish
-%% Links %%        
-    L1 ~~~ L2 ~~~ L3 ~~~ L4 ~~~ L5 ~~~ L6
-%% Class Colors %%
-    classDef start stroke: #0f0, stroke-width: 2.5px;
-    classDef finish stroke: #f00, stroke-width: 2.5px;
-    classDef decision stroke: #cc5500, stroke-width: 2.5px;
-    classDef action stroke: #196de3, stroke-width: 2.5px;
-    classDef input stroke: #ca14de, stroke-width: 2.5px;
-    classDef output stroke: #ede205 , stroke-width: 2.5px;
-    classDef empty width: 0px, height: 0px;
-```
