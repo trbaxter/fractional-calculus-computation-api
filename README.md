@@ -143,14 +143,31 @@ Output:
 Given the polynomial $f(x) = 3x^2 + 2x + 1$, and the order $\alpha = 0.5$, the Caputo fractional derivative
 ${}^{C} D^{0.5} f(x)$ is computed by applying the Caputo derivative formula to each term: 
 
+Term $3x^2$:
+
 $$
 {}^{C} D^{0.5}[3x^2] = 3 \cdot \dfrac{\Gamma(3)}{\Gamma(3-0.5)} x^{2-0.5} = 3 \cdot \dfrac{2!}{\Gamma(2.5)} x^{1.5}
-$$  
+$$
 
+Using $\Gamma(3) = 2$ amd $\Gamma(2.5) = \dfrac{3\sqrt{\pi}}{4}$:
 
 $$
-{}^{C} D^{0.5}[2x] = 2 \cdot \dfrac{\Gamma(2)}{\Gamma(2 - 0.5)} x^{1-0.5} = 3 \cdot \dfrac{1!}{\Gamma(1.5)} x^{0.5}
+{}^{C} D^{0.5}[3x^2] = 3 \cdot \dfrac{2}{\dfrac{3\sqrt{pi}}{4}}x^{1.5} = \dfrac{8}{\sqrt{pi}}x^{1.5}
 $$
+
+Term $2x$:
+
+$$
+{}^{C} D^{0.5}[2x] = 2 \cdot \dfrac{\Gamma(2)}{\Gamma(2 - 0.5)} x^{1-0.5} = 2 \cdot \dfrac{1!}{\Gamma(1.5)} x^{0.5}
+$$
+
+Using $\Gamma(2) = 1!$ and $\Gamma(1.5) = \dfrac{\sqrt(\pi)}{2}$:
+
+$$
+{}^{C} D^{0.5}[2x] = 2 \cdot \dfrac{1}{\dfrac{\sqrt{\pi}}{2}}x^{0.5} = \dfrac{4}{\sqrt{pi}}x^{0.5}
+$$
+
+Term $1$:
 
 $$
 {}^{C} D^{0.5}[1] = 0
@@ -159,11 +176,13 @@ $$
 Simplifying and combining the terms:
 
 $$
-{}^{C} D^{0.5} f(x) = 3 \cdot \dfrac{2}{1.772} x^{1.5} + 2 \cdot \dfrac{1}{0.886} x^0.5
+{}^{C} D^{0.5} f(x) = \dfrac{8}{\sqrt{pi}}x^{1.5} + \dfrac{4}{\sqrt{pi}}x^{0.5}
 $$
 
+Approximating to 3 decimal places in the coefficient and 1 decimal place in the exponent:
+
 $$
-\approx 3.386x^{1.5} + 2.257x^{0.5}
+\approx 4.514x^{1.5} + 2.257x^{0.5}
 $$
 
 
