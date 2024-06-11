@@ -266,7 +266,7 @@ $$
 
 <details>
     <summary>&nbsp;<i>What is meant by "memory effects"?</i></summary>&nbsp;<br/>
-    "Memory effects" refers to how a system's <i><b>recent</i></b> past influences its present behavior. <br/> 
+    "Memory effects" refers to how a system's <i><b>recent</b></i> past influences its present behavior. <br/> 
     In other words, the system "remembers" its recent history. <br/><br/>
     For example, consider a rubber band that's been stretched and released multiple times. The current "stretchiness" of 
     the rubber band not only depends on how it's being stretched right now, but <i><b>also</b></i> on how it was stretched recently.
