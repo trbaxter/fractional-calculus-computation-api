@@ -1,24 +1,24 @@
 # Fractional Calculus Computation API
 
-A Java-based API for computing Caputo fractional derivatives of user-provided polynomial
+A Java-based API for computing Caputo and Riemann-Liouville fractional derivatives of user-provided polynomial
 expressions. 
 
 ## Table of Contents
-1.) [Project Status](#project-status)  
-2.) [Technologies Used](#technologies-used)  
-3.) [Getting Started](#getting-started)  
-4.) [Usage](#usage)  
-5.) [API Reference](#api-reference)  
-6.) [Examples](#examples)  
-7.) [Example Calculation](#example-calculation)  
-8.) [FAQ](#faq)  
-9.) [Contributing](#contributing)  
-10.) [Changelog](#changelog)  
-11.) [Known Issues](#known-issues)  
-12.) [License](#license)  
-13.) [Acknowledgements](#acknowledgements)  
-14.) [Support](#support)  
-15.) [Contact Information](#contact-information)
+[Project Status](#project-status)  
+[Technologies Used](#technologies-used)  
+[Getting Started](#getting-started)  
+[Usage](#usage)  
+[API Reference](#api-reference)  
+[Examples](#examples)  
+[Calculation Details](#calculation-details)  
+[FAQ](#faq)  
+[Contributing](#contributing)  
+[Changelog](#changelog)  
+[Known Issues](#known-issues)  
+[License](#license)  
+[Acknowledgements](#acknowledgements)  
+[Support](#support)  
+[Contact Information](#contact-information)
 
 <br/>
 
@@ -96,8 +96,9 @@ Endpoint URL:
 /calculate/derivative/caputo
 ```
 
-
 Method: <b>POST</b>  
+
+&nbsp;
 
 Required request body:
 ```
@@ -123,11 +124,15 @@ Response:
 ```
 Returns the closed-form expression of the Caputo derivative if successful.
 
+&nbsp;
+
 ## Examples
 
 ### Example 1: Caputo Derivative with Non-Zero Integer Coefficients
 
 Calculate the closed-form 0.35th Caputo derivative of $3x^2 + 2x + 1$.
+
+&nbsp;
 
 Input: 
 
@@ -137,6 +142,8 @@ Input:
   "order": 0.35
 }
 ```
+
+&nbsp;
 
 Output: 
 ```
@@ -150,6 +157,8 @@ Output:
 
 Calculate the closed-form 1.23456th Caputo derivative of $14.6x^3 + 16.049x - 12$.
 
+&nbsp;
+
 Input:
 ```
 {
@@ -157,6 +166,8 @@ Input:
   "order": 1.23456
 }
 ```
+
+&nbsp;
 
 Output:
 ```
@@ -167,7 +178,7 @@ Output:
 
 &nbsp;
 
-## Example Calculation
+## Calculation Details
 
 Given the polynomial $f(x) = 3x^2 + 2x + 1$, and the order $\alpha = 0.5$, the Caputo fractional derivative
 ${}^{C} D^{0.5} f(x)$ is computed by applying the Caputo derivative formula to each term: 
@@ -175,7 +186,7 @@ ${}^{C} D^{0.5} f(x)$ is computed by applying the Caputo derivative formula to e
 Term $3x^2$:
 
 $$
-{}^{C} D^{0.5}[3x^2] = 3 \cdot \dfrac{\Gamma(3)}{\Gamma(3-0.5)} x^{2-0.5} = 3 \cdot \dfrac{2!}{\Gamma(2.5)} x^{1.5}
+{}^{C} D^{0.5}\:[3x^2] = 3 \cdot \dfrac{\Gamma(3)}{\Gamma(3-0.5)} x^{2-0.5} = 3 \cdot \dfrac{2!}{\Gamma(2.5)} x^{1.5}
 $$
 
 &nbsp;
@@ -185,7 +196,7 @@ Since $\Gamma(3) = 2$ amd $\Gamma(2.5) = \dfrac{3\sqrt{\pi}}{4}$:
 &nbsp;
 
 $$
-{}^{C} D^{0.5}[3x^2] = 3 \cdot \dfrac{2}{\dfrac{3\sqrt{pi}}{4}}x^{1.5} = \dfrac{8}{\sqrt{pi}}x^{1.5}
+{}^{C} D^{0.5}\:[3x^2] = 3 \cdot \dfrac{2}{\dfrac{3\sqrt{\pi}}{4}}x^{1.5} = \dfrac{8}{\sqrt{\pi}}x^{1.5}
 $$
 
 &nbsp;
@@ -193,17 +204,17 @@ $$
 Term $2x$:
 
 $$
-{}^{C} D^{0.5}[2x] = 2 \cdot \dfrac{\Gamma(2)}{\Gamma(2 - 0.5)} x^{1-0.5} = 2 \cdot \dfrac{1!}{\Gamma(1.5)} x^{0.5}
+{}^{C} D^{0.5}\:[2x] = 2 \cdot \dfrac{\Gamma(2)}{\Gamma(2 - 0.5)} x^{1-0.5} = 2 \cdot \dfrac{1!}{\Gamma(1.5)} x^{0.5}
 $$
 
 &nbsp;
 
-Since $\Gamma(2) = 1$ and $\Gamma(1.5) = \dfrac{\sqrt(\pi)}{2}$:
+Since $\Gamma(2) = 1$ and $\Gamma(1.5) = \dfrac{\sqrt{(\pi)}}{2}$:
 
 &nbsp;
 
 $$
-{}^{C} D^{0.5}[2x] = 2 \cdot \dfrac{1}{\dfrac{\sqrt{\pi}}{2}}x^{0.5} = \dfrac{4}{\sqrt{pi}}x^{0.5}
+{}^{C} D^{0.5}\:[2x] = 2 \cdot \dfrac{1}{\dfrac{\sqrt{\pi}}{2}}x^{0.5} = \dfrac{4}{\sqrt{\pi}}x^{0.5}
 $$
 
 &nbsp;
@@ -211,7 +222,7 @@ $$
 Term $1$:
 
 $$
-{}^{C} D^{0.5}[1] = 0
+{}^{C} D^{0.5}\:[1] = 0
 $$
 
 &nbsp;
@@ -221,7 +232,7 @@ Simplifying and combining the terms:
 &nbsp;
 
 $$
-{}^{C} D^{0.5} f(x) = \dfrac{8}{\sqrt{pi}}x^{1.5} + \dfrac{4}{\sqrt{pi}}x^{0.5}
+{}^{C} D^{0.5} f(x) = \dfrac{8}{\sqrt{\pi}}x^{1.5} + \dfrac{4}{\sqrt{\pi}}x^{0.5}
 $$
 
 &nbsp;
@@ -295,7 +306,7 @@ to handle "well-behaved" finite functions at t = 0.
 Consider the following example where $f(x) = x$ and $\alpha = 2$: 
 
 $$
-{}^{C} D^{2} x = \dfrac{\Gamma{2}}{\Gamma{2-2}}x^{1-2} = \dfrac{1}{\Gamma(0)}x^{-1}
+{}^{C} D^{2} x = \dfrac{\Gamma(2)}{\Gamma(2-2)}x^{1-2} = \dfrac{1}{\Gamma(0)}x^{-1}
 $$
 
 Since $\Gamma(0)$ is undefined (it tends to infinity), this result would be omitted from the output expression. This
