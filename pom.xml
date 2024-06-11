@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.trbaxter.github</groupId>
     <artifactId>fractional-computation-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>fractional-computation-api</name>
     <description>An API for solving fractional derivatives and integrals</description>
     <properties>
