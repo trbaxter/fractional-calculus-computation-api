@@ -9,15 +9,21 @@ import java.util.Comparator;
 import java.util.List;
 
 @Service
-public class ComputationService {
+public class CaputoDerivativeService implements DerivativeService {
 
-	public String caputoFractionalDerivative(double[] coefficients, double alpha) {
+	@Override
+	public String computeDerivative(double[] coefficients, double alpha) {
+		List<Term> terms = computeTerms(coefficients, alpha);
+		return formatTerms(terms);
+	}
+
+	private List<Term> computeTerms(double[] coefficients, double alpha) {
 		List<Term> terms = new ArrayList<>();
 		int degree = coefficients.length - 1;
 
 		for (int i = 0; i <= degree; i++) {
-			double coefficient = coefficients[i];  // Highest degree term comes first
-			if (coefficient != 0) {
+			double coefficient = coefficients[i];
+			if (coefficient != 0)  {
 				double gammaNumerator = MathUtils.gamma(degree - i + 1);
 				double gammaDenominator = MathUtils.gamma(degree - i + 1 - alpha);
 				if (gammaDenominator != 0) {
@@ -31,11 +37,13 @@ public class ComputationService {
 			}
 		}
 
-		// Sort terms by the power in descending order
 		terms.sort(Comparator.comparingDouble(Term::power).reversed());
+		return terms;
+	}
 
+	private String formatTerms(List<Term> terms) {
 		StringBuilder result = new StringBuilder();
-		for (int i = 0; i < terms.size(); i++) {
+		for (int i = 0; i <terms.size(); i++) {
 			Term term = terms.get(i);
 			if (i > 0) {
 				if (term.coefficient() > 0) {
@@ -55,7 +63,6 @@ public class ComputationService {
 			}
 			result.append("x^").append(String.format("%.3f", term.power()));
 		}
-
 		return result.toString();
 	}
 }

@@ -24,9 +24,7 @@ expressions.
 
 ## Project Status
 
-This project is in active development with a current version of 1.0.0. Upcoming features include:  
-
-- Support for the Riemann-Liouville fractional derivative 
+This project is in active development with a current version of 1.0.0. Upcoming features include:
 
 
 - Support for the Caputo and Riemann-Liouville fractional integrals
@@ -35,7 +33,8 @@ This project is in active development with a current version of 1.0.0. Upcoming 
 - Performance optimizations
 
 
-- Expanding capability to handle other types of math expressions (logarithms, trig identities, and so on)
+- Expanding capability to handle other types of math expressions  
+(logarithms, trig identities, and so on)
 
 <br/>
     
@@ -93,7 +92,7 @@ mvn spring-boot:run
 
 Endpoint URL: 
 ```
-/calculate/derivative/caputo
+/fractional-calculus-computation-api/derivative/caputo
 ```
 
 Method: <b>POST</b>  
@@ -126,6 +125,44 @@ Returns the closed-form expression of the Caputo derivative if successful.
 
 &nbsp;
 
+### Riemann-Liouville Fractional Derivative Endpoint
+
+
+Endpoint URL:
+```
+/fractional-calculus-computation-api/derivative/riemann-liouville
+```
+
+Method: <b>POST</b>
+
+&nbsp;
+
+Required request body:
+```
+{
+  "coefficients": [],
+  "order": 
+}
+```
+&nbsp;
+
+Parameters:
+
+```coefficients``` - An array of polynomial coefficients of type double.
+
+```order``` - The derivative order of type double.  
+&nbsp;
+
+Response:
+```
+{
+    "expression": 
+}
+```
+Returns the closed-form expression of the Riemann-Liouville derivative if successful.
+
+&nbsp;
+
 ## Examples
 
 ### Example 1: Caputo Derivative with Non-Zero Integer Coefficients
@@ -151,9 +188,10 @@ Output:
   "expression": "4.040x^1.650 + 2.222x^0.650"
 }
 ```
-&nbsp;
+<br/>
+<br/>
 
-### Example 2: Caputo Derivative with Zero and Non-Zero Long-Type Coefficients
+### Example 2: Caputo Derivative with Zero and Non-Zero Coefficients
 
 Calculate the closed-form 1.23456th Caputo derivative of $14.6x^3 + 16.049x - 12$.
 
@@ -176,7 +214,62 @@ Output:
 }
 ```
 
+<br/>
+<br/>
+
+### Example 3: Riemann-Liouville Derivative with Non-Zero Integer Coefficients
+
+Calculate the closed-form 0.35th Riemann-Liouville derivative of $3x^2 + 2x + 1$.
+
 &nbsp;
+
+Input:
+
+```
+{
+  "coefficients": [3,2,1],
+  "order": 0.35
+}
+```
+
+&nbsp;
+
+Output:
+```
+{
+  "expression": "4.040x^1.650 + 2.222x^0.650 + 0.722x^-0.350"
+}
+```
+
+> [!NOTE]
+> Be aware that the Riemann-Liouville fractional derivative has non-zero outputs for derivatives of constants. 
+
+<br/>
+<br/>
+
+### Example 4: Riemann-Liouville Derivative with Zero and Non-Zero Coefficients
+
+Calculate the closed-form 0.35th Riemann-Liouville derivative of $14.6x^3 + 16.049x - 12$.
+
+&nbsp;
+
+Input:
+
+```
+{
+  "coefficients": [3,2,1],
+  "order": 0.35
+}
+```
+
+&nbsp;
+
+Output:
+```
+{
+  "expression": "4.514x^1.500 + 2.257x^0.500 + 0.564x^-0.500"
+}
+```
 
 ## Calculation Details
 

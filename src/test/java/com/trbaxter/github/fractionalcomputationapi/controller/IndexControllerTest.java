@@ -2,59 +2,79 @@ package com.trbaxter.github.fractionalcomputationapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trbaxter.github.fractionalcomputationapi.model.ControllerRequest;
-import com.trbaxter.github.fractionalcomputationapi.model.ControllerResponse;
-import com.trbaxter.github.fractionalcomputationapi.service.ComputationService;
+import com.trbaxter.github.fractionalcomputationapi.service.CaputoDerivativeService;
+import com.trbaxter.github.fractionalcomputationapi.service.RiemannLiouvilleDerivativeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 public class IndexControllerTest {
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
     private MockMvc mockMvc;
 
-    @Mock
-    private ComputationService computationService;
+    @MockBean
+    private CaputoDerivativeService caputoDerivativeService;
 
-    @InjectMocks
-    private IndexController indexController;
+    @MockBean
+    private RiemannLiouvilleDerivativeService riemannLiouvilleDerivativeService;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
-    public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(indexController).build();
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
     @Test
-    public void testCaputoDerivative() throws Exception {
-        // Arrange: Set up the request object and expected response
+    public void testComputeCaputoDerivative() throws Exception {
+        double[] coefficients = {3.0, 2.0, 1.0};
+        double alpha = 0.5;
         ControllerRequest request = new ControllerRequest();
-        request.setCoefficients(new double[]{1.0, 2.0, 3.0});
-        request.setOrder(1.0);
+        request.setCoefficients(coefficients);
+        request.setOrder(alpha);
 
-        // Mock the computation service
-        String expectedExpression = "some derivative expression";
-        when(computationService.caputoFractionalDerivative(any(double[].class), any(double.class)))
-                .thenReturn(expectedExpression);
+        when(caputoDerivativeService.computeDerivative(coefficients, alpha))
+                .thenReturn("4.514x^1.500 + 2.257x^0.500");
 
-        // Act: Perform the POST request
-        mockMvc.perform(post("/calculate/derivative/caputo")
-               .contentType(MediaType.APPLICATION_JSON)
-               .content(objectMapper.writeValueAsString(request)))
-               .andExpect(status().isOk()) // Assert: Verify the status is OK
-               .andExpect(content().json(objectMapper.writeValueAsString(new ControllerResponse(expectedExpression)))); // Verify the response content
+        mockMvc.perform(post("/api/derivative/caputo")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("4.514x^1.500 + 2.257x^0.500"));
+    }
+
+    @Test
+    public void testComputeRiemannLiouvilleDerivative() throws Exception {
+        double[] coefficients = {3.0, 2.0, 1.0};
+        double alpha = 0.5;
+        ControllerRequest request = new ControllerRequest();
+        request.setCoefficients(coefficients);
+        request.setOrder(alpha);
+
+        when(riemannLiouvilleDerivativeService.computeDerivative(coefficients, alpha))
+                .thenReturn("3.786x^1.500 + 1.893x^0.500");
+
+        mockMvc.perform(post("/api/derivative/riemann-liouville")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("3.786x^1.500 + 1.893x^0.500"));
     }
 }

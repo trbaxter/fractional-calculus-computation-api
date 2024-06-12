@@ -85,6 +85,14 @@
         </dependency>
 
         <dependency>
+            <!-- Preconfigured inline mock maker for mocking static methods. -->
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>5.2.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <!-- Java library that provides annotations to simplify Java development. -->
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

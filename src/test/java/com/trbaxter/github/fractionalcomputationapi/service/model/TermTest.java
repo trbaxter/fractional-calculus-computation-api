@@ -1,5 +1,6 @@
-package com.trbaxter.github.fractionalcomputationapi.model;
+package com.trbaxter.github.fractionalcomputationapi.service.model;
 
+import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
