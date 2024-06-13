@@ -1,3 +1,5 @@
 package com.trbaxter.github.fractionalcomputationapi.model;
 
-public record Term (double coefficient, double power) {}
+import java.math.BigDecimal;
+
+public record Term (BigDecimal coefficient, BigDecimal power) {}
