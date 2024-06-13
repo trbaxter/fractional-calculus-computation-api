@@ -51,13 +51,13 @@ public class IndexControllerTest {
         request.setOrder(alpha);
 
         when(caputoDerivativeService.computeDerivative(coefficients, alpha))
-                .thenReturn("4.514x^1.500 + 2.257x^0.500");
+               .thenReturn("4.514x^1.500 + 2.257x^0.500");
 
-        mockMvc.perform(post("/api/derivative/caputo")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(content().string("4.514x^1.500 + 2.257x^0.500"));
+        mockMvc.perform(post("/fractional-calculus-computation-api/derivative/caputo")
+               .contentType(MediaType.APPLICATION_JSON)
+               .content(objectMapper.writeValueAsString(request)))
+               .andExpect(status().isOk())
+               .andExpect(content().string("4.514x^1.500 + 2.257x^0.500"));
     }
 
     @Test
@@ -69,12 +69,12 @@ public class IndexControllerTest {
         request.setOrder(alpha);
 
         when(riemannLiouvilleDerivativeService.computeDerivative(coefficients, alpha))
-                .thenReturn("3.786x^1.500 + 1.893x^0.500");
+               .thenReturn("3.786x^1.500 + 1.893x^0.500");
 
-        mockMvc.perform(post("/api/derivative/riemann-liouville")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(content().string("3.786x^1.500 + 1.893x^0.500"));
+        mockMvc.perform(post("/fractional-calculus-computation-api/derivative/riemann-liouville")
+               .contentType(MediaType.APPLICATION_JSON)
+               .content(objectMapper.writeValueAsString(request)))
+               .andExpect(status().isOk())
+               .andExpect(content().string("3.786x^1.500 + 1.893x^0.500"));
     }
 }
