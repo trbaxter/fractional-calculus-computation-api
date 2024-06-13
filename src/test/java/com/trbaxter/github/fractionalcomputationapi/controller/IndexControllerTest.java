@@ -51,13 +51,13 @@ public class IndexControllerTest {
         request.setOrder(alpha);
 
         when(caputoDerivativeService.computeDerivative(coefficients, alpha))
-               .thenReturn("4.514x^1.500 + 2.257x^0.500");
+               .thenReturn("4.514x^1.5 + 2.257x^0.5");
 
         mockMvc.perform(post("/fractional-calculus-computation-api/derivative/caputo")
                .contentType(MediaType.APPLICATION_JSON)
                .content(objectMapper.writeValueAsString(request)))
                .andExpect(status().isOk())
-               .andExpect(content().string("4.514x^1.500 + 2.257x^0.500"));
+               .andExpect(content().string("4.514x^1.5 + 2.257x^0.5"));
     }
 
     @Test
