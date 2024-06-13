@@ -53,7 +53,7 @@ public class MathUtilsTest {
     }
 
     @Test
-    public void testMathUtilsConstructor() {
+    public void testMathUtilsConstructor() {    // Coverage for MathUtils class
         Constructor<MathUtils> constructor = null;
         try {
             constructor = MathUtils.class.getDeclaredConstructor();
