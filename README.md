@@ -40,7 +40,7 @@ This project is in active development with a current version of 1.0.0. Upcoming 
     
 ## Technologies Used
 
-- Java 11 (or higher)
+- Java 22
 
 
 - Maven
@@ -167,7 +167,7 @@ Returns the closed-form expression of the Riemann-Liouville derivative if succes
 
 ### Example 1: Caputo Derivative with Non-Zero Integer Coefficients
 
-Calculate the closed-form 0.35th Caputo derivative of $3x^2 + 2x + 1$.
+Obtain an expression for the 0.35th Caputo derivative of $3x^2 + 2x + 1$.
 
 &nbsp;
 
@@ -185,7 +185,7 @@ Input:
 Output: 
 ```
 {
-  "expression": "4.040x^1.650 + 2.222x^0.650"
+  "expression": "4.040x^1.65 + 2.222x^0.65"
 }
 ```
 <br/>
@@ -193,7 +193,7 @@ Output:
 
 ### Example 2: Caputo Derivative with Zero and Non-Zero Coefficients
 
-Calculate the closed-form 1.23456th Caputo derivative of $14.6x^3 + 16.049x - 12$.
+Obtain an expression for the 1.23456th Caputo derivative of $14.6x^3 + 16.049x - 12$.
 
 &nbsp;
 
@@ -210,7 +210,7 @@ Input:
 Output:
 ```
 {
-    "expression": "53.778x^1.766"
+    "expression": "53.778x^1.76544"
 }
 ```
 
@@ -219,7 +219,7 @@ Output:
 
 ### Example 3: Riemann-Liouville Derivative with Non-Zero Integer Coefficients
 
-Calculate the closed-form 0.35th Riemann-Liouville derivative of $3x^2 + 2x + 1$.
+Obtain an expression for the 0.35th Riemann-Liouville derivative of $3x^2 + 2x + 1$.
 
 &nbsp;
 
@@ -241,15 +241,17 @@ Output:
 }
 ```
 
-> [!NOTE]
-> Be aware that the Riemann-Liouville fractional derivative has non-zero outputs for derivatives of constants. 
+&nbsp;
+
+> [!WARNING]
+> Be aware that the Riemann-Liouville fractional derivative has non-zero outputs for derivatives of constants.
 
 <br/>
 <br/>
 
 ### Example 4: Riemann-Liouville Derivative with Zero and Non-Zero Coefficients
 
-Calculate the closed-form 0.35th Riemann-Liouville derivative of $14.6x^3 + 16.049x - 12$.
+Obtain an expression for the 0.35th Riemann-Liouville derivative of $14.6x^3 + 16.049x - 12$.
 
 &nbsp;
 
@@ -342,7 +344,8 @@ $$
 
 <details>
     <summary>&nbsp;<i>What is a fractional derivative?</i></summary>&nbsp;<br/>
-    A fractional derivative is a generalization of the traditional integer-order derivative extended to include non-integer values.
+    A fractional derivative is a generalization of the traditional integer-order derivative extended 
+    to include non-integer values.
 </details>
 
 
@@ -361,8 +364,9 @@ $$
     <summary>&nbsp;<i>What is meant by "memory effects"?</i></summary>&nbsp;<br/>
     "Memory effects" refers to how a system's <i><b>recent</b></i> past influences its present behavior. <br/> 
     In other words, the system "remembers" its recent history. <br/><br/>
-    For example, consider a rubber band that's been stretched and released multiple times. The current "stretchiness" of 
-    the rubber band not only depends on how it's being stretched right now, but <i><b>also</b></i> on how it was stretched recently.
+    For example, consider a rubber band that's been stretched and released multiple times. 
+    The current "stretchiness" of the rubber band not only depends on how it's being stretched right now, but 
+    <i><b>also</b></i> on how it was stretched recently.
 </details>
 
 
@@ -370,7 +374,8 @@ $$
 
 <details>
     <summary>&nbsp;<i>What about "hereditary properties"?</i></summary>&nbsp;<br/>
-    "Hereditary properties" refers to the characteristics of a system that depend on its <i><b>entire</b></i> history. <br/><br/>
+    "Hereditary properties" refers to the characteristics of a system that depend on its <i><b>entire</b></i> history. 
+    <br/><br/>
     As an example, consider a material that hardens over time, like concrete. The current "hardness" of concrete is a 
     comprehensive function of its entire history - the starting mix ratio of cement and water, the curing conditions, 
     the amount of cumulative elemental exposure - all of these historical factors represent the hereditary properties 
@@ -393,13 +398,14 @@ $$
 &nbsp;
 
 <details>
-    <summary>&nbsp;<i>There are multiple coefficients in my input, but the output doesn't show the same amount. Why?</i></summary>&nbsp;<br/>
+    <summary>&nbsp;<i>There are multiple coefficients in my input, but the output doesn't show the same amount. Why?</i>
+    </summary>&nbsp;<br/>
     There are two reasons why this occurs:&nbsp;<br/><br/>
     <details>
         <summary>&nbsp; Fractional Derivatives of Constants</summary>&nbsp;<br/>
-        For an array with multiple coefficients, the right-most coefficient represents a constant term, and the fractional 
-        derivative of a constant is always zero in either Caputo or Riemann-Liouville contexts.
-    </details>
+        For an array with multiple coefficients, the right-most coefficient represents a constant term, and the 
+        fractional derivative of a constant is always zero in either Caputo or Riemann-Liouville contexts.
+    </details> <br/>
     <details>
         <summary>&nbsp; General Behavior of a Caputo Derivative</summary>&nbsp;<br/>
         For a Caputo derivative, if the exponent value of the term minus the order value is a negative number, then that 
@@ -412,9 +418,6 @@ $$
         This applies to negative values of the gamma function as well.
     </details>
 </details>
-
-
-
 
 
 <br/>
@@ -443,6 +446,7 @@ Remember to update tests if necessary and provide responses to the questions as 
 
 - Initial release with Caputo and Riemann-Liouville fractional derivative calculation capabilities
 
+
 - Includes comprehensive test coverage
 
 <br/>
@@ -468,6 +472,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 
 - <a href="https://maven.apache.org/">Maven</a>
+
+
+- <a href="https://commons.apache.org/proper/commons-math/">Apache Commons Math</a>
 
 
 - <a href="https://openai.com/">OpenAI GPT-4o</a>
