@@ -101,6 +101,7 @@
         </dependency>
 
         <dependency>
+            <!-- Provides the BigDecimal type for greater precision in gamma function calculations. -->
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
             <version>3.6.1</version>
