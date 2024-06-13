@@ -1,14 +1,13 @@
 package com.trbaxter.github.fractionalcomputationapi;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-/**
- * Smoke test for the Main application class. <br/>
- * Performs a basic sanity check ensuring that main() is executed without exceptions.
- */
+@SpringBootTest
 public class MainTest {
-    @Test
-    public void main() {
-        Main.main(new String[] {});
-    }
+
+	@Test
+	void contextLoads() {
+		// Fails if the application context cannot start
+	}
 }
