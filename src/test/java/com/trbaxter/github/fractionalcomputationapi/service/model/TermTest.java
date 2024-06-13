@@ -1,17 +1,15 @@
 package com.trbaxter.github.fractionalcomputationapi.service.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import java.math.BigDecimal;
 import java.util.stream.Stream;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import com.trbaxter.github.fractionalcomputationapi.model.Term;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TermTest {
 
