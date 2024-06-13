@@ -237,21 +237,18 @@ Input:
 Output:
 ```
 {
-  "expression": "4.040x^1.650 + 2.222x^0.650 + 0.722x^-0.350"
+  "expression": "4.040x^1.65 + 2.222x^0.65 + 0.722x^-0.35"
 }
 ```
 
 &nbsp;
-
-> [!WARNING]
-> Be aware that the Riemann-Liouville fractional derivative has non-zero outputs for derivatives of constants.
 
 <br/>
 <br/>
 
 ### Example 4: Riemann-Liouville Derivative with Zero and Non-Zero Coefficients
 
-Obtain an expression for the 0.35th Riemann-Liouville derivative of $14.6x^3 + 16.049x - 12$.
+Obtain an expression for the 1.23456th Riemann-Liouville derivative of $14.6x^3 + 16.049x - 12$.
 
 &nbsp;
 
@@ -259,8 +256,8 @@ Input:
 
 ```
 {
-  "coefficients": [3,2,1],
-  "order": 0.35
+  "coefficients": [14.6, 0, 16.049, -12],
+  "order": 1.23456
 }
 ```
 
@@ -269,7 +266,7 @@ Input:
 Output:
 ```
 {
-  "expression": "4.514x^1.500 + 2.257x^0.500 + 0.564x^-0.500"
+  "expression": "53.778x^1.76544 + 13.314x^-0.23456 + 2.335x^-1.23456"
 }
 ```
 
@@ -348,8 +345,7 @@ $$
     to include non-integer values.
 </details>
 
-
-&nbsp;
+<br/>
 
 <details>
     <summary>&nbsp;<i>Why is this important?</i>&nbsp;<br/></summary>&nbsp;<br/>
@@ -358,7 +354,7 @@ $$
 </details>
 
 
-&nbsp;
+<br/>
 
 <details>
     <summary>&nbsp;<i>What is meant by "memory effects"?</i></summary>&nbsp;<br/>
@@ -369,8 +365,7 @@ $$
     <i><b>also</b></i> on how it was stretched recently.
 </details>
 
-
-&nbsp;
+<br/>
 
 <details>
     <summary>&nbsp;<i>What about "hereditary properties"?</i></summary>&nbsp;<br/>
@@ -382,9 +377,7 @@ $$
     of the material.
 </details>
 
-
-&nbsp;
-
+<br/>
 
 <details>
     <summary>&nbsp;<i>How does all this relate to the Caputo and Riemann-Liouville derivatives?</i></summary>&nbsp;<br/>
@@ -394,8 +387,7 @@ $$
     If the entire system's "memory" is needed, then the Riemann-Liouville derivative is used. 
 </details>
 
-
-&nbsp;
+<br/>
 
 <details>
     <summary>&nbsp;<i>There are multiple coefficients in my input, but the output doesn't show the same amount. Why?</i>
@@ -404,17 +396,20 @@ $$
     <details>
         <summary>&nbsp; Fractional Derivatives of Constants</summary>&nbsp;<br/>
         For an array with multiple coefficients, the right-most coefficient represents a constant term, and the 
-        fractional derivative of a constant is always zero in either Caputo or Riemann-Liouville contexts.
+        fractional derivative of a constant is always zero for a Caputo fractional derivative. <br/><br/>
+        If the fractional derivative of a constant is needed, use the Riemann-Liouville option.
     </details> <br/>
     <details>
         <summary>&nbsp; General Behavior of a Caputo Derivative</summary>&nbsp;<br/>
         For a Caputo derivative, if the exponent value of the term minus the order value is a negative number, then that 
-        term's calculation will be omitted from the result. This is due to the way in which the Caputo derivative is designed 
-        to handle "well-behaved" finite functions. <br/><br/>
+        term's calculation will be omitted from the result. This is due to the way in which the Caputo derivative is 
+        designed to handle "well-behaved" finite functions. 
+        <br/><br/>
         Consider the following example where $f(x) = x$ and $\alpha = 2$: <br/><br/>
         ${}^{C} D^{2}{\text{&nbsp;}}[x] = \dfrac{\Gamma(2)}{\Gamma(2-2)}x^{1-2} = \dfrac{1}{\Gamma(0)}x^{-1}$
         <br/><br/>
-        Since $\Gamma(0)$ is undefined (it tends to infinity), this result would be omitted from the output expression. <br/>
+        Since $\Gamma(0)$ is undefined, this result would be omitted from the output expression. 
+        <br/>
         This applies to negative values of the gamma function as well.
     </details>
 </details>
