@@ -27,33 +27,41 @@ public class CaputoDerivativeService implements DerivativeService {
 		int degree = coefficients.length - 1;
 
 		if (alpha.stripTrailingZeros().scale() <= 0) {
-			// Handle whole number order as regular derivative
+
+			// If order is an integer, handle as regular derivative
 			int intAlpha = alpha.intValue();
 			for (int i = 0; i <= degree; i++) {
 				BigDecimal coefficient = BigDecimal.valueOf(coefficients[i]);
 				if (coefficient.compareTo(BigDecimal.ZERO) != 0) {
 					int newDegree = degree - i - intAlpha;
 					if (newDegree >= 0) {
-						BigDecimal newCoefficient = coefficient.multiply(BigDecimal.valueOf(factorial(degree - i) / factorial(degree - i - intAlpha)));
+						BigDecimal newCoefficient = coefficient.multiply(
+								BigDecimal.valueOf(factorial(degree - i) /
+								factorial(degree - i - intAlpha)));
 						terms.add(new Term(newCoefficient, BigDecimal.valueOf(newDegree)));
 					}
 				}
 			}
 		} else {
-			// Handle fractional order
+
+			// If order is a non-integer, use the gamma function
 			for (int i = 0; i <= degree; i++) {
 				BigDecimal coefficient = BigDecimal.valueOf(coefficients[i]);
 				if (coefficient.compareTo(BigDecimal.ZERO) != 0) {
 					try {
 						BigDecimal gammaNumerator = MathUtils.gamma(BigDecimal.valueOf(degree - i + 1));
-						BigDecimal gammaDenominator = MathUtils.gamma(BigDecimal.valueOf(degree - i + 1).subtract(alpha));
-						logger.info(String.format("Term %d: gammaNumerator = %s, gammaDenominator = %s", i, gammaNumerator, gammaDenominator));
+						BigDecimal gammaDenominator = MathUtils.gamma(BigDecimal.valueOf(degree - i + 1)
+															   .subtract(alpha));
+						logger.info(String.format("Term %d: gammaNumerator = %s, gammaDenominator = %s",
+															i, gammaNumerator, gammaDenominator));
 
 						if (gammaDenominator.compareTo(BigDecimal.ZERO) != 0) {
-							BigDecimal gammaCoefficient = gammaNumerator.divide(gammaDenominator, MathContext.DECIMAL128);
+							BigDecimal gammaCoefficient = gammaNumerator.divide(gammaDenominator,
+																				MathContext.DECIMAL128);
 							BigDecimal newCoefficient = coefficient.multiply(gammaCoefficient);
 							BigDecimal newPower = BigDecimal.valueOf(degree - i).subtract(alpha);
-							logger.info(String.format("Term %d: newCoefficient = %s, newPower = %s", i, newCoefficient, newPower));
+							logger.info(String.format("Term %d: newCoefficient = %s, newPower = %s",
+													   			i, newCoefficient, newPower));
 							if (newPower.compareTo(BigDecimal.ZERO) >= 0) {
 								terms.add(new Term(newCoefficient, newPower));
 							}
@@ -93,7 +101,8 @@ public class CaputoDerivativeService implements DerivativeService {
 					result.append(term.coefficient().setScale(3, RoundingMode.HALF_UP));
 				}
 			}
-			// Format the exponent without trailing zeros
+
+			// Remove the trailing zeros from exponents in output
 			String exponent = term.power().stripTrailingZeros().toPlainString();
 			result.append("x^").append(exponent);
 		}
