@@ -1,12 +1,8 @@
 server:
   port: 8080
-  tomcat:
-    relaxed-query-chars: '^'
 
 spring:
-  main:
-    banner-mode: "off"
-  application: fractional-computation-api
+  application: fractional-calculus-computation-api
 
 logging:
   level:
