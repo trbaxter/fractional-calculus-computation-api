@@ -7,6 +7,8 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -25,12 +27,12 @@ public class RiemannLiouvilleDerivativeServiceTest {
         double alpha = 0.5;
 
         try (MockedStatic<MathUtils> utilities = Mockito.mockStatic(MathUtils.class)) {
-            utilities.when(() -> MathUtils.gamma(3)).thenReturn(2.0); // Gamma(3) = 2!
-            utilities.when(() -> MathUtils.gamma(2.5)).thenReturn(1.329);
-            utilities.when(() -> MathUtils.gamma(2)).thenReturn(1.0); // Gamma(2) = 1!
-            utilities.when(() -> MathUtils.gamma(1.5)).thenReturn(0.886);
-            utilities.when(() -> MathUtils.gamma(1)).thenReturn(1.0);
-            utilities.when(() -> MathUtils.gamma(0.5)).thenReturn(1.772);
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(3))).thenReturn(new BigDecimal("2.0"));
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(2.5))).thenReturn(new BigDecimal("1.329"));
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(2))).thenReturn(new BigDecimal("1.0"));
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(1.5))).thenReturn(new BigDecimal("0.886"));
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(1))).thenReturn(new BigDecimal("1.0"));
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(0.5))).thenReturn(new BigDecimal("1.77245385091"));
 
             String result = riemannLiouvilleDerivativeService.computeDerivative(coefficients, alpha);
             String expected = "4.515x^1.500 + 2.257x^0.500 + 0.564x^-0.500";
@@ -45,13 +47,16 @@ public class RiemannLiouvilleDerivativeServiceTest {
         double alpha = 0.5;
 
         try (MockedStatic<MathUtils> utilities = Mockito.mockStatic(MathUtils.class)) {
-            utilities.when(() -> MathUtils.gamma(3)).thenReturn(2.0);
-            utilities.when(() -> MathUtils.gamma(2.5)).thenReturn(1.329);
-            utilities.when(() -> MathUtils.gamma(2)).thenReturn(1.0);
-            utilities.when(() -> MathUtils.gamma(1.5)).thenReturn(0.886);
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(3))).thenReturn(new BigDecimal("2.0"));
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(2.5))).thenReturn(new BigDecimal("1.329"));
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(2))).thenReturn(new BigDecimal("1.0"));
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(1.5))).thenReturn(new BigDecimal("0.886"));
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(1))).thenReturn(new BigDecimal("1.0"));
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(0.5))).thenReturn(new BigDecimal("1.77245385091"));
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(-0.5))).thenReturn(new BigDecimal("-3.54490770181"));
 
             String result = riemannLiouvilleDerivativeService.computeDerivative(coefficients, alpha);
-            String expected = "- 4.515x^1.500 - 2.257x^0.500";
+            String expected = "- 4.515x^1.500 - 2.257x^0.500 - 0.564x^-0.500";
 
             assertEquals(expected, result);
         }
@@ -62,10 +67,15 @@ public class RiemannLiouvilleDerivativeServiceTest {
         double[] coefficients = {3.0};
         double alpha = 0.5;
 
-        String result = riemannLiouvilleDerivativeService.computeDerivative(coefficients, alpha);
-        String expected = "1.693x^-0.500";
+        try (MockedStatic<MathUtils> utilities = Mockito.mockStatic(MathUtils.class)) {
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(1))).thenReturn(new BigDecimal("1.0"));
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(0.5))).thenReturn(new BigDecimal("1.77245385091"));
 
-        assertEquals(expected, result);
+            String result = riemannLiouvilleDerivativeService.computeDerivative(coefficients, alpha);
+            String expected = "1.693x^-0.500";
+
+            assertEquals(expected, result);
+        }
     }
 
     @Test
@@ -85,11 +95,14 @@ public class RiemannLiouvilleDerivativeServiceTest {
         double alpha = 1.5;
 
         try (MockedStatic<MathUtils> utilities = Mockito.mockStatic(MathUtils.class)) {
-            utilities.when(() -> MathUtils.gamma(3)).thenReturn(2.0); // Gamma(3) = 2!
-            utilities.when(() -> MathUtils.gamma(1.5)).thenReturn(0.886);
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(3))).thenReturn(new BigDecimal("2.0"));
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(1.5))).thenReturn(new BigDecimal("0.886"));
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(1))).thenReturn(new BigDecimal("1.0"));
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(0.5))).thenReturn(new BigDecimal("1.77245385091"));
+            utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(-0.5))).thenReturn(new BigDecimal("-3.54490770181"));
 
             String result = riemannLiouvilleDerivativeService.computeDerivative(coefficients, alpha);
-            String expected = "6.772x^0.500";
+            String expected = "6.772x^0.500 - 0.282x^-1.500";
 
             assertEquals(expected, result);
         }
