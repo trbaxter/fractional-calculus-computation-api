@@ -20,7 +20,7 @@
     </properties>
     <dependencies>
         <dependency>
-            <!-- Starter for building web/RESTful apps using Spring MVC. -->
+            <!-- Starter for building web / restful apps using Spring MVC. -->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
@@ -115,8 +115,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
-                <configuration>
-                </configuration>
             </plugin>
 
             <plugin>
@@ -144,24 +142,16 @@
                             <include>src/main/java/**/*.java</include>
                             <include>src/test/java/**/*.java</include>
                         </includes>
-
-                        <cleanthat/>
                         <googleJavaFormat/>
                         <eclipse/>
-
-                        <importOrder/> <!-- standard import order -->
-                        <importOrder>  <!-- custom ordering -->
-                            <wildcardsLast>false
-                            </wildcardsLast> <!-- Optional, default false. Sort wildcard import after specific imports -->
-                            <order>java|javax,org,com,com.diffplug,,\#com.diffplug,\#
-                            </order>  <!-- or use <file>${project.basedir}/eclipse.importorder</file> -->
-                            <!-- you can use an empty string for all the imports you didn't specify explicitly, '|' to join group without blank line, and '\#` prefix for static imports. -->
-                            <semanticSort>false
-                            </semanticSort> <!-- Optional, default false. Sort by package, then class, then member (for static imports). Splitting is based on common conventions (packages are lower case, classes start with upper case). Use <treatAsPackage> and <treatAsClass> for exceptions. -->
-                            <treatAsPackage> <!-- Packages starting with upper case letters. -->
+                        <importOrder>
+                            <wildcardsLast>false</wildcardsLast>
+                            <order>java|javax,org,com,com.diffplug,,\#com.diffplug,\#</order>
+                            <semanticSort>false</semanticSort>
+                            <treatAsPackage>
                                 <package>com.example.MyPackage</package>
                             </treatAsPackage>
-                            <treatAsClass> <!-- Classes starting with lower case letters. -->
+                            <treatAsClass>
                                 <class>com.example.myClass</class>
                             </treatAsClass>
                         </importOrder>
@@ -181,7 +171,6 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.12</version>
                 <executions>
-
                     <execution>
                         <goals>
                             <goal>prepare-agent</goal>
