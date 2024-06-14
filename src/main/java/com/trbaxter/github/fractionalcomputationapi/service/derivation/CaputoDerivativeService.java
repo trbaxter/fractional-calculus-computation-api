@@ -1,5 +1,8 @@
-package com.trbaxter.github.fractionalcomputationapi.service;
+package com.trbaxter.github.fractionalcomputationapi.service.derivation;
 
+import com.trbaxter.github.fractionalcomputationapi.model.Term;
+import com.trbaxter.github.fractionalcomputationapi.service.FractionalCalculusService;
+import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -7,18 +10,14 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
-
 import org.springframework.stereotype.Service;
 
-import com.trbaxter.github.fractionalcomputationapi.model.Term;
-import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
-
 @Service
-public class CaputoDerivativeService implements DerivativeService {
+public class CaputoDerivativeService implements FractionalCalculusService {
 	private static final Logger logger = Logger.getLogger(CaputoDerivativeService.class.getName());
 
 	@Override
-	public String computeDerivative(double[] coefficients, double alpha) {
+	public String evaluateExpression(double[] coefficients, double alpha) {
 		List<Term> terms = computeTerms(coefficients, BigDecimal.valueOf(alpha));
 		return formatTerms(terms);
 	}
@@ -41,12 +40,11 @@ public class CaputoDerivativeService implements DerivativeService {
 		for (int i = 0; i <= degree; i++) {
 			BigDecimal coefficient = BigDecimal.valueOf(coefficients[i]);
 			if (coefficient.compareTo(BigDecimal.ZERO) != 0) {
-				int newDegree = degree - i - intAlpha;
-				if (newDegree >= 0) {
-					BigDecimal newCoefficient = coefficient
-							.multiply(BigDecimal.valueOf(factorial(degree - i) / factorial(degree - i - intAlpha)));
-					terms.add(new Term(newCoefficient, BigDecimal.valueOf(newDegree)));
-				}
+				int newDegree = degree - i + intAlpha;
+				BigDecimal newCoefficient = coefficient.divide(
+						BigDecimal.valueOf(factorial(newDegree) / factorial(newDegree - intAlpha)),
+						MathContext.DECIMAL128);
+				terms.add(new Term(newCoefficient, BigDecimal.valueOf(newDegree)));
 			}
 		}
 	}
@@ -56,20 +54,18 @@ public class CaputoDerivativeService implements DerivativeService {
 			BigDecimal coefficient = BigDecimal.valueOf(coefficients[i]);
 			if (coefficient.compareTo(BigDecimal.ZERO) != 0) {
 				try {
-					BigDecimal gammaNumerator = MathUtils.gamma(BigDecimal.valueOf(degree - i + 1));
-					BigDecimal gammaDenominator = MathUtils.gamma(BigDecimal.valueOf(degree - i + 1).subtract(alpha));
+					BigDecimal gammaNumerator = MathUtils.gamma(BigDecimal.valueOf(degree - i + alpha.doubleValue()));
+					BigDecimal gammaDenominator = MathUtils.gamma(BigDecimal.valueOf(degree - i + 1));
 					logger.info(String.format("Term %d: gammaNumerator = %s, gammaDenominator = %s", i, gammaNumerator,
 							gammaDenominator));
 
 					if (gammaDenominator.compareTo(BigDecimal.ZERO) != 0) {
 						BigDecimal gammaCoefficient = gammaNumerator.divide(gammaDenominator, MathContext.DECIMAL128);
 						BigDecimal newCoefficient = coefficient.multiply(gammaCoefficient);
-						BigDecimal newPower = BigDecimal.valueOf(degree - i).subtract(alpha);
+						BigDecimal newPower = BigDecimal.valueOf(degree - i).add(alpha);
 						logger.info(String.format("Term %d: newCoefficient = %s, newPower = %s", i, newCoefficient,
 								newPower));
-						if (newPower.compareTo(BigDecimal.ZERO) >= 0) {
-							terms.add(new Term(newCoefficient, newPower));
-						}
+						terms.add(new Term(newCoefficient, newPower));
 					}
 				} catch (Exception e) {
 					logger.severe(String.format("Error computing term %d: %s", i, e.getMessage()));

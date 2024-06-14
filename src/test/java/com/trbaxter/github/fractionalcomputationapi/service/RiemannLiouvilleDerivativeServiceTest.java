@@ -2,6 +2,7 @@ package com.trbaxter.github.fractionalcomputationapi.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.trbaxter.github.fractionalcomputationapi.service.derivation.RiemannLiouvilleDerivativeService;
 import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
@@ -39,7 +40,7 @@ public class RiemannLiouvilleDerivativeServiceTest {
 			utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(1))).thenReturn(new BigDecimal("1.0"));
 			utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(0.5))).thenReturn(new BigDecimal("1.77245385091"));
 
-			String result = riemannLiouvilleDerivativeService.computeDerivative(coefficients, alpha);
+			String result = riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha);
 			String expected = "4.515x^1.5 + 2.257x^0.5 + 0.564x^-0.5";
 
 			assertEquals(expected, result);
@@ -61,7 +62,7 @@ public class RiemannLiouvilleDerivativeServiceTest {
 			utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(-0.5)))
 					.thenReturn(new BigDecimal("-3.54490770181"));
 
-			String result = riemannLiouvilleDerivativeService.computeDerivative(coefficients, alpha);
+			String result = riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha);
 			String expected = "- 4.515x^1.5 - 2.257x^0.5 - 0.564x^-0.5";
 
 			assertEquals(expected, result);
@@ -77,7 +78,7 @@ public class RiemannLiouvilleDerivativeServiceTest {
 			utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(1))).thenReturn(new BigDecimal("1.0"));
 			utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(0.5))).thenReturn(new BigDecimal("1.77245385091"));
 
-			String result = riemannLiouvilleDerivativeService.computeDerivative(coefficients, alpha);
+			String result = riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha);
 			String expected = "1.693x^-0.5";
 
 			assertEquals(expected, result);
@@ -89,7 +90,7 @@ public class RiemannLiouvilleDerivativeServiceTest {
 		double[] coefficients = {0.0, 0.0, 0.0};
 		double alpha = 0.5;
 
-		String result = riemannLiouvilleDerivativeService.computeDerivative(coefficients, alpha);
+		String result = riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha);
 		String expected = "";
 
 		assertEquals(expected, result);
@@ -108,7 +109,7 @@ public class RiemannLiouvilleDerivativeServiceTest {
 			utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(-0.5)))
 					.thenReturn(new BigDecimal("-3.54490770181"));
 
-			String result = riemannLiouvilleDerivativeService.computeDerivative(coefficients, alpha);
+			String result = riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha);
 			String expected = "6.772x^0.5 - 0.282x^-1.5";
 
 			assertEquals(expected, result);
@@ -126,7 +127,7 @@ public class RiemannLiouvilleDerivativeServiceTest {
 					.thenThrow(new ArithmeticException("Division by zero")); // This will trigger the
 			// ArithmeticException
 
-			String result = riemannLiouvilleDerivativeService.computeDerivative(coefficients, alpha);
+			String result = riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha);
 			String expected = "";
 
 			assertEquals(expected, result);
@@ -142,7 +143,7 @@ public class RiemannLiouvilleDerivativeServiceTest {
 			utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(1.5)))
 					.thenThrow(new RuntimeException("Unexpected error"));
 
-			String result = riemannLiouvilleDerivativeService.computeDerivative(coefficients, alpha);
+			String result = riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha);
 			String expected = "";
 
 			assertEquals(expected, result);

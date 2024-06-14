@@ -1,5 +1,8 @@
-package com.trbaxter.github.fractionalcomputationapi.service;
+package com.trbaxter.github.fractionalcomputationapi.service.derivation;
 
+import com.trbaxter.github.fractionalcomputationapi.model.Term;
+import com.trbaxter.github.fractionalcomputationapi.service.FractionalCalculusService;
+import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -8,18 +11,14 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
-
 import org.springframework.stereotype.Service;
 
-import com.trbaxter.github.fractionalcomputationapi.model.Term;
-import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
-
 @Service
-public class RiemannLiouvilleDerivativeService implements DerivativeService {
+public class RiemannLiouvilleDerivativeService implements FractionalCalculusService {
 	private static final Logger logger = Logger.getLogger(RiemannLiouvilleDerivativeService.class.getName());
 
 	@Override
-	public String computeDerivative(double[] coefficients, double alpha) {
+	public String evaluateExpression(double[] coefficients, double alpha) {
 		logger.info(
 				"Computing derivative with coefficients: " + Arrays.toString(coefficients) + " and alpha: " + alpha);
 		List<Term> terms = computeTerms(coefficients, BigDecimal.valueOf(alpha));
