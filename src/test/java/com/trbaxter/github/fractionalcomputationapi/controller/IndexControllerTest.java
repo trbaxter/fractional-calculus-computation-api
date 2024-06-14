@@ -7,8 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trbaxter.github.fractionalcomputationapi.model.ControllerRequest;
-import com.trbaxter.github.fractionalcomputationapi.service.CaputoDerivativeService;
-import com.trbaxter.github.fractionalcomputationapi.service.RiemannLiouvilleDerivativeService;
+import com.trbaxter.github.fractionalcomputationapi.service.derivation.CaputoDerivativeService;
+import com.trbaxter.github.fractionalcomputationapi.service.derivation.RiemannLiouvilleDerivativeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -46,7 +46,7 @@ public class IndexControllerTest {
 		request.setCoefficients(coefficients);
 		request.setOrder(alpha);
 
-		when(caputoDerivativeService.computeDerivative(coefficients, alpha)).thenReturn("4.514x^1.5 + 2.257x^0.5");
+		when(caputoDerivativeService.evaluateExpression(coefficients, alpha)).thenReturn("4.514x^1.5 + 2.257x^0.5");
 
 		mockMvc.perform(post("/fractional-calculus-computation-api/derivative/caputo")
 				.contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(request)))
@@ -61,7 +61,7 @@ public class IndexControllerTest {
 		request.setCoefficients(coefficients);
 		request.setOrder(alpha);
 
-		when(riemannLiouvilleDerivativeService.computeDerivative(coefficients, alpha))
+		when(riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha))
 				.thenReturn("3.786x^1.500 + 1.893x^0.500");
 
 		mockMvc.perform(post("/fractional-calculus-computation-api/derivative/riemann-liouville")
@@ -88,7 +88,7 @@ public class IndexControllerTest {
 		request.setCoefficients(coefficients);
 		request.setOrder(alpha);
 
-		when(caputoDerivativeService.computeDerivative(coefficients, alpha))
+		when(caputoDerivativeService.evaluateExpression(coefficients, alpha))
 				.thenThrow(new RuntimeException("Internal Server Error"));
 
 		mockMvc.perform(post("/fractional-calculus-computation-api/derivative/caputo")
@@ -104,7 +104,7 @@ public class IndexControllerTest {
 		request.setCoefficients(coefficients);
 		request.setOrder(alpha);
 
-		when(riemannLiouvilleDerivativeService.computeDerivative(coefficients, alpha))
+		when(riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha))
 				.thenThrow(new RuntimeException("Internal Server Error"));
 
 		mockMvc.perform(post("/fractional-calculus-computation-api/derivative/riemann-liouville")

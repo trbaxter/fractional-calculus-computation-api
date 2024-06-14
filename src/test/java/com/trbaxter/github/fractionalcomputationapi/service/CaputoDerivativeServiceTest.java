@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mockStatic;
 
+import com.trbaxter.github.fractionalcomputationapi.service.derivation.CaputoDerivativeService;
 import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class CaputoDerivativeServiceTest {
 			utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(1))).thenReturn(new BigDecimal("1.0"));
 			utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(0.5))).thenReturn(new BigDecimal("1.77245385091"));
 
-			String result = caputoDerivativeService.computeDerivative(coefficients, alpha);
+			String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
 			String expected = "4.515x^1.5 + 2.257x^0.5";
 
 			assertEquals(expected, result);
@@ -61,7 +62,7 @@ public class CaputoDerivativeServiceTest {
 			utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(1))).thenReturn(new BigDecimal("1.0"));
 			utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(0.5))).thenReturn(new BigDecimal("1.77245385091"));
 
-			String result = caputoDerivativeService.computeDerivative(coefficients, alpha);
+			String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
 			String expected = "- 4.515x^1.5 - 2.257x^0.5";
 
 			assertEquals(expected, result);
@@ -73,7 +74,7 @@ public class CaputoDerivativeServiceTest {
 		double[] coefficients = {3.0};
 		double alpha = 0.5;
 
-		String result = caputoDerivativeService.computeDerivative(coefficients, alpha);
+		String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
 		String expected = "";
 
 		assertEquals(expected, result);
@@ -92,7 +93,7 @@ public class CaputoDerivativeServiceTest {
 			utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(1))).thenReturn(new BigDecimal("1.0"));
 			utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(0.5))).thenReturn(new BigDecimal("1.77245385091"));
 
-			String result = caputoDerivativeService.computeDerivative(coefficients, alpha);
+			String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
 			String expected = "4.515x^1.5 - 2.257x^0.5";
 
 			assertEquals(expected, result);
@@ -110,7 +111,7 @@ public class CaputoDerivativeServiceTest {
 			utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(1))).thenReturn(new BigDecimal("1.0"));
 			utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(0.5))).thenReturn(new BigDecimal("1.77245385091"));
 
-			String result = caputoDerivativeService.computeDerivative(coefficients, alpha);
+			String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
 			String expected = "2.257x^0.5";
 
 			assertEquals(expected, result);
@@ -122,7 +123,7 @@ public class CaputoDerivativeServiceTest {
 		double[] coefficients = {0.0, 0.0, 0.0};
 		double alpha = 0.5;
 
-		String result = caputoDerivativeService.computeDerivative(coefficients, alpha);
+		String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
 		String expected = "";
 
 		assertEquals(expected, result);
@@ -141,7 +142,7 @@ public class CaputoDerivativeServiceTest {
 			utilities.when(() -> MathUtils.gamma(BigDecimal.valueOf(-0.5)))
 					.thenReturn(new BigDecimal("-3.54490770181"));
 
-			String result = caputoDerivativeService.computeDerivative(coefficients, alpha);
+			String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
 			String expected = "6.772x^0.5";
 
 			assertEquals(expected, result);
@@ -153,7 +154,7 @@ public class CaputoDerivativeServiceTest {
 		double[] coefficients = {1, 2, 3};
 		double alpha = 2;
 
-		String result = caputoDerivativeService.computeDerivative(coefficients, alpha);
+		String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
 		String expected = "2.000";
 
 		assertEquals(expected, result);
@@ -167,7 +168,7 @@ public class CaputoDerivativeServiceTest {
 		try (MockedStatic<MathUtils> mockedMathUtils = mockStatic(MathUtils.class)) {
 			mockedMathUtils.when(() -> MathUtils.gamma(any(BigDecimal.class))).thenReturn(BigDecimal.ONE);
 
-			String result = caputoDerivativeService.computeDerivative(coefficients, alpha);
+			String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
 			assertNotNull(result);
 		}
 	}
@@ -199,7 +200,7 @@ public class CaputoDerivativeServiceTest {
 			mockedMathUtils.when(() -> MathUtils.gamma(any(BigDecimal.class)))
 					.thenThrow(new ArithmeticException("Gamma function error"));
 
-			String result = caputoDerivativeService.computeDerivative(coefficients, alpha);
+			String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
 			assertNotNull(result);
 			// Ensure the logger captured the error
 			assertTrue(logMessages.stream().anyMatch(msg -> msg.contains("Gamma function error")));

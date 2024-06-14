@@ -2,7 +2,6 @@ package com.trbaxter.github.fractionalcomputationapi.utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-
 import org.apache.commons.math3.special.Gamma;
 
 public final class MathUtils {
