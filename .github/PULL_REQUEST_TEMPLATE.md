@@ -1,3 +1,4 @@
+<!-- @formatter:off -->
 ## What type of PR is this?
 
 - [ ] Bug Fix
