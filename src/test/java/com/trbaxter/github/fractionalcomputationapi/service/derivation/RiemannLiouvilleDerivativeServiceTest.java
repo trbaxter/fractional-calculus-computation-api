@@ -1,8 +1,7 @@
-package com.trbaxter.github.fractionalcomputationapi.service;
+package com.trbaxter.github.fractionalcomputationapi.service.derivation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.trbaxter.github.fractionalcomputationapi.service.derivation.RiemannLiouvilleDerivativeService;
 import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
