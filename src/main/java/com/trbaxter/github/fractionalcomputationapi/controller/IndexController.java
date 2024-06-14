@@ -1,7 +1,7 @@
 package com.trbaxter.github.fractionalcomputationapi.controller;
 
 import com.trbaxter.github.fractionalcomputationapi.model.ControllerRequest;
-import com.trbaxter.github.fractionalcomputationapi.service.derivation.CaputoDerivativeService;
+import com.trbaxter.github.fractionalcomputationapi.service.derivation.caputo.CaputoDerivativeService;
 import com.trbaxter.github.fractionalcomputationapi.service.derivation.RiemannLiouvilleDerivativeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

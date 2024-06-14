@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trbaxter.github.fractionalcomputationapi.model.ControllerRequest;
-import com.trbaxter.github.fractionalcomputationapi.service.derivation.CaputoDerivativeService;
+import com.trbaxter.github.fractionalcomputationapi.service.derivation.caputo.CaputoDerivativeService;
 import com.trbaxter.github.fractionalcomputationapi.service.derivation.RiemannLiouvilleDerivativeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
