@@ -1,5 +1,6 @@
 package com.trbaxter.github.fractionalcomputationapi.service.derivation.caputo;
 
+import static com.trbaxter.github.fractionalcomputationapi.testdata.TestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -32,16 +33,16 @@ public class CaputoDerivativeServiceTest {
     try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(3)))
-          .thenReturn(new BigDecimal("2.000000000000000"));
+          .thenReturn(new BigDecimal(gamma_3));
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(2.5)))
-          .thenReturn(new BigDecimal("1.329340388179137"));
+          .thenReturn(new BigDecimal(gamma_2_point_5));
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(2)))
-          .thenReturn(new BigDecimal("1.000000000000000"));
+          .thenReturn(new BigDecimal(gamma_2));
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.5)))
-          .thenReturn(new BigDecimal("0.886226925452758"));
+          .thenReturn(new BigDecimal(gamma_1_point_5));
 
       String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
       String expected = "4.514x^1.5 + 2.257x^0.5";
@@ -58,16 +59,16 @@ public class CaputoDerivativeServiceTest {
     try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(3)))
-          .thenReturn(new BigDecimal("2.000000000000000"));
+          .thenReturn(new BigDecimal(gamma_3));
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(2.5)))
-          .thenReturn(new BigDecimal("1.329340388179137"));
+          .thenReturn(new BigDecimal(gamma_2_point_5));
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(2)))
-          .thenReturn(new BigDecimal("1.000000000000000"));
+          .thenReturn(new BigDecimal(gamma_2));
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.5)))
-          .thenReturn(new BigDecimal("0.886226925452758"));
+          .thenReturn(new BigDecimal(gamma_1_point_5));
 
       String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
       String expected = "-4.514x^1.5 - 2.257x^0.5";
@@ -95,16 +96,16 @@ public class CaputoDerivativeServiceTest {
     try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(3)))
-          .thenReturn(new BigDecimal("2.000000000000000"));
+          .thenReturn(new BigDecimal(gamma_3));
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(2.5)))
-          .thenReturn(new BigDecimal("1.329340388179137"));
+          .thenReturn(new BigDecimal(gamma_2_point_5));
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(2)))
-          .thenReturn(new BigDecimal("1.000000000000000"));
+          .thenReturn(new BigDecimal(gamma_2));
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.5)))
-          .thenReturn(new BigDecimal("0.886226925452758"));
+          .thenReturn(new BigDecimal(gamma_1_point_5));
 
       String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
       String expected = "4.514x^1.5 - 2.257x^0.5";
@@ -121,19 +122,19 @@ public class CaputoDerivativeServiceTest {
     try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(6)))
-          .thenReturn(new BigDecimal("120.000000000000000"));
+          .thenReturn(new BigDecimal(gamma_6));
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(5)))
-          .thenReturn(new BigDecimal("24.000000000000000"));
+          .thenReturn(new BigDecimal(gamma_5));
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(4)))
-          .thenReturn(new BigDecimal("6.000000000000000"));
+          .thenReturn(new BigDecimal(gamma_4));
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(3)))
-          .thenReturn(new BigDecimal("2.000000000000000"));
+          .thenReturn(new BigDecimal(gamma_3));
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(2)))
-          .thenReturn(new BigDecimal("1.000000000000000"));
+          .thenReturn(new BigDecimal(gamma_2));
 
       String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
       String expected = "5x^4 + 12x^3 - 18x^2";
@@ -150,10 +151,10 @@ public class CaputoDerivativeServiceTest {
     try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(2)))
-          .thenReturn(new BigDecimal("1.000000000000000"));
+          .thenReturn(new BigDecimal(gamma_2));
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.5)))
-          .thenReturn(new BigDecimal("0.886226925452758"));
+          .thenReturn(new BigDecimal(gamma_1_point_5));
 
       String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
       String expected = "2.257x^0.5";
@@ -181,10 +182,10 @@ public class CaputoDerivativeServiceTest {
     try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(3)))
-          .thenReturn(new BigDecimal("2.000000000000000"));
+          .thenReturn(new BigDecimal(gamma_3));
       utilities
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.5)))
-          .thenReturn(new BigDecimal("0.886226925452758"));
+          .thenReturn(new BigDecimal(gamma_1_point_5));
 
       String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
       String expected = "6.770x^0.5";
