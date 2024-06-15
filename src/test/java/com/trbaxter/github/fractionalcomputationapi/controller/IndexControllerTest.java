@@ -8,7 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trbaxter.github.fractionalcomputationapi.model.ControllerRequest;
 import com.trbaxter.github.fractionalcomputationapi.service.derivation.caputo.CaputoDerivativeService;
-import com.trbaxter.github.fractionalcomputationapi.service.derivation.RiemannLiouvilleDerivativeService;
+import com.trbaxter.github.fractionalcomputationapi.service.derivation.riemann_liouville.RiemannLiouvilleDerivativeService;
+import com.trbaxter.github.fractionalcomputationapi.service.integration.caputo.CaputoIntegrationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -21,94 +22,152 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(IndexController.class)
 public class IndexControllerTest {
 
-	@Autowired
-	private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-	@MockBean
-	private CaputoDerivativeService caputoDerivativeService;
+  @MockBean private CaputoDerivativeService caputoDerivativeService;
 
-	@MockBean
-	private RiemannLiouvilleDerivativeService riemannLiouvilleDerivativeService;
+  @MockBean private RiemannLiouvilleDerivativeService riemannLiouvilleDerivativeService;
 
-	@Autowired
-	private ObjectMapper objectMapper;
+  @MockBean private CaputoIntegrationService caputoIntegrationService;
 
-	@BeforeEach
-	public void setUp() {
-		MockitoAnnotations.openMocks(this);
-	}
+  @Autowired private ObjectMapper objectMapper;
 
-	@Test
-	public void testComputeCaputoDerivative() throws Exception {
-		double[] coefficients = {3.0, 2.0, 1.0};
-		double alpha = 0.5;
-		ControllerRequest request = new ControllerRequest();
-		request.setCoefficients(coefficients);
-		request.setOrder(alpha);
+  @BeforeEach
+  public void setUp() {
+    MockitoAnnotations.openMocks(this);
+  }
 
-		when(caputoDerivativeService.evaluateExpression(coefficients, alpha)).thenReturn("4.514x^1.5 + 2.257x^0.5");
+  @Test
+  public void testComputeCaputoDerivative() throws Exception {
+    double[] coefficients = {3.0, 2.0, 1.0};
+    double alpha = 0.5;
+    ControllerRequest request = new ControllerRequest();
+    request.setCoefficients(coefficients);
+    request.setOrder(alpha);
 
-		mockMvc.perform(post("/fractional-calculus-computation-api/derivative/caputo")
-				.contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(request)))
-				.andExpect(status().isOk()).andExpect(content().string("4.514x^1.5 + 2.257x^0.5"));
-	}
+    when(caputoDerivativeService.evaluateExpression(coefficients, alpha))
+        .thenReturn("4.514x^1.5 + 2.257x^0.5");
 
-	@Test
-	public void testComputeRiemannLiouvilleDerivative() throws Exception {
-		double[] coefficients = {3.0, 2.0, 1.0};
-		double alpha = 0.5;
-		ControllerRequest request = new ControllerRequest();
-		request.setCoefficients(coefficients);
-		request.setOrder(alpha);
+    mockMvc
+        .perform(
+            post("/fractional-calculus-computation-api/derivative/caputo")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isOk())
+        .andExpect(content().string("4.514x^1.5 + 2.257x^0.5"));
+  }
 
-		when(riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha))
-				.thenReturn("3.786x^1.500 + 1.893x^0.500");
+  @Test
+  public void testComputeRiemannLiouvilleDerivative() throws Exception {
+    double[] coefficients = {3.0, 2.0, 1.0};
+    double alpha = 0.5;
+    ControllerRequest request = new ControllerRequest();
+    request.setCoefficients(coefficients);
+    request.setOrder(alpha);
 
-		mockMvc.perform(post("/fractional-calculus-computation-api/derivative/riemann-liouville")
-				.contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(request)))
-				.andExpect(status().isOk()).andExpect(content().string("3.786x^1.500 + 1.893x^0.500"));
-	}
+    when(riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha))
+        .thenReturn("3.786x^1.5 + 1.893x^0.5");
 
-	@Test
-	public void testInvalidControllerRequest() throws Exception {
-		ControllerRequest request = new ControllerRequest();
-		request.setCoefficients(null);
-		request.setOrder(0.5);
+    mockMvc
+        .perform(
+            post("/fractional-calculus-computation-api/derivative/riemann-liouville")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isOk())
+        .andExpect(content().string("3.786x^1.5 + 1.893x^0.5"));
+  }
 
-		mockMvc.perform(post("/fractional-calculus-computation-api/derivative/caputo")
-				.contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(request)))
-				.andExpect(status().isBadRequest());
-	}
+  @Test
+  public void testComputeCaputoIntegral() throws Exception {
+    double[] coefficients = {3.0, 2.0, 1.0};
+    double alpha = 0.5;
+    ControllerRequest request = new ControllerRequest();
+    request.setCoefficients(coefficients);
+    request.setOrder(alpha);
 
-	@Test
-	public void testCaputoDerivativeInternalServerError() throws Exception {
-		double[] coefficients = {3.0, 2.0, 1.0};
-		double alpha = 0.5;
-		ControllerRequest request = new ControllerRequest();
-		request.setCoefficients(coefficients);
-		request.setOrder(alpha);
+    when(caputoIntegrationService.evaluateExpression(coefficients, alpha))
+        .thenReturn("4.985x^2.5 + 2.695x^1.5 + 0.886x^0.5");
 
-		when(caputoDerivativeService.evaluateExpression(coefficients, alpha))
-				.thenThrow(new RuntimeException("Internal Server Error"));
+    mockMvc
+        .perform(
+            post("/fractional-calculus-computation-api/integral/caputo")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isOk())
+        .andExpect(content().string("4.985x^2.5 + 2.695x^1.5 + 0.886x^0.5"));
+  }
 
-		mockMvc.perform(post("/fractional-calculus-computation-api/derivative/caputo")
-				.contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(request)))
-				.andExpect(status().isInternalServerError()).andExpect(content().string("Internal Server Error"));
-	}
+  @Test
+  public void testInvalidControllerRequest() throws Exception {
+    ControllerRequest request = new ControllerRequest();
+    request.setCoefficients(null);
+    request.setOrder(0.5);
 
-	@Test
-	public void testRiemannLiouvilleDerivativeInternalServerError() throws Exception {
-		double[] coefficients = {3.0, 2.0, 1.0};
-		double alpha = 0.5;
-		ControllerRequest request = new ControllerRequest();
-		request.setCoefficients(coefficients);
-		request.setOrder(alpha);
+    mockMvc
+        .perform(
+            post("/fractional-calculus-computation-api/derivative/caputo")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isBadRequest());
+  }
 
-		when(riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha))
-				.thenThrow(new RuntimeException("Internal Server Error"));
+  @Test
+  public void testCaputoDerivativeInternalServerError() throws Exception {
+    double[] coefficients = {3.0, 2.0, 1.0};
+    double alpha = 0.5;
+    ControllerRequest request = new ControllerRequest();
+    request.setCoefficients(coefficients);
+    request.setOrder(alpha);
 
-		mockMvc.perform(post("/fractional-calculus-computation-api/derivative/riemann-liouville")
-				.contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(request)))
-				.andExpect(status().isInternalServerError()).andExpect(content().string("Internal Server Error"));
-	}
+    when(caputoDerivativeService.evaluateExpression(coefficients, alpha))
+        .thenThrow(new RuntimeException("Internal Server Error"));
+
+    mockMvc
+        .perform(
+            post("/fractional-calculus-computation-api/derivative/caputo")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isInternalServerError())
+        .andExpect(content().string("Internal Server Error"));
+  }
+
+  @Test
+  public void testRiemannLiouvilleDerivativeInternalServerError() throws Exception {
+    double[] coefficients = {3.0, 2.0, 1.0};
+    double alpha = 0.5;
+    ControllerRequest request = new ControllerRequest();
+    request.setCoefficients(coefficients);
+    request.setOrder(alpha);
+
+    when(riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha))
+        .thenThrow(new RuntimeException("Internal Server Error"));
+
+    mockMvc
+        .perform(
+            post("/fractional-calculus-computation-api/derivative/riemann-liouville")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isInternalServerError())
+        .andExpect(content().string("Internal Server Error"));
+  }
+
+  @Test
+  public void testCaputoIntegralInternalServerError() throws Exception {
+    double[] coefficients = {3.0, 2.0, 1.0};
+    double alpha = 0.5;
+    ControllerRequest request = new ControllerRequest();
+    request.setCoefficients(coefficients);
+    request.setOrder(alpha);
+
+    when(caputoIntegrationService.evaluateExpression(coefficients, alpha))
+        .thenThrow(new RuntimeException("Internal Server Error"));
+
+    mockMvc
+        .perform(
+            post("/fractional-calculus-computation-api/integral/caputo")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+        .andExpect(status().isInternalServerError())
+        .andExpect(content().string("Internal Server Error"));
+  }
 }
