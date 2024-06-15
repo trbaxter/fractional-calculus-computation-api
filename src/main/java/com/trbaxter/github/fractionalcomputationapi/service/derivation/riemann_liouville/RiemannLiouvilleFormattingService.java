@@ -15,25 +15,26 @@ public class RiemannLiouvilleFormattingService {
       Term term = terms.get(i);
       BigDecimal coefficient = term.coefficient().setScale(3, RoundingMode.HALF_UP);
 
+      // Check if coefficient has trailing zeros to be stripped
+      String coefficientStr = coefficient.toPlainString();
+      if (coefficientStr.endsWith(".000")) {
+        coefficientStr = coefficientStr.replaceAll("\\.0+$", "");
+      }
+
       if (i > 0) {
         if (coefficient.compareTo(BigDecimal.ZERO) > 0) {
           result.append(" + ");
+          result.append(coefficientStr);
         } else {
           result.append(" - ");
-        }
-        if (coefficient.abs().compareTo(BigDecimal.ONE) != 0) {
           result.append(coefficient.abs().toPlainString());
         }
       } else {
         if (coefficient.compareTo(BigDecimal.ZERO) < 0) {
           result.append("-");
-          if (coefficient.abs().compareTo(BigDecimal.ONE) != 0) {
-            result.append(coefficient.abs().toPlainString());
-          }
+          result.append(coefficient.abs().toPlainString());
         } else {
-          if (coefficient.compareTo(BigDecimal.ONE) != 0) {
-            result.append(coefficient.toPlainString());
-          }
+          result.append(coefficientStr);
         }
       }
 
