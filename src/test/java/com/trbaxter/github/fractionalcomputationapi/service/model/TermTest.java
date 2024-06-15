@@ -13,23 +13,24 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class TermTest {
 
-	@ParameterizedTest
-	@MethodSource("provideValidTerms")
-	public void testTermRecord(BigDecimal coefficient, BigDecimal power) {
-		Term term = new Term(coefficient, power);
-		assertEquals(coefficient, term.coefficient());
-		assertEquals(power, term.power());
-	}
+  private static Stream<Arguments> provideValidTerms() {
+    return Stream.of(
+        Arguments.of(new BigDecimal("3.5"), new BigDecimal("2.0")),
+        Arguments.of(new BigDecimal("0.0"), new BigDecimal("0.0")),
+        Arguments.of(new BigDecimal("-1.5"), new BigDecimal("3.0")));
+  }
 
-	private static Stream<Arguments> provideValidTerms() {
-		return Stream.of(Arguments.of(new BigDecimal("3.5"), new BigDecimal("2.0")),
-				Arguments.of(new BigDecimal("0.0"), new BigDecimal("0.0")),
-				Arguments.of(new BigDecimal("-1.5"), new BigDecimal("3.0")));
-	}
+  @ParameterizedTest
+  @MethodSource("provideValidTerms")
+  public void testTermRecord(BigDecimal coefficient, BigDecimal power) {
+    Term term = new Term(coefficient, power);
+    assertEquals(coefficient, term.coefficient());
+    assertEquals(power, term.power());
+  }
 
-	@Test
-	public void testTermRecordNullValues() {
-		assertThrows(NullPointerException.class, () -> new Term(null, new BigDecimal("2.0")));
-		assertThrows(NullPointerException.class, () -> new Term(new BigDecimal("3.5"), null));
-	}
+  @Test
+  public void testTermRecordNullValues() {
+    assertThrows(NullPointerException.class, () -> new Term(null, new BigDecimal("2.0")));
+    assertThrows(NullPointerException.class, () -> new Term(new BigDecimal("3.5"), null));
+  }
 }
