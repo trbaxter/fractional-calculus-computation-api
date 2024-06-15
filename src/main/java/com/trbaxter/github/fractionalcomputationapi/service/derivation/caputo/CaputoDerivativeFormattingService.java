@@ -13,6 +13,9 @@ public class CaputoDerivativeFormattingService {
     StringBuilder result = new StringBuilder();
     for (int i = 0; i < terms.size(); i++) {
       Term term = terms.get(i);
+      if (term.power().compareTo(BigDecimal.ZERO) < 0) {
+        continue; // Skip terms with negative exponents
+      }
       BigDecimal coefficient = term.coefficient().setScale(3, RoundingMode.HALF_UP);
 
       String coefficientString =
