@@ -179,12 +179,4 @@ public class RiemannLiouvilleDerivativeServiceTest {
       assertEquals(expected, result);
     }
   }
-  //
-  //  @Configuration
-  //  static class Config {
-  //    @Bean
-  //    public RiemannLiouvilleDerivativeService riemannLiouvilleDerivativeService() {
-  //      return new RiemannLiouvilleDerivativeService();
-  //    }
-  //  }
 }
