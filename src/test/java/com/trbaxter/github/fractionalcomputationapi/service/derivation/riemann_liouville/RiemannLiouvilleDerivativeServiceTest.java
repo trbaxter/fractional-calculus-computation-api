@@ -76,7 +76,7 @@ public class RiemannLiouvilleDerivativeServiceTest {
           .thenReturn(new BigDecimal("-3.54490770181"));
 
       String result = riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha);
-      String expected = "- 4.515x^1.5 - 2.257x^0.5 - 0.564x^-0.5";
+      String expected = "-4.515x^1.5 - 2.257x^0.5 - 0.564x^-0.5";
 
       assertEquals(expected, result);
     }
@@ -179,12 +179,4 @@ public class RiemannLiouvilleDerivativeServiceTest {
       assertEquals(expected, result);
     }
   }
-  //
-  //  @Configuration
-  //  static class Config {
-  //    @Bean
-  //    public RiemannLiouvilleDerivativeService riemannLiouvilleDerivativeService() {
-  //      return new RiemannLiouvilleDerivativeService();
-  //    }
-  //  }
 }
