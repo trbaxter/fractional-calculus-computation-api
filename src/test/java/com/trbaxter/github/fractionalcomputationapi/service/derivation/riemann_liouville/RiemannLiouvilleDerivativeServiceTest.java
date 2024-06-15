@@ -9,11 +9,9 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 @SpringBootTest
-public class RiemannLiouvilleCaputoDerivativeServiceTest {
+public class RiemannLiouvilleDerivativeServiceTest {
 
   @Autowired private RiemannLiouvilleDerivativeService riemannLiouvilleDerivativeService;
 
@@ -181,12 +179,12 @@ public class RiemannLiouvilleCaputoDerivativeServiceTest {
       assertEquals(expected, result);
     }
   }
-
-  @Configuration
-  static class Config {
-    @Bean
-    public RiemannLiouvilleDerivativeService riemannLiouvilleDerivativeService() {
-      return new RiemannLiouvilleDerivativeService();
-    }
-  }
+  //
+  //  @Configuration
+  //  static class Config {
+  //    @Bean
+  //    public RiemannLiouvilleDerivativeService riemannLiouvilleDerivativeService() {
+  //      return new RiemannLiouvilleDerivativeService();
+  //    }
+  //  }
 }
