@@ -19,80 +19,88 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class ControllerRequestTest {
 
-	private static final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-	private static final Validator validator = factory.getValidator();
+  private static final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+  private static final Validator validator = factory.getValidator();
 
-	@ParameterizedTest
-	@MethodSource("provideValidRequests")
-	public void testControllerRequestSettersAndGetters(double[] coefficients, double order) {
-		ControllerRequest request = new ControllerRequest();
-		request.setCoefficients(coefficients);
-		request.setOrder(order);
+  private static Stream<Arguments> provideValidRequests() {
+    return Stream.of(
+        Arguments.of(new double[] {1.0, 2.0, 3.0}, 1.5),
+        Arguments.of(new double[] {}, 2.0),
+        Arguments.of(new double[] {1.0, 2.0, 3.0}, -1.0),
+        Arguments.of(new double[] {Double.MAX_VALUE, Double.MIN_VALUE}, Double.MAX_VALUE));
+  }
 
-		assertArrayEquals(coefficients, request.getCoefficients(), "Coefficients should be set correctly");
-		assertEquals(order, request.getOrder(), "Order should be set correctly");
-	}
+  private static Stream<Arguments> provideInvalidRequests() {
+    return Stream.of(
+        Arguments.of(null, 1.5, "Coefficients must not be null"),
+        Arguments.of(new double[] {}, 1.5, "At least one coefficient must be provided"),
+        Arguments.of(new double[] {1.0, 2.0, 3.0}, -1.0, "Order must be zero or positive"));
+  }
 
-	private static Stream<Arguments> provideValidRequests() {
-		return Stream.of(Arguments.of(new double[]{1.0, 2.0, 3.0}, 1.5), Arguments.of(new double[]{}, 2.0),
-				Arguments.of(new double[]{1.0, 2.0, 3.0}, -1.0),
-				Arguments.of(new double[]{Double.MAX_VALUE, Double.MIN_VALUE}, Double.MAX_VALUE));
-	}
+  @ParameterizedTest
+  @MethodSource("provideValidRequests")
+  public void testControllerRequestSettersAndGetters(double[] coefficients, double order) {
+    ControllerRequest request = new ControllerRequest();
+    request.setCoefficients(coefficients);
+    request.setOrder(order);
 
-	@Test
-	public void testControllerRequestEmptyCoefficients() {
-		ControllerRequest request = new ControllerRequest();
-		double[] coefficients = {};
-		double order = 2.0;
+    assertArrayEquals(
+        coefficients, request.getCoefficients(), "Coefficients should be set correctly");
+    assertEquals(order, request.getOrder(), "Order should be set correctly");
+  }
 
-		request.setCoefficients(coefficients);
-		request.setOrder(order);
+  @Test
+  public void testControllerRequestEmptyCoefficients() {
+    ControllerRequest request = new ControllerRequest();
+    double[] coefficients = {};
+    double order = 2.0;
 
-		assertArrayEquals(coefficients, request.getCoefficients(), "Coefficients should handle empty array");
-		assertEquals(order, request.getOrder(), "Order should handle normal values");
-	}
+    request.setCoefficients(coefficients);
+    request.setOrder(order);
 
-	@Test
-	public void testControllerRequestNegativeOrder() {
-		ControllerRequest request = new ControllerRequest();
-		double[] coefficients = {1.0, 2.0, 3.0};
-		double order = -1.0;
+    assertArrayEquals(
+        coefficients, request.getCoefficients(), "Coefficients should handle empty array");
+    assertEquals(order, request.getOrder(), "Order should handle normal values");
+  }
 
-		request.setCoefficients(coefficients);
-		request.setOrder(order);
+  @Test
+  public void testControllerRequestNegativeOrder() {
+    ControllerRequest request = new ControllerRequest();
+    double[] coefficients = {1.0, 2.0, 3.0};
+    double order = -1.0;
 
-		assertArrayEquals(coefficients, request.getCoefficients(), "Coefficients should handle normal values");
-		assertEquals(order, request.getOrder(), "Order should handle negative values");
-	}
+    request.setCoefficients(coefficients);
+    request.setOrder(order);
 
-	@Test
-	public void testControllerRequestLargeValues() {
-		ControllerRequest request = new ControllerRequest();
-		double[] coefficients = {Double.MAX_VALUE, Double.MIN_VALUE};
-		double order = Double.MAX_VALUE;
+    assertArrayEquals(
+        coefficients, request.getCoefficients(), "Coefficients should handle normal values");
+    assertEquals(order, request.getOrder(), "Order should handle negative values");
+  }
 
-		request.setCoefficients(coefficients);
-		request.setOrder(order);
+  @Test
+  public void testControllerRequestLargeValues() {
+    ControllerRequest request = new ControllerRequest();
+    double[] coefficients = {Double.MAX_VALUE, Double.MIN_VALUE};
+    double order = Double.MAX_VALUE;
 
-		assertArrayEquals(coefficients, request.getCoefficients(), "Coefficients should handle large values");
-		assertEquals(order, request.getOrder(), "Order should handle large values");
-	}
+    request.setCoefficients(coefficients);
+    request.setOrder(order);
 
-	@ParameterizedTest
-	@MethodSource("provideInvalidRequests")
-	public void testInvalidControllerRequests(double[] coefficients, double order, String expectedMessage) {
-		ControllerRequest request = new ControllerRequest();
-		request.setCoefficients(coefficients);
-		request.setOrder(order);
+    assertArrayEquals(
+        coefficients, request.getCoefficients(), "Coefficients should handle large values");
+    assertEquals(order, request.getOrder(), "Order should handle large values");
+  }
 
-		Set<ConstraintViolation<ControllerRequest>> violations = validator.validate(request);
-		assertFalse(violations.isEmpty());
-		assertTrue(violations.stream().anyMatch(v -> v.getMessage().contains(expectedMessage)));
-	}
+  @ParameterizedTest
+  @MethodSource("provideInvalidRequests")
+  public void testInvalidControllerRequests(
+      double[] coefficients, double order, String expectedMessage) {
+    ControllerRequest request = new ControllerRequest();
+    request.setCoefficients(coefficients);
+    request.setOrder(order);
 
-	private static Stream<Arguments> provideInvalidRequests() {
-		return Stream.of(Arguments.of(null, 1.5, "Coefficients must not be null"),
-				Arguments.of(new double[]{}, 1.5, "At least one coefficient must be provided"),
-				Arguments.of(new double[]{1.0, 2.0, 3.0}, -1.0, "Order must be zero or positive"));
-	}
+    Set<ConstraintViolation<ControllerRequest>> violations = validator.validate(request);
+    assertFalse(violations.isEmpty());
+    assertTrue(violations.stream().anyMatch(v -> v.getMessage().contains(expectedMessage)));
+  }
 }
