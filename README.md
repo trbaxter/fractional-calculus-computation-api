@@ -1,9 +1,10 @@
 # Fractional Calculus Computation API
 
 A Java-based API for computing Caputo and Riemann-Liouville fractional derivatives of user-provided polynomial
-expressions. 
+expressions.
 
 ## Table of Contents
+
 [Project Status](#project-status)  
 [Technologies Used](#technologies-used)  
 [Getting Started](#getting-started)  
@@ -26,7 +27,6 @@ expressions.
 
 This project is in active development with a current version of 1.0.0. Upcoming features include:
 
-
 - Support for the Caputo and Riemann-Liouville fractional integrals
 
 
@@ -34,10 +34,10 @@ This project is in active development with a current version of 1.0.0. Upcoming 
 
 
 - Expanding capability to handle other types of math expressions  
-(logarithms, trig identities, and so on)
+  (logarithms, trig identities, and so on)
 
 <br/>
-    
+
 ## Technologies Used
 
 - Java 22
@@ -47,65 +47,69 @@ This project is in active development with a current version of 1.0.0. Upcoming 
 
 <br/>
 
-  
 ## Getting Started
-
 
 ### Prerequisites
 
-1.) Clone the repository:  
+1.) Clone the repository:
+
 ```sh
 git clone https://github.com/trbaxter/fractional-computation-api.git
 ```
+
 &nbsp;
 
-2.) Navigate to the project directory: 
+2.) Navigate to the project directory:
+
 ```sh
 cd fractional-computation-api
 ```
+
 &nbsp;
 
 3.) Build the project using Maven:
+
 ```sh
 mvn clean install
 ```
 
 <br/>
 
-
 ## Usage
 
 ### Application Start
 
 To start the application, use the following command:
+
 ```sh
 mvn spring-boot:run
 ```
-<br/>
 
+<br/>
 
 ## API Reference
 
+### Caputo Fractional Derivative Endpoint
 
-### Caputo Fractional Derivative Endpoint  
+Endpoint URL:
 
-
-Endpoint URL: 
 ```
 /fractional-calculus-computation-api/derivative/caputo
 ```
 
-Method: <b>POST</b>  
+Method: <b>POST</b>
 
 &nbsp;
 
 Required request body:
+
 ```
 {
   "coefficients": [],
   "order": 
 }
 ```
+
 &nbsp;
 
 Parameters:
@@ -116,19 +120,21 @@ Parameters:
 &nbsp;
 
 Response:
+
 ```
 {
     "expression": 
 }
 ```
+
 Returns the closed-form expression of the Caputo derivative if successful.
 
 &nbsp;
 
 ### Riemann-Liouville Fractional Derivative Endpoint
 
-
 Endpoint URL:
+
 ```
 /fractional-calculus-computation-api/derivative/riemann-liouville
 ```
@@ -138,12 +144,14 @@ Method: <b>POST</b>
 &nbsp;
 
 Required request body:
+
 ```
 {
   "coefficients": [],
   "order": 
 }
 ```
+
 &nbsp;
 
 Parameters:
@@ -154,11 +162,13 @@ Parameters:
 &nbsp;
 
 Response:
+
 ```
 {
     "expression": 
 }
 ```
+
 Returns the closed-form expression of the Riemann-Liouville derivative if successful.
 
 &nbsp;
@@ -171,7 +181,7 @@ Obtain an expression for the 0.35th Caputo derivative of $3x^2 + 2x + 1$.
 
 &nbsp;
 
-Input: 
+Input:
 
 ```
 {
@@ -182,12 +192,14 @@ Input:
 
 &nbsp;
 
-Output: 
+Output:
+
 ```
 {
   "expression": "4.040x^1.65 + 2.222x^0.65"
 }
 ```
+
 <br/>
 <br/>
 
@@ -198,6 +210,7 @@ Obtain an expression for the 1.23456th Caputo derivative of $14.6x^3 + 16.049x -
 &nbsp;
 
 Input:
+
 ```
 {
   "coefficients": [14.6, 0, 16.049, -12],
@@ -208,6 +221,7 @@ Input:
 &nbsp;
 
 Output:
+
 ```
 {
     "expression": "53.778x^1.76544"
@@ -235,6 +249,7 @@ Input:
 &nbsp;
 
 Output:
+
 ```
 {
   "expression": "4.040x^1.65 + 2.222x^0.65 + 0.722x^-0.35"
@@ -264,6 +279,7 @@ Input:
 &nbsp;
 
 Output:
+
 ```
 {
   "expression": "53.778x^1.76544 + 13.314x^-0.23456 + 2.335x^-1.23456"
@@ -273,12 +289,13 @@ Output:
 ## Calculation Details
 
 Given the polynomial $f(x) = 3x^2 + 2x + 1$, and the order $\alpha = 0.5$, the Caputo fractional derivative
-${}^{C} D^{0.5} f(x)$ is computed by applying the Caputo derivative formula to each term: 
+${}^{C} D^{0.5} f(x)$ is computed by applying the Caputo derivative formula to each term:
 
 Term $3x^2$:
 
 $$
-{}^{C} D^{0.5}{\text{&nbsp;}}[3x^2] = 3 \cdot \dfrac{\Gamma(3)}{\Gamma(3-0.5)} x^{2-0.5} = 3 \cdot \dfrac{2!}{\Gamma(2.5)} x^{1.5}
+{}^{C} D^{0.5}{\text{&nbsp;}}[3x^2] = 3 \cdot \dfrac{\Gamma(3)}{\Gamma(3-0.5)} x^{2-0.5} = 3 \cdot \dfrac{2!}{\Gamma(
+2.5)} x^{1.5}
 $$
 
 &nbsp;
@@ -296,7 +313,8 @@ $$
 Term $2x$:
 
 $$
-{}^{C} D^{0.5}{\text{&nbsp;}}[2x] = 2 \cdot \dfrac{\Gamma(2)}{\Gamma(2 - 0.5)} x^{1-0.5} = 2 \cdot \dfrac{1!}{\Gamma(1.5)} x^{0.5}
+{}^{C} D^{0.5}{\text{&nbsp;}}[2x] = 2 \cdot \dfrac{\Gamma(2)}{\Gamma(2 - 0.5)} x^{1-0.5} = 2 \cdot \dfrac{1!}{\Gamma(
+1.5)} x^{0.5}
 $$
 
 &nbsp;
@@ -431,7 +449,7 @@ Contributions towards this project are welcome! If interested, please follow the
 
 5.) Open a pull request
 
-Remember to update tests if necessary and provide responses to the questions as outlined in the pull request template. 
+Remember to update tests if necessary and provide responses to the questions as outlined in the pull request template.
 
 <br/>
 
@@ -448,7 +466,7 @@ Remember to update tests if necessary and provide responses to the questions as 
 
 ## Known Issues
 
-- When polynomial coefficients are very large, or very small, numerical precision errors may occur. 
+- When polynomial coefficients are very large, or very small, numerical precision errors may occur.
 
 
 - The current implementation does not support multi-threading for large-scale computations.
@@ -457,13 +475,13 @@ Remember to update tests if necessary and provide responses to the questions as 
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 <br/>
 
 ## Acknowledgements
 
-- <a href="https://spring.io/projects/spring-boot">Spring Boot</a> 
+- <a href="https://spring.io/projects/spring-boot">Spring Boot</a>
 
 
 - <a href="https://maven.apache.org/">Maven</a>
