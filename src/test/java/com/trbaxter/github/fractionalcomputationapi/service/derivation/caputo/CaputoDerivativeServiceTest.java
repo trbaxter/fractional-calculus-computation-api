@@ -25,6 +25,8 @@ public class CaputoDerivativeServiceTest {
 
   @Autowired private CaputoDerivativeService caputoDerivativeService;
 
+  @Autowired private CaputoDerivativeFormattingService formattingService;
+
   @Test
   public void testComputeDerivative_SimplePolynomial() {
     double[] coefficients = {3.0, 2.0, 1.0};
@@ -83,7 +85,7 @@ public class CaputoDerivativeServiceTest {
     double alpha = 0.5;
 
     String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
-    String expected = "";
+    String expected = "0";
 
     assertEquals(expected, result);
   }
@@ -169,7 +171,7 @@ public class CaputoDerivativeServiceTest {
     double alpha = 0.5;
 
     String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
-    String expected = "";
+    String expected = "0";
 
     assertEquals(expected, result);
   }
@@ -189,6 +191,26 @@ public class CaputoDerivativeServiceTest {
 
       String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
       String expected = "6.770x^0.5";
+
+      assertEquals(expected, result);
+    }
+  }
+
+  @Test
+  public void testComputeDerivative_NegativeExponentSuccessfulOmit() {
+    double[] coefficients = {1.0, 1.0};
+    double alpha = 1.5;
+
+    try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
+      utilities
+          .when(() -> MathUtils.gamma(BigDecimal.valueOf(3)))
+          .thenReturn(new BigDecimal(gamma_3));
+      utilities
+          .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.5)))
+          .thenReturn(new BigDecimal(gamma_1_point_5));
+
+      String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
+      String expected = "0";
 
       assertEquals(expected, result);
     }

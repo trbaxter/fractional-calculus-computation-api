@@ -50,6 +50,11 @@ public class CaputoDerivativeFormattingService {
         }
       }
     }
+
+    if (result.isEmpty()) {
+      return "0";
+    }
+
     return result.toString();
   }
 }
