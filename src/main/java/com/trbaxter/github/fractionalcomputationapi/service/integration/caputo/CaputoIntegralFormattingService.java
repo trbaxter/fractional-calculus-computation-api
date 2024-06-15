@@ -57,9 +57,14 @@ public class CaputoIntegralFormattingService {
       }
     }
 
-    if (integerAlpha && alphaInt > 1) {
-      appendConstantsOfIntegration(result, alphaInt);
-    } else if (integerAlpha && alphaInt == 1) {
+    if (integerAlpha) {
+      if (alphaInt > 1) {
+        appendConstantsOfIntegration(result, alphaInt);
+      } else if (alphaInt == 1) {
+        if (!result.isEmpty()) result.append(" + ");
+        result.append("C");
+      }
+    } else {
       if (!result.isEmpty()) result.append(" + ");
       result.append("C");
     }

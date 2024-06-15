@@ -45,7 +45,7 @@ public class CaputoIntegrationServiceTest {
     double alpha = 0.5;
     String result = caputoIntegrationService.evaluateExpression(coefficients, alpha);
     assertNotNull(result);
-    String expectedResult = "1.662x^2.5 + 2.659x^1.5 + 2.659x^0.5";
+    String expectedResult = "1.662x^2.5 + 2.659x^1.5 + 2.659x^0.5 + C";
     assertEquals(expectedResult, result);
   }
 
