@@ -23,7 +23,7 @@ public class CaputoDerivativeComputationService {
     if (alpha.stripTrailingZeros().scale() <= 0) {
       computeIntegerOrderDerivativeTerms(coefficients, alpha.intValue(), terms, degree);
     } else {
-      computeFractionalOrderTerms(coefficients, alpha, terms, degree);
+      computeFractionalOrderDerivativeTerms(coefficients, alpha, terms, degree);
     }
 
     terms.sort(Comparator.comparing(Term::power).reversed());
@@ -49,7 +49,7 @@ public class CaputoDerivativeComputationService {
     }
   }
 
-  private void computeFractionalOrderTerms(
+  private void computeFractionalOrderDerivativeTerms(
       double[] coefficients, BigDecimal alpha, List<Term> terms, int degree) {
     for (int i = 0; i <= degree; i++) {
       BigDecimal coefficient = BigDecimal.valueOf(coefficients[i]);
