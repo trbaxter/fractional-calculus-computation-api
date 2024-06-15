@@ -16,26 +16,25 @@ public class RiemannLiouvilleFormattingService {
       BigDecimal coefficient = term.coefficient().setScale(3, RoundingMode.HALF_UP);
 
       // Check if coefficient has trailing zeros to be stripped
-      String coefficientStr = coefficient.toPlainString();
-      if (coefficientStr.endsWith(".000")) {
-        coefficientStr = coefficientStr.replaceAll("\\.0+$", "");
-      }
+      String coefficientStr = coefficient.stripTrailingZeros().toPlainString();
 
       if (i > 0) {
         if (coefficient.compareTo(BigDecimal.ZERO) > 0) {
           result.append(" + ");
-          result.append(coefficientStr);
         } else {
           result.append(" - ");
-          result.append(coefficient.abs().toPlainString());
+          coefficientStr = coefficient.abs().stripTrailingZeros().toPlainString();
         }
       } else {
         if (coefficient.compareTo(BigDecimal.ZERO) < 0) {
           result.append("-");
-          result.append(coefficient.abs().toPlainString());
-        } else {
-          result.append(coefficientStr);
+          coefficientStr = coefficient.abs().stripTrailingZeros().toPlainString();
         }
+      }
+
+      if (coefficient.abs().compareTo(BigDecimal.ONE) != 0
+          || term.power().compareTo(BigDecimal.ZERO) == 0) {
+        result.append(coefficientStr);
       }
 
       // Check if power is zero, and if so, only append the coefficient
@@ -47,6 +46,9 @@ public class RiemannLiouvilleFormattingService {
           result.append("^").append(exponent);
         }
       }
+    }
+    if (result.isEmpty()) {
+      return "0";
     }
     return result.toString();
   }
