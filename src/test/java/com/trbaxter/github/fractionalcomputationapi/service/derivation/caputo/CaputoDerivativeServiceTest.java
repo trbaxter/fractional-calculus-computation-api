@@ -114,6 +114,35 @@ public class CaputoDerivativeServiceTest {
   }
 
   @Test
+  public void testComputeDerivative_WholePositiveCoefficients_IntegerAlpha() {
+    double[] coefficients = {1, 3, -6, 0, 0, 2};
+    double alpha = 1.0;
+
+    try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
+      utilities
+          .when(() -> MathUtils.gamma(BigDecimal.valueOf(6)))
+          .thenReturn(new BigDecimal("120.000000000000000"));
+      utilities
+          .when(() -> MathUtils.gamma(BigDecimal.valueOf(5)))
+          .thenReturn(new BigDecimal("24.000000000000000"));
+      utilities
+          .when(() -> MathUtils.gamma(BigDecimal.valueOf(4)))
+          .thenReturn(new BigDecimal("6.000000000000000"));
+      utilities
+          .when(() -> MathUtils.gamma(BigDecimal.valueOf(3)))
+          .thenReturn(new BigDecimal("2.000000000000000"));
+      utilities
+          .when(() -> MathUtils.gamma(BigDecimal.valueOf(2)))
+          .thenReturn(new BigDecimal("1.000000000000000"));
+
+      String result = caputoDerivativeService.evaluateExpression(coefficients, alpha);
+      String expected = "5x^4 + 12x^3 - 18x^2";
+
+      assertEquals(expected, result);
+    }
+  }
+
+  @Test
   public void testComputeDerivative_ZeroCoefficient() {
     double[] coefficients = {0.0, 2.0, -1.0};
     double alpha = 0.5;

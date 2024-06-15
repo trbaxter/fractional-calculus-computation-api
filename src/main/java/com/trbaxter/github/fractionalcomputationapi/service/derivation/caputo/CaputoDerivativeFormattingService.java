@@ -15,12 +15,10 @@ public class CaputoDerivativeFormattingService {
       Term term = terms.get(i);
       BigDecimal coefficient = term.coefficient().setScale(3, RoundingMode.HALF_UP);
 
-      String coefficientString;
-      if (coefficient.stripTrailingZeros().scale() <= 0) {
-        coefficientString = coefficient.stripTrailingZeros().toPlainString();
-      } else {
-        coefficientString = coefficient.toPlainString();
-      }
+      String coefficientString =
+          coefficient.stripTrailingZeros().scale() <= 0
+              ? coefficient.stripTrailingZeros().toPlainString()
+              : coefficient.toPlainString().replaceAll("\\.000$", "");
 
       if (i > 0) {
         if (coefficient.compareTo(BigDecimal.ZERO) > 0) {
@@ -29,7 +27,7 @@ public class CaputoDerivativeFormattingService {
           result.append(" - ");
         }
         if (coefficient.abs().compareTo(BigDecimal.ONE) != 0) {
-          result.append(coefficient.abs().toPlainString());
+          result.append(coefficient.abs().toPlainString().replaceAll("\\.000$", ""));
         }
       } else {
         if (coefficient.compareTo(BigDecimal.ZERO) < 0) {
