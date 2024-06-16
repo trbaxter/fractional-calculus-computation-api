@@ -80,8 +80,10 @@ public class RiemannLiouvilleComputationService {
           }
         } catch (ArithmeticException e) {
           logger.severe(String.format("Arithmetic error computing term %d: %s", i, e.getMessage()));
+          throw e;
         } catch (Exception e) {
           logger.severe(String.format("Unexpected error computing term %d: %s", i, e.getMessage()));
+          throw new RuntimeException(e);
         }
       }
     }
