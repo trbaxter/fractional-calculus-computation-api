@@ -2,10 +2,14 @@ package com.trbaxter.github.fractionalcomputationapi.service.derivation.riemann_
 
 import static com.trbaxter.github.fractionalcomputationapi.testdata.TestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mockStatic;
 
 import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,159 +18,464 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class RiemannLiouvilleDerivativeServiceTest {
 
-  @Autowired private RiemannLiouvilleDerivativeService riemannLiouvilleDerivativeService;
+  @Autowired RiemannLiouvilleDerivativeService derivativeService;
 
-  @Test
-  public void testDerivative_SimplePolynomial() {
-    double[] coefficients = {3.0, 2.0, 1.0};
-    double alpha = 0.5;
+  private void setupMathUtilsMock(MockedStatic<MathUtils> utilities) {
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(5)))
+        .thenReturn(new BigDecimal(gamma_6));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(5)))
+        .thenReturn(new BigDecimal(gamma_5));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(4)))
+        .thenReturn(new BigDecimal(gamma_4));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(3.5)))
+        .thenReturn(new BigDecimal(gamma_3_point_5));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(3)))
+        .thenReturn(new BigDecimal(gamma_3));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(2.9)))
+        .thenReturn(new BigDecimal(gamma_2_point_9));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(2.8)))
+        .thenReturn(new BigDecimal(gamma_2_point_8));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(2.7)))
+        .thenReturn(new BigDecimal(gamma_2_point_7));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(2.6)))
+        .thenReturn(new BigDecimal(gamma_2_point_6));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(2.5)))
+        .thenReturn(new BigDecimal(gamma_2_point_5));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(2.4)))
+        .thenReturn(new BigDecimal(gamma_2_point_4));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(2.3)))
+        .thenReturn(new BigDecimal(gamma_2_point_3));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(2.2)))
+        .thenReturn(new BigDecimal(gamma_2_point_2));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(2.1)))
+        .thenReturn(new BigDecimal(gamma_2_point_1));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(2)))
+        .thenReturn(new BigDecimal(gamma_2));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.9)))
+        .thenReturn(new BigDecimal(gamma_1_point_9));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.8)))
+        .thenReturn(new BigDecimal(gamma_1_point_8));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.7)))
+        .thenReturn(new BigDecimal(gamma_1_point_7));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.6)))
+        .thenReturn(new BigDecimal(gamma_1_point_6));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.5)))
+        .thenReturn(new BigDecimal(gamma_1_point_5));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.4)))
+        .thenReturn(new BigDecimal(gamma_1_point_4));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.3)))
+        .thenReturn(new BigDecimal(gamma_1_point_3));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.2)))
+        .thenReturn(new BigDecimal(gamma_1_point_2));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.1)))
+        .thenReturn(new BigDecimal(gamma_1_point_1));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(1)))
+        .thenReturn(new BigDecimal(gamma_1));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(0.9)))
+        .thenReturn(new BigDecimal(gamma_0_point_9));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(0.8)))
+        .thenReturn(new BigDecimal(gamma_0_point_8));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(0.7)))
+        .thenReturn(new BigDecimal(gamma_0_point_7));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(0.6)))
+        .thenReturn(new BigDecimal(gamma_0_point_6));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(0.5)))
+        .thenReturn(new BigDecimal(gamma_0_point_5));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(0.4)))
+        .thenReturn(new BigDecimal(gamma_0_point_4));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(0.3)))
+        .thenReturn(new BigDecimal(gamma_0_point_3));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(0.2)))
+        .thenReturn(new BigDecimal(gamma_0_point_2));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(0.1)))
+        .thenReturn(new BigDecimal(gamma_0_point_1));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(-0.5)))
+        .thenReturn(new BigDecimal(neg_gamma_0_point_5));
+  }
 
-    try (MockedStatic<MathUtils> utilities = Mockito.mockStatic(MathUtils.class)) {
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(3)))
-          .thenReturn(new BigDecimal(gamma_3));
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(2.5)))
-          .thenReturn(new BigDecimal(gamma_2_point_5));
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(2)))
-          .thenReturn(new BigDecimal(gamma_2));
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.5)))
-          .thenReturn(new BigDecimal(gamma_1_point_5));
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(1)))
-          .thenReturn(new BigDecimal(gamma_1));
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(0.5)))
-          .thenReturn(new BigDecimal(gamma_0_point_5));
+  @ParameterizedTest
+  @CsvSource({
+    "'1', 0.0, '1'",
+    "'1', 0.1, '0.936x^-0.1'",
+    "'1', 0.2, '0.859x^-0.2'",
+    "'1', 0.3, '0.770x^-0.3'",
+    "'1', 0.4, '0.672x^-0.4'",
+    "'1', 0.5, '0.564x^-0.5'",
+    "'1', 0.6, '0.451x^-0.6'",
+    "'1', 0.7, '0.334x^-0.7'",
+    "'1', 0.8, '0.218x^-0.8'",
+    "'1', 0.9, '0.105x^-0.9'",
+    "'1', 1.0, '0'",
+    "'1', 1.5, '-0.282x^-1.5'",
+    "'1', 2.0, '0'",
+    "'1', 3.0, '0'",
+    "'1', 5.0, '0'",
+    "'1', 10.0, '0'",
+    "'1', 100.0, '0'"
+  })
+  public void testSinglePositiveCoefficient(
+      String coefficientString, double alpha, String expected) {
+    double[] coefficients =
+        Arrays.stream(coefficientString.split(",")).mapToDouble(Double::parseDouble).toArray();
 
-      String result = riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha);
-      String expected = "4.514x^1.5 + 2.257x^0.5 + 0.564x^-0.5";
-
+    try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
+      setupMathUtilsMock(utilities);
+      String result = derivativeService.evaluateExpression(coefficients, alpha);
       assertEquals(expected, result);
     }
   }
 
-  @Test
-  public void testComputeDerivative_NegativeCoefficients() {
-    double[] coefficients = {-3.0, -2.0, -1.0};
-    double alpha = 0.5;
+  @ParameterizedTest
+  @CsvSource({
+    "'-1', 0.0, '-1'",
+    "'-1', 0.1, '-0.936x^-0.1'",
+    "'-1', 0.2, '-0.859x^-0.2'",
+    "'-1', 0.3, '-0.770x^-0.3'",
+    "'-1', 0.4, '-0.672x^-0.4'",
+    "'-1', 0.5, '-0.564x^-0.5'",
+    "'-1', 0.6, '-0.451x^-0.6'",
+    "'-1', 0.7, '-0.334x^-0.7'",
+    "'-1', 0.8, '-0.218x^-0.8'",
+    "'-1', 0.9, '-0.105x^-0.9'",
+    "'-1', 1.0, '0'",
+    "'-1', 1.5, '0.282x^-1.5'",
+    "'-1', 2.0, '0'",
+    "'-1', 3.0, '0'",
+    "'-1', 5.0, '0'",
+    "'-1', 10.0, '0'",
+    "'-1', 100.0, '0'"
+  })
+  public void testSingleNegativeCoefficient(
+      String coefficientString, double alpha, String expected) {
+    double[] coefficients =
+        Arrays.stream(coefficientString.split(",")).mapToDouble(Double::parseDouble).toArray();
 
-    try (MockedStatic<MathUtils> utilities = Mockito.mockStatic(MathUtils.class)) {
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(3)))
-          .thenReturn(new BigDecimal(gamma_3));
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(2.5)))
-          .thenReturn(new BigDecimal(gamma_2_point_5));
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(2)))
-          .thenReturn(new BigDecimal(gamma_2));
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.5)))
-          .thenReturn(new BigDecimal(gamma_1_point_5));
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(1)))
-          .thenReturn(new BigDecimal(gamma_1));
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(0.5)))
-          .thenReturn(new BigDecimal(gamma_0_point_5));
-
-      String result = riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha);
-      String expected = "-4.514x^1.5 - 2.257x^0.5 - 0.564x^-0.5";
-
+    try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
+      setupMathUtilsMock(utilities);
+      String result = derivativeService.evaluateExpression(coefficients, alpha);
       assertEquals(expected, result);
     }
   }
 
-  @Test
-  public void testComputeFractionalDerivative_ConstantTerm() {
-    double[] coefficients = {3.0};
-    double alpha = 0.5;
+  @ParameterizedTest
+  @CsvSource({
+    "'1,1', 0.0, 'x + 1'",
+    "'1,1', 0.1, '1.040x^0.9 + 0.936x^-0.1'",
+    "'1,1', 0.2, '1.074x^0.8 + 0.859x^-0.2'",
+    "'1,1', 0.3, '1.101x^0.7 + 0.770x^-0.3'",
+    "'1,1', 0.4, '1.119x^0.6 + 0.672x^-0.4'",
+    "'1,1', 0.5, '1.128x^0.5 + 0.564x^-0.5'",
+    "'1,1', 0.6, '1.127x^0.4 + 0.451x^-0.6'",
+    "'1,1', 0.7, '1.114x^0.3 + 0.334x^-0.7'",
+    "'1,1', 0.8, '1.089x^0.2 + 0.218x^-0.8'",
+    "'1,1', 0.9, '1.051x^0.1 + 0.105x^-0.9'",
+    "'1,1', 1.0, '1'",
+    "'1,1', 1.5, '0.564x^-0.5 - 0.282x^-1.5'",
+    "'1,1', 2.0, '0'",
+    "'1,1', 3.0, '0'",
+    "'1,1', 5.0, '0'",
+    "'1,1', 10.0, '0'",
+    "'1,1', 100.0, '0'",
+  })
+  public void testPositiveLinearPolynomial(
+      String coefficientString, double alpha, String expected) {
+    double[] coefficients =
+        Arrays.stream(coefficientString.split(",")).mapToDouble(Double::parseDouble).toArray();
 
-    try (MockedStatic<MathUtils> utilities = Mockito.mockStatic(MathUtils.class)) {
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(1)))
-          .thenReturn(new BigDecimal(gamma_1));
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(0.5)))
-          .thenReturn(new BigDecimal(gamma_0_point_5));
-
-      String result = riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha);
-      String expected = "1.693x^-0.5";
-
+    try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
+      setupMathUtilsMock(utilities);
+      String result = derivativeService.evaluateExpression(coefficients, alpha);
       assertEquals(expected, result);
     }
   }
 
-  @Test
-  public void testComputeIntegerDerivative_ConstantTerm() {
-    double[] coefficients = {3.0};
-    double alpha = 1.0;
+  @ParameterizedTest
+  @CsvSource({
+    "'-1,-1', 0.0, '-x - 1'",
+    "'-1,-1', 0.1, '-1.040x^0.9 - 0.936x^-0.1'",
+    "'-1,-1', 0.2, '-1.074x^0.8 - 0.859x^-0.2'",
+    "'-1,-1', 0.3, '-1.101x^0.7 - 0.770x^-0.3'",
+    "'-1,-1', 0.4, '-1.119x^0.6 - 0.672x^-0.4'",
+    "'-1,-1', 0.5, '-1.128x^0.5 - 0.564x^-0.5'",
+    "'-1,-1', 0.6, '-1.127x^0.4 - 0.451x^-0.6'",
+    "'-1,-1', 0.7, '-1.114x^0.3 - 0.334x^-0.7'",
+    "'-1,-1', 0.8, '-1.089x^0.2 - 0.218x^-0.8'",
+    "'-1,-1', 0.9, '-1.051x^0.1 - 0.105x^-0.9'",
+    "'-1,-1', 1.0, '-1'",
+    "'-1,-1', 1.5, '-0.564x^-0.5 + 0.282x^-1.5'",
+    "'-1,-1', 2.0, '0'",
+    "'-1,-1', 3.0, '0'",
+    "'-1,-1', 5.0, '0'",
+    "'-1,-1', 10.0, '0'",
+    "'-1,-1', 100.0, '0'",
+  })
+  public void testNegativeLinearPolynomial(
+      String coefficientString, double alpha, String expected) {
+    double[] coefficients =
+        Arrays.stream(coefficientString.split(",")).mapToDouble(Double::parseDouble).toArray();
 
-    String result = riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha);
-    String expected = "0";
-
-    assertEquals(expected, result);
-  }
-
-  @Test
-  public void testComputeDerivative_ZeroPolynomial() {
-    double[] coefficients = {0.0, 0.0, 0.0};
-    double alpha = 0.5;
-
-    String result = riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha);
-    String expected = "0";
-
-    assertEquals(expected, result);
-  }
-
-  @Test
-  public void testComputeDerivative_DifferentAlpha() {
-    double[] coefficients = {3.0, 0.0, 1.0};
-    double alpha = 1.5;
-
-    try (MockedStatic<MathUtils> utilities = Mockito.mockStatic(MathUtils.class)) {
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(3)))
-          .thenReturn(new BigDecimal(gamma_3));
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.5)))
-          .thenReturn(new BigDecimal(gamma_1_point_5));
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(1)))
-          .thenReturn(new BigDecimal(gamma_1));
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(-0.5)))
-          .thenReturn(new BigDecimal(neg_gamma_0_point_5));
-
-      String result = riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha);
-      String expected = "6.770x^0.5 - 0.282x^-1.5";
-
+    try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
+      setupMathUtilsMock(utilities);
+      String result = derivativeService.evaluateExpression(coefficients, alpha);
       assertEquals(expected, result);
     }
   }
 
-  @Test
-  public void testComputeDerivative_LargeAlpha() {
-    double[] coefficients = {3.0, 0.0, 1.0};
-    double alpha = 2.0;
+  @ParameterizedTest
+  @CsvSource({
+    "'-1,1', 0.0, '-x + 1'",
+    "'-1,1', 0.1, '-1.040x^0.9 + 0.936x^-0.1'",
+    "'-1,1', 0.2, '-1.074x^0.8 + 0.859x^-0.2'",
+    "'-1,1', 0.3, '-1.101x^0.7 + 0.770x^-0.3'",
+    "'-1,1', 0.4, '-1.119x^0.6 + 0.672x^-0.4'",
+    "'-1,1', 0.5, '-1.128x^0.5 + 0.564x^-0.5'",
+    "'-1,1', 0.6, '-1.127x^0.4 + 0.451x^-0.6'",
+    "'-1,1', 0.7, '-1.114x^0.3 + 0.334x^-0.7'",
+    "'-1,1', 0.8, '-1.089x^0.2 + 0.218x^-0.8'",
+    "'-1,1', 0.9, '-1.051x^0.1 + 0.105x^-0.9'",
+    "'-1,1', 1.0, '-1'",
+    "'-1,1', 1.5, '-0.564x^-0.5 - 0.282x^-1.5'",
+    "'-1,1', 2.0, '0'",
+    "'-1,1', 3.0, '0'",
+    "'-1,1', 5.0, '0'",
+    "'-1,1', 10.0, '0'",
+    "'-1,1', 100.0, '0'",
+  })
+  public void testMixedSignLinearPolynomial2(
+      String coefficientString, double alpha, String expected) {
+    double[] coefficients =
+        Arrays.stream(coefficientString.split(",")).mapToDouble(Double::parseDouble).toArray();
 
-    try (MockedStatic<MathUtils> utilities = Mockito.mockStatic(MathUtils.class)) {
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(3)))
-          .thenReturn(new BigDecimal(gamma_3));
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(2)))
-          .thenReturn(new BigDecimal(gamma_2));
-      utilities
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(1)))
-          .thenReturn(new BigDecimal(gamma_1));
+    try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
+      setupMathUtilsMock(utilities);
+      String result = derivativeService.evaluateExpression(coefficients, alpha);
+      assertEquals(expected, result);
+    }
+  }
 
-      String result = riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha);
-      String expected = "6";
+  @ParameterizedTest
+  @CsvSource({
+    "'1,-1', 0.0, 'x - 1'",
+    "'1,-1', 0.1, '1.040x^0.9 - 0.936x^-0.1'",
+    "'1,-1', 0.2, '1.074x^0.8 - 0.859x^-0.2'",
+    "'1,-1', 0.3, '1.101x^0.7 - 0.770x^-0.3'",
+    "'1,-1', 0.4, '1.119x^0.6 - 0.672x^-0.4'",
+    "'1,-1', 0.5, '1.128x^0.5 - 0.564x^-0.5'",
+    "'1,-1', 0.6, '1.127x^0.4 - 0.451x^-0.6'",
+    "'1,-1', 0.7, '1.114x^0.3 - 0.334x^-0.7'",
+    "'1,-1', 0.8, '1.089x^0.2 - 0.218x^-0.8'",
+    "'1,-1', 0.9, '1.051x^0.1 - 0.105x^-0.9'",
+    "'1,-1', 1.0, '1'",
+    "'1,-1', 1.5, '0.564x^-0.5 + 0.282x^-1.5'",
+    "'1,-1', 2.0, '0'",
+    "'1,-1', 3.0, '0'",
+    "'1,-1', 5.0, '0'",
+    "'1,-1', 10.0, '0'",
+    "'1,-1', 100.0, '0'",
+  })
+  public void testMixedSignLinearPolynomial1(
+      String coefficientString, double alpha, String expected) {
+    double[] coefficients =
+        Arrays.stream(coefficientString.split(",")).mapToDouble(Double::parseDouble).toArray();
 
+    try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
+      setupMathUtilsMock(utilities);
+      String result = derivativeService.evaluateExpression(coefficients, alpha);
+      assertEquals(expected, result);
+    }
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "'1,1,1', 0.0, 'x^2 + x + 1'",
+    "'1,1,1', 0.1, '1.094x^1.9 + 1.040x^0.9 + 0.936x^-0.1'",
+    "'1,1,1', 0.2, '1.193x^1.8 + 1.074x^0.8 + 0.859x^-0.2'",
+    "'1,1,1', 0.3, '1.295x^1.7 + 1.101x^0.7 + 0.770x^-0.3'",
+    "'1,1,1', 0.4, '1.399x^1.6 + 1.119x^0.6 + 0.672x^-0.4'",
+    "'1,1,1', 0.5, '1.505x^1.5 + 1.128x^0.5 + 0.564x^-0.5'",
+    "'1,1,1', 0.6, '1.610x^1.4 + 1.127x^0.4 + 0.451x^-0.6'",
+    "'1,1,1', 0.7, '1.714x^1.3 + 1.114x^0.3 + 0.334x^-0.7'",
+    "'1,1,1', 0.8, '1.815x^1.2 + 1.089x^0.2 + 0.218x^-0.8'",
+    "'1,1,1', 0.9, '1.911x^1.1 + 1.051x^0.1 + 0.105x^-0.9'",
+    "'1,1,1', 1.0, '2x + 1'",
+    "'1,1,1', 1.5, '2.257x^0.5 + 0.564x^-0.5 - 0.282x^-1.5'",
+    "'1,1,1', 2.0, '2'",
+    "'1,1,1', 3.0, '0'",
+    "'1,1,1', 5.0, '0'",
+    "'1,1,1', 10.0, '0'",
+    "'1,1,1', 100.0, '0'",
+  })
+  public void testPositiveQuadraticPolynomial(
+      String coefficientString, double alpha, String expected) {
+    double[] coefficients =
+        Arrays.stream(coefficientString.split(",")).mapToDouble(Double::parseDouble).toArray();
+
+    try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
+      setupMathUtilsMock(utilities);
+      String result = derivativeService.evaluateExpression(coefficients, alpha);
+      assertEquals(expected, result);
+    }
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "'-1,-1,-1', 0.0, '-x^2 - x - 1'",
+    "'-1,-1,-1', 0.1, '-1.094x^1.9 - 1.040x^0.9 - 0.936x^-0.1'",
+    "'-1,-1,-1', 0.2, '-1.193x^1.8 - 1.074x^0.8 - 0.859x^-0.2'",
+    "'-1,-1,-1', 0.3, '-1.295x^1.7 - 1.101x^0.7 - 0.770x^-0.3'",
+    "'-1,-1,-1', 0.4, '-1.399x^1.6 - 1.119x^0.6 - 0.672x^-0.4'",
+    "'-1,-1,-1', 0.5, '-1.505x^1.5 - 1.128x^0.5 - 0.564x^-0.5'",
+    "'-1,-1,-1', 0.6, '-1.610x^1.4 - 1.127x^0.4 - 0.451x^-0.6'",
+    "'-1,-1,-1', 0.7, '-1.714x^1.3 - 1.114x^0.3 - 0.334x^-0.7'",
+    "'-1,-1,-1', 0.8, '-1.815x^1.2 - 1.089x^0.2 - 0.218x^-0.8'",
+    "'-1,-1,-1', 0.9, '-1.911x^1.1 - 1.051x^0.1 - 0.105x^-0.9'",
+    "'-1,-1,-1', 1.0, '-2x - 1'",
+    "'-1,-1,-1', 1.5, '-2.257x^0.5 - 0.564x^-0.5 + 0.282x^-1.5'",
+    "'-1,-1,-1', 2.0, '-2'",
+    "'-1,-1,-1', 3.0, '0'",
+    "'-1,-1,-1', 5.0, '0'",
+    "'-1,-1,-1', 10.0, '0'",
+    "'-1,-1,-1', 100.0, '0'",
+  })
+  public void testNegativeQuadraticPolynomial(
+      String coefficientString, double alpha, String expected) {
+    double[] coefficients =
+        Arrays.stream(coefficientString.split(",")).mapToDouble(Double::parseDouble).toArray();
+
+    try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
+      setupMathUtilsMock(utilities);
+      String result = derivativeService.evaluateExpression(coefficients, alpha);
+      assertEquals(expected, result);
+    }
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "'-1,1,1', 0.0, '-x^2 + x + 1'",
+    "'-1,1,1', 0.1, '-1.094x^1.9 + 1.040x^0.9 + 0.936x^-0.1'",
+    "'-1,1,1', 0.2, '-1.193x^1.8 + 1.074x^0.8 + 0.859x^-0.2'",
+    "'-1,1,1', 0.3, '-1.295x^1.7 + 1.101x^0.7 + 0.770x^-0.3'",
+    "'-1,1,1', 0.4, '-1.399x^1.6 + 1.119x^0.6 + 0.672x^-0.4'",
+    "'-1,1,1', 0.5, '-1.505x^1.5 + 1.128x^0.5 + 0.564x^-0.5'",
+    "'-1,1,1', 0.6, '-1.610x^1.4 + 1.127x^0.4 + 0.451x^-0.6'",
+    "'-1,1,1', 0.7, '-1.714x^1.3 + 1.114x^0.3 + 0.334x^-0.7'",
+    "'-1,1,1', 0.8, '-1.815x^1.2 + 1.089x^0.2 + 0.218x^-0.8'",
+    "'-1,1,1', 0.9, '-1.911x^1.1 + 1.051x^0.1 + 0.105x^-0.9'",
+    "'-1,1,1', 1.0, '-2x + 1'",
+    "'-1,1,1', 1.5, '-2.257x^0.5 + 0.564x^-0.5 - 0.282x^-1.5'",
+    "'-1,1,1', 2.0, '-2'",
+    "'-1,1,1', 3.0, '0'",
+    "'-1,1,1', 5.0, '0'",
+    "'-1,1,1', 10.0, '0'",
+    "'-1,1,1', 100.0, '0'",
+  })
+  public void testMixedQuadraticPolynomial1(
+      String coefficientString, double alpha, String expected) {
+    double[] coefficients =
+        Arrays.stream(coefficientString.split(",")).mapToDouble(Double::parseDouble).toArray();
+
+    try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
+      setupMathUtilsMock(utilities);
+      String result = derivativeService.evaluateExpression(coefficients, alpha);
+      assertEquals(expected, result);
+    }
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "'1,-1,1', 0.0, 'x^2 - x + 1'",
+    "'1,-1,1', 0.1, '1.094x^1.9 - 1.040x^0.9 + 0.936x^-0.1'",
+    "'1,-1,1', 0.2, '1.193x^1.8 - 1.074x^0.8 + 0.859x^-0.2'",
+    "'1,-1,1', 0.3, '1.295x^1.7 - 1.101x^0.7 + 0.770x^-0.3'",
+    "'1,-1,1', 0.4, '1.399x^1.6 - 1.119x^0.6 + 0.672x^-0.4'",
+    "'1,-1,1', 0.5, '1.505x^1.5 - 1.128x^0.5 + 0.564x^-0.5'",
+    "'1,-1,1', 0.6, '1.610x^1.4 - 1.127x^0.4 + 0.451x^-0.6'",
+    "'1,-1,1', 0.7, '1.714x^1.3 - 1.114x^0.3 + 0.334x^-0.7'",
+    "'1,-1,1', 0.8, '1.815x^1.2 - 1.089x^0.2 + 0.218x^-0.8'",
+    "'1,-1,1', 0.9, '1.911x^1.1 - 1.051x^0.1 + 0.105x^-0.9'",
+    "'1,-1,1', 1.0, '2x - 1'",
+    "'1,-1,1', 1.5, '2.257x^0.5 - 0.564x^-0.5 - 0.282x^-1.5'",
+    "'1,-1,1', 2.0, '2'",
+    "'1,-1,1', 3.0, '0'",
+    "'1,-1,1', 5.0, '0'",
+    "'1,-1,1', 10.0, '0'",
+    "'1,-1,1', 100.0, '0'",
+  })
+  public void testMixedQuadraticPolynomial2(
+      String coefficientString, double alpha, String expected) {
+    double[] coefficients =
+        Arrays.stream(coefficientString.split(",")).mapToDouble(Double::parseDouble).toArray();
+
+    try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
+      setupMathUtilsMock(utilities);
+      String result = derivativeService.evaluateExpression(coefficients, alpha);
+      assertEquals(expected, result);
+    }
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "'1,1,-1', 0.0, 'x^2 + x - 1'",
+    "'1,1,-1', 0.1, '1.094x^1.9 + 1.040x^0.9 - 0.936x^-0.1'",
+    "'1,1,-1', 0.2, '1.193x^1.8 + 1.074x^0.8 - 0.859x^-0.2'",
+    "'1,1,-1', 0.3, '1.295x^1.7 + 1.101x^0.7 - 0.770x^-0.3'",
+    "'1,1,-1', 0.4, '1.399x^1.6 + 1.119x^0.6 - 0.672x^-0.4'",
+    "'1,1,-1', 0.5, '1.505x^1.5 + 1.128x^0.5 - 0.564x^-0.5'",
+    "'1,1,-1', 0.6, '1.610x^1.4 + 1.127x^0.4 - 0.451x^-0.6'",
+    "'1,1,-1', 0.7, '1.714x^1.3 + 1.114x^0.3 - 0.334x^-0.7'",
+    "'1,1,-1', 0.8, '1.815x^1.2 + 1.089x^0.2 - 0.218x^-0.8'",
+    "'1,1,-1', 0.9, '1.911x^1.1 + 1.051x^0.1 - 0.105x^-0.9'",
+    "'1,1,-1', 1.0, '2x + 1'",
+    "'1,1,-1', 1.5, '2.257x^0.5 + 0.564x^-0.5 + 0.282x^-1.5'",
+    "'1,1,-1', 2.0, '2'",
+    "'1,1,-1', 3.0, '0'",
+    "'1,1,-1', 5.0, '0'",
+    "'1,1,-1', 10.0, '0'",
+    "'1,1,-1', 100.0, '0'",
+  })
+  public void testMixedQuadraticPolynomial3(
+      String coefficientString, double alpha, String expected) {
+    double[] coefficients =
+        Arrays.stream(coefficientString.split(",")).mapToDouble(Double::parseDouble).toArray();
+
+    try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
+      setupMathUtilsMock(utilities);
+      String result = derivativeService.evaluateExpression(coefficients, alpha);
       assertEquals(expected, result);
     }
   }
@@ -184,9 +493,9 @@ public class RiemannLiouvilleDerivativeServiceTest {
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(2.5)))
           .thenThrow(new ArithmeticException("Division by zero"));
 
-      String result = "";
+      String result;
       try {
-        result = riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha);
+        result = derivativeService.evaluateExpression(coefficients, alpha);
       } catch (ArithmeticException e) {
         result = "";
       }
@@ -206,9 +515,9 @@ public class RiemannLiouvilleDerivativeServiceTest {
           .when(() -> MathUtils.gamma(BigDecimal.valueOf(1.5)))
           .thenThrow(new RuntimeException("Unexpected error"));
 
-      String result = "";
+      String result;
       try {
-        result = riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha);
+        result = derivativeService.evaluateExpression(coefficients, alpha);
       } catch (RuntimeException e) {
         result = "";
       }
