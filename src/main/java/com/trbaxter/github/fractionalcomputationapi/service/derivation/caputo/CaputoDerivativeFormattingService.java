@@ -10,11 +10,22 @@ import org.springframework.stereotype.Service;
 public class CaputoDerivativeFormattingService {
 
   public String formatTerms(List<Term> terms) {
+
+    // Derivative of 0 polynomial is always 0
+    boolean allZeroCoefficients =
+        terms.stream().allMatch(term -> term.coefficient().compareTo(BigDecimal.ZERO) == 0);
+    if (allZeroCoefficients) {
+      return "0";
+    }
+
     StringBuilder result = new StringBuilder();
-    for (int i = 0; i < terms.size(); i++) {
-      Term term = terms.get(i);
-      if (term.power().compareTo(BigDecimal.ZERO) < 0) {
-        continue; // Skip terms with negative exponents
+
+    for (Term term : terms) {
+
+      // Skip terms with zero coefficients or negative exponents
+      if (term.coefficient().compareTo(BigDecimal.ZERO) == 0
+          || term.power().compareTo(BigDecimal.ZERO) < 0) {
+        continue;
       }
       BigDecimal coefficient = term.coefficient().setScale(3, RoundingMode.HALF_UP);
 
@@ -23,23 +34,23 @@ public class CaputoDerivativeFormattingService {
               ? coefficient.stripTrailingZeros().toPlainString()
               : coefficient.toPlainString().replaceAll("\\.000$", "");
 
-      if (i > 0) {
+      if (!result.isEmpty()) {
         if (coefficient.compareTo(BigDecimal.ZERO) > 0) {
           result.append(" + ");
-        } else {
+        } else if (coefficient.compareTo(BigDecimal.ZERO) < 0) {
           result.append(" - ");
+          coefficientString = coefficient.abs().toPlainString().replaceAll("\\.000$", "");
         }
-        if (coefficient.abs().compareTo(BigDecimal.ONE) != 0) {
-          result.append(coefficient.abs().toPlainString().replaceAll("\\.000$", ""));
-        }
-      } else {
-        if (coefficient.compareTo(BigDecimal.ZERO) < 0) {
-          result.append(coefficientString);
-        } else {
-          if (coefficient.compareTo(BigDecimal.ONE) != 0) {
-            result.append(coefficientString);
-          }
-        }
+      }
+
+      boolean omitCoefficient =
+          coefficient.abs().compareTo(BigDecimal.ONE) == 0
+              && term.power().compareTo(BigDecimal.ZERO) != 0;
+
+      if (!omitCoefficient) {
+        result.append(coefficientString);
+      } else if (coefficient.compareTo(BigDecimal.ONE.negate()) == 0 && result.isEmpty()) {
+        result.append("-");
       }
 
       if (term.power().compareTo(BigDecimal.ZERO) != 0) {

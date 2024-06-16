@@ -19,8 +19,14 @@ public class CaputoDerivativeComputationService {
     List<Term> terms = new ArrayList<>();
     int degree = coefficients.length - 1;
 
-    // Differentiate if alpha is an integer
-    if (alpha.stripTrailingZeros().scale() <= 0) {
+    // Special case for alpha = 0
+    if (alpha.compareTo(BigDecimal.ZERO) == 0) {
+      for (int i = 0; i <= degree; i++) {
+        BigDecimal coefficient = BigDecimal.valueOf(coefficients[i]);
+        BigDecimal power = BigDecimal.valueOf(degree - i);
+        terms.add(new Term(coefficient, power));
+      }
+    } else if (alpha.stripTrailingZeros().scale() <= 0) {
       computeIntegerOrderDerivativeTerms(coefficients, alpha.intValue(), terms, degree);
     } else {
       computeFractionalOrderDerivativeTerms(coefficients, alpha, terms, degree);
