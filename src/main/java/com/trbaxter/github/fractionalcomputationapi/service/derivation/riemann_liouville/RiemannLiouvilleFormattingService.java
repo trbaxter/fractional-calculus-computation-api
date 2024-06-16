@@ -21,25 +21,34 @@ public class RiemannLiouvilleFormattingService {
       Term term = terms.get(i);
       BigDecimal coefficient = term.coefficient().setScale(3, RoundingMode.HALF_UP);
 
-      // Check if coefficient has trailing zeros to be stripped
-      String coefficientStr;
-      if (coefficient.stripTrailingZeros().scale() <= 0) {
-        coefficientStr = coefficient.stripTrailingZeros().toPlainString();
-      } else {
-        coefficientStr = coefficient.toPlainString();
+      // Convert coefficient to string and remove ".000" if it exists
+      String coefficientStr = coefficient.toPlainString();
+      if (coefficientStr.endsWith(".000")) {
+        coefficientStr = coefficientStr.substring(0, coefficientStr.length() - 4);
+      }
+
+      // Handle negative zero
+      if (coefficientStr.equals("-0")) {
+        coefficientStr = "0";
       }
 
       if (i > 0) {
         if (coefficient.compareTo(BigDecimal.ZERO) > 0) {
           result.append(" + ");
-        } else {
+        } else if (coefficient.compareTo(BigDecimal.ZERO) < 0) {
           result.append(" - ");
           coefficientStr = coefficient.abs().toPlainString();
+          if (coefficientStr.endsWith(".000")) {
+            coefficientStr = coefficientStr.substring(0, coefficientStr.length() - 4);
+          }
         }
       } else {
         if (coefficient.compareTo(BigDecimal.ZERO) < 0) {
           result.append("-");
           coefficientStr = coefficient.abs().toPlainString();
+          if (coefficientStr.endsWith(".000")) {
+            coefficientStr = coefficientStr.substring(0, coefficientStr.length() - 4);
+          }
         }
       }
 
@@ -48,7 +57,7 @@ public class RiemannLiouvilleFormattingService {
         result.append(coefficientStr);
       }
 
-      // Check if power is zero, and if so, only append the coefficient
+      // If power is zero only append the coefficient
       if (term.power().compareTo(BigDecimal.ZERO) != 0) {
         result.append("x");
         if (term.power().compareTo(BigDecimal.ONE) != 0) {
