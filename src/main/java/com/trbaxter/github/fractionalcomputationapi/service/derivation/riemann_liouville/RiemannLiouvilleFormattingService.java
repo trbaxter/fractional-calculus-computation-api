@@ -10,25 +10,36 @@ import org.springframework.stereotype.Service;
 public class RiemannLiouvilleFormattingService {
 
   public String formatTerms(List<Term> terms) {
+    // Check if all terms are zero, meaning the polynomial is zero
+    if (terms.isEmpty()
+        || terms.stream().allMatch(term -> term.coefficient().compareTo(BigDecimal.ZERO) == 0)) {
+      return "0";
+    }
+
     StringBuilder result = new StringBuilder();
     for (int i = 0; i < terms.size(); i++) {
       Term term = terms.get(i);
       BigDecimal coefficient = term.coefficient().setScale(3, RoundingMode.HALF_UP);
 
       // Check if coefficient has trailing zeros to be stripped
-      String coefficientStr = coefficient.stripTrailingZeros().toPlainString();
+      String coefficientStr;
+      if (coefficient.stripTrailingZeros().scale() <= 0) {
+        coefficientStr = coefficient.stripTrailingZeros().toPlainString();
+      } else {
+        coefficientStr = coefficient.toPlainString();
+      }
 
       if (i > 0) {
         if (coefficient.compareTo(BigDecimal.ZERO) > 0) {
           result.append(" + ");
         } else {
           result.append(" - ");
-          coefficientStr = coefficient.abs().stripTrailingZeros().toPlainString();
+          coefficientStr = coefficient.abs().toPlainString();
         }
       } else {
         if (coefficient.compareTo(BigDecimal.ZERO) < 0) {
           result.append("-");
-          coefficientStr = coefficient.abs().stripTrailingZeros().toPlainString();
+          coefficientStr = coefficient.abs().toPlainString();
         }
       }
 
@@ -46,9 +57,6 @@ public class RiemannLiouvilleFormattingService {
           result.append("^").append(exponent);
         }
       }
-    }
-    if (result.isEmpty()) {
-      return "0";
     }
     return result.toString();
   }
