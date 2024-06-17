@@ -9,15 +9,19 @@ import static org.mockito.Mockito.mockStatic;
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import com.trbaxter.github.fractionalcomputationapi.service.integration.caputo.CaputoIntegralComputationService;
 import com.trbaxter.github.fractionalcomputationapi.service.integration.caputo.CaputoIntegrationService;
+import com.trbaxter.github.fractionalcomputationapi.testdata.GammaTestData;
 import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,80 +29,24 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class CaputoIntegrationServiceTest {
 
-  @Autowired private CaputoIntegrationService caputoIntegrationService;
+  @Autowired private CaputoIntegrationService integrationService;
 
   @Autowired private CaputoIntegralComputationService computationService;
 
-  @Test
-  public void testComputeIntegral_IntegerOrder() {
-    double[] coefficients = {1.0, 2.0, 3.0};
-    double alpha = 1.0;
-    String result = caputoIntegrationService.evaluateExpression(coefficients, alpha);
-    assertNotNull(result);
-    String expectedResult = "0.333x^3 + x^2 + 3x + C";
-    assertEquals(expectedResult, result);
-  }
+  @ParameterizedTest
+  @MethodSource(
+      "com.trbaxter.github.fractionalcomputationapi.testdata"
+          + ".CaputoIntegrationTestData#coefficientCombinations")
+  public void testCaputoCoefficientCombinations(
+      String coefficientString, double alpha, String expected) {
+    double[] coefficients =
+        Arrays.stream(coefficientString.split(",")).mapToDouble(Double::parseDouble).toArray();
 
-  @Test
-  public void testComputeIntegral_FractionalOrder() {
-    double[] coefficients = {1.0, 2.0, 3.0};
-    double alpha = 0.5;
-    String result = caputoIntegrationService.evaluateExpression(coefficients, alpha);
-    assertNotNull(result);
-    String expectedResult = "1.662x^2.5 + 2.659x^1.5 + 2.659x^0.5 + C";
-    assertEquals(expectedResult, result);
-  }
-
-  @Test
-  public void testComputeIntegral_ZeroCoefficients() {
-    double[] coefficients = {0.0, 0.0, 0.0};
-    double alpha = 1.0;
-    String result = caputoIntegrationService.evaluateExpression(coefficients, alpha);
-    assertNotNull(result);
-    String expectedResult = "C";
-    assertEquals(expectedResult, result);
-  }
-
-  @Test
-  public void testComputeIntegral_NegativeCoefficients() {
-    double[] coefficients = {-1.0, -2.0, -3.0};
-    double alpha = 1.0;
-    String result = caputoIntegrationService.evaluateExpression(coefficients, alpha);
-    assertNotNull(result);
-    String expectedResult = "-0.333x^3 - x^2 - 3x + C";
-    assertEquals(expectedResult, result);
-  }
-
-  @Test
-  public void testComputeIntegral_HighOrder() {
-    double[] coefficients = {1.0, 2.0, 3.0, 4.0, 5.0};
-    double alpha = 2.0;
-    String result = caputoIntegrationService.evaluateExpression(coefficients, alpha);
-    assertNotNull(result);
-    String expectedResult = "0.033x^6 + 0.1x^5 + 0.25x^4 + 0.667x^3 + 2.5x^2 + Cx + D";
-    assertEquals(expectedResult, result);
-  }
-
-  @Test
-  public void testComputeIntegral_EvenHigherOrder() {
-    double[] coefficients = {1.0, 2.0, 3.0, 4.0, 5.0};
-    double alpha = 3.0;
-    String result = caputoIntegrationService.evaluateExpression(coefficients, alpha);
-    assertNotNull(result);
-    String expectedResult =
-        "0.005x^7 + 0.017x^6 + 0.05x^5 + 0.167x^4 + 0.833x^3 + 0.5Cx^2 + Dx + E";
-    assertEquals(expectedResult, result);
-  }
-
-  @Test
-  public void testComputeIntegral_SuperOrder() {
-    double[] coefficients = {1.0, 2.0, 3.0, 4.0, 5.0};
-    double alpha = 4.0;
-    String result = caputoIntegrationService.evaluateExpression(coefficients, alpha);
-    assertNotNull(result);
-    String expectedResult =
-        "0.001x^8 + 0.002x^7 + 0.008x^6 + 0.033x^5 + 0.208x^4 + 0.167Cx^3 + 0.5Dx^2 + Ex + F";
-    assertEquals(expectedResult, result);
+    try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
+      GammaTestData.setupMathUtilsMock(utilities);
+      String result = integrationService.evaluateExpression(coefficients, alpha);
+      assertEquals(expected, result);
+    }
   }
 
   @Test
@@ -132,7 +80,6 @@ public class CaputoIntegrationServiceTest {
 
       List<Term> result = computationService.computeTerms(coefficients, alpha);
       assertNotNull(result);
-      // Ensure the logger captured the error
       assertTrue(logMessages.stream().anyMatch(msg -> msg.contains("Gamma function error")));
     } finally {
       logger.removeHandler(testHandler);

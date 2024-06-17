@@ -21,7 +21,14 @@ public class CaputoIntegralComputationService {
     List<Term> terms = new ArrayList<>();
     int degree = coefficients.length - 1;
 
-    if (alpha.stripTrailingZeros().scale() <= 0) {
+    // Special case for alpha = 0
+    if (alpha.compareTo(BigDecimal.ZERO) == 0) {
+      for (int i = 0; i <= degree; i++) {
+        BigDecimal coefficient = BigDecimal.valueOf(coefficients[i]);
+        BigDecimal power = BigDecimal.valueOf(degree - i);
+        terms.add(new Term(coefficient, power));
+      }
+    } else if (alpha.stripTrailingZeros().scale() <= 0) {
       computeIntegerOrderTerms(coefficients, alpha.intValue(), terms, degree);
     } else {
       computeFractionalOrderTerms(coefficients, alpha, terms, degree);
@@ -53,8 +60,8 @@ public class CaputoIntegralComputationService {
       if (coefficient.compareTo(BigDecimal.ZERO) != 0) {
         try {
           BigDecimal k = BigDecimal.valueOf(degree - i);
-          BigDecimal gammaNumerator = MathUtils.gamma(k.add(alpha).add(BigDecimal.ONE));
-          BigDecimal gammaDenominator = MathUtils.gamma(k.add(BigDecimal.ONE));
+          BigDecimal gammaNumerator = MathUtils.gamma(k.add(BigDecimal.ONE));
+          BigDecimal gammaDenominator = MathUtils.gamma(k.add(alpha).add(BigDecimal.ONE));
           logger.info(
               String.format(
                   "Term %d: gammaNumerator = %s, gammaDenominator = %s",
