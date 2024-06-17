@@ -3,73 +3,46 @@ package com.trbaxter.github.fractionalcomputationapi.service.integration.caputo;
 import static org.apache.commons.math3.special.Gamma.gamma;
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
+import com.trbaxter.github.fractionalcomputationapi.service.derivation.BaseFormattingService;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CaputoIntegralFormattingService {
+public class CaputoIntegralFormattingService extends BaseFormattingService {
+
+  @Override
+  protected boolean shouldSkipTerm(Term term) {
+    // Do not skip any terms based on the coefficient for integrals
+    return false;
+  }
+
+  @Override
+  protected String getZeroPolynomialResult() {
+    // Integral of 0 polynomial is always a constant
+    return "C";
+  }
 
   public String formatTerms(List<Term> terms, double alpha) {
-    StringBuilder result = new StringBuilder();
+    String result = super.formatTerms(terms);
+
     boolean integerAlpha = BigDecimal.valueOf(alpha).stripTrailingZeros().scale() <= 0;
     int alphaInt = (int) alpha;
 
-    for (int i = 0; i < terms.size(); i++) {
-      Term term = terms.get(i);
-      BigDecimal coefficient = term.coefficient().stripTrailingZeros();
-      boolean omitCoefficient =
-          coefficient.compareTo(BigDecimal.ONE) == 0
-              || coefficient.compareTo(BigDecimal.ONE.negate()) == 0;
-
-      if (i > 0) {
-        if (coefficient.compareTo(BigDecimal.ZERO) > 0) {
-          result.append(" + ");
-        } else {
-          result.append(" - ");
-        }
-        if (!omitCoefficient) {
-          result.append(
-              coefficient
-                  .abs()
-                  .setScale(3, RoundingMode.HALF_UP)
-                  .stripTrailingZeros()
-                  .toPlainString());
-        }
-      } else {
-        String roundThreeSigFigsStripZeros =
-            coefficient.setScale(3, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString();
-        if (coefficient.compareTo(BigDecimal.ZERO) < 0) {
-          result.append(roundThreeSigFigsStripZeros);
-        } else {
-          if (!omitCoefficient) {
-            result.append(roundThreeSigFigsStripZeros);
-          }
-        }
-      }
-
-      if (term.power().compareTo(BigDecimal.ZERO) != 0) {
-        result.append("x");
-        if (term.power().compareTo(BigDecimal.ONE) != 0) {
-          result.append("^").append(term.power().stripTrailingZeros().toPlainString());
-        }
-      }
-    }
-
     if (integerAlpha) {
       if (alphaInt > 1) {
-        appendConstantsOfIntegration(result, alphaInt);
+        appendConstantsOfIntegration(new StringBuilder(result), alphaInt);
       } else if (alphaInt == 1) {
-        if (!result.isEmpty()) result.append(" + ");
-        result.append("C");
+        if (!result.isEmpty()) result += " + ";
+        result += "C";
       }
     } else {
-      if (!result.isEmpty()) result.append(" + ");
-      result.append("C");
+      if (!result.isEmpty()) result += " + ";
+      result += "C";
     }
 
-    return result.toString();
+    return result;
   }
 
   private void appendConstantsOfIntegration(StringBuilder result, int alphaInt) {
