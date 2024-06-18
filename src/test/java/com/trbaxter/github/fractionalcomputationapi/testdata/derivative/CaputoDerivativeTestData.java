@@ -1,9 +1,9 @@
-package com.trbaxter.github.fractionalcomputationapi.testdata;
+package com.trbaxter.github.fractionalcomputationapi.testdata.derivative;
 
 import java.util.stream.Stream;
 import org.junit.jupiter.params.provider.Arguments;
 
-public class CaputoDerivativeTestData {
+public final class CaputoDerivativeTestData {
 
   public static Stream<Arguments> coefficientCombinations() {
     return Stream.of(
