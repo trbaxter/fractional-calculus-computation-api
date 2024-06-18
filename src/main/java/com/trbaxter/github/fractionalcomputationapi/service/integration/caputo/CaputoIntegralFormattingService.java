@@ -32,7 +32,7 @@ public class CaputoIntegralFormattingService extends BaseFormattingService {
 
     if (integerAlpha) {
       if (alphaInt > 1) {
-        appendConstantsOfIntegration(new StringBuilder(result), alphaInt);
+        result = appendConstantsOfIntegration(result, alphaInt);
       } else if (alphaInt == 1) {
         if (!result.isEmpty()) result += " + ";
         result += "C";
@@ -45,9 +45,10 @@ public class CaputoIntegralFormattingService extends BaseFormattingService {
     return result;
   }
 
-  private void appendConstantsOfIntegration(StringBuilder result, int alphaInt) {
+  private String appendConstantsOfIntegration(String result, int alphaInt) {
+    StringBuilder sb = new StringBuilder(result);
     for (int i = 0; i < alphaInt; i++) {
-      if (!result.isEmpty()) result.append(" + ");
+      if (!sb.isEmpty()) sb.append(" + ");
       char constant = (char) ('C' + i);
       BigDecimal constantCoefficient;
 
@@ -60,10 +61,9 @@ public class CaputoIntegralFormattingService extends BaseFormattingService {
       int power = alphaInt - i - 1;
 
       if (constantCoefficient.compareTo(BigDecimal.ONE) == 0) {
-        result.append(constant);
+        sb.append(constant);
       } else {
-        result
-            .append(
+        sb.append(
                 constantCoefficient
                     .setScale(3, RoundingMode.HALF_UP)
                     .stripTrailingZeros()
@@ -72,11 +72,12 @@ public class CaputoIntegralFormattingService extends BaseFormattingService {
       }
 
       if (power > 0) {
-        result.append("x");
+        sb.append("x");
         if (power > 1) {
-          result.append("^").append(power);
+          sb.append("^").append(power);
         }
       }
     }
+    return sb.toString();
   }
 }
