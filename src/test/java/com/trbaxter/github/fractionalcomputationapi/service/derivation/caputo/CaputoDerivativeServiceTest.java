@@ -28,7 +28,7 @@ public class CaputoDerivativeServiceTest {
 
   @ParameterizedTest
   @MethodSource(
-      "com.trbaxter.github.fractionalcomputationapi.testdata"
+      "com.trbaxter.github.fractionalcomputationapi.testdata.derivative"
           + ".CaputoDerivativeTestData#coefficientCombinations")
   public void testCaputoCoefficientCombinations(
       String coefficientString, double alpha, String expected) {
@@ -44,7 +44,7 @@ public class CaputoDerivativeServiceTest {
 
   @ParameterizedTest
   @MethodSource(
-      "com.trbaxter.github.fractionalcomputationapi.testdata"
+      "com.trbaxter.github.fractionalcomputationapi.testdata.derivative"
           + ".SharedDerivativeTestData#coefficientCombinations")
   public void testSharedCoefficientCombinations(
       String coefficientString, double alpha, String expected) {

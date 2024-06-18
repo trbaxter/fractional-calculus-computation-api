@@ -35,7 +35,7 @@ public class CaputoIntegrationServiceTest {
 
   @ParameterizedTest
   @MethodSource(
-      "com.trbaxter.github.fractionalcomputationapi.testdata"
+      "com.trbaxter.github.fractionalcomputationapi.testdata.integral"
           + ".CaputoIntegrationTestData#coefficientCombinations")
   public void testCaputoCoefficientCombinations(
       String coefficientString, double alpha, String expected) {
