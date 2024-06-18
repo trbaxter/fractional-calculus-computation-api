@@ -23,7 +23,7 @@ public class RiemannLiouvilleDerivativeServiceTest {
 
   @ParameterizedTest
   @MethodSource(
-      "com.trbaxter.github.fractionalcomputationapi.testdata"
+      "com.trbaxter.github.fractionalcomputationapi.testdata.derivative"
           + ".RiemannLiouvilleDerivativeTestData#coefficientCombinations")
   public void testCoefficientCombinations(String coefficientString, double alpha, String expected) {
     double[] coefficients =
@@ -38,7 +38,7 @@ public class RiemannLiouvilleDerivativeServiceTest {
 
   @ParameterizedTest
   @MethodSource(
-      "com.trbaxter.github.fractionalcomputationapi.testdata"
+      "com.trbaxter.github.fractionalcomputationapi.testdata.derivative"
           + ".SharedDerivativeTestData#coefficientCombinations")
   public void testSharedCoefficientCombinations(
       String coefficientString, double alpha, String expected) {
