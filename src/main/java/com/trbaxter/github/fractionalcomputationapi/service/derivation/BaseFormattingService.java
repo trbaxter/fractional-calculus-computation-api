@@ -48,6 +48,10 @@ public abstract class BaseFormattingService {
   private void appendTerm(StringBuilder result, Term term, String coefficientString) {
     BigDecimal coefficient = term.coefficient().setScale(3, RoundingMode.HALF_UP);
 
+    if (coefficient.compareTo(BigDecimal.ZERO) == 0) {
+      return;
+    }
+
     if (!result.isEmpty()) {
       if (coefficient.compareTo(BigDecimal.ZERO) > 0) {
         result.append(" + ");
