@@ -4,12 +4,25 @@ import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
 import java.math.BigDecimal;
 import org.mockito.MockedStatic;
 
-public class GammaTestData {
-
+public final class GammaTestData {
+  public static final String gamma_101 =
+      "933262154439441526816992388562667004907159682643816"
+          + "214685929638952175999932299156089414639761565182862"
+          + "536979208272237582511852109168640000000000000000000"
+          + "00000";
+  public static final String gamma_11 = "3628800.000000000000000";
   public static final String gamma_6 = "120.000000000000000";
-  public static final String gamma_5 = "24.000000000000000";
+  public static final String gamma_4_point_5 = "11.631728396567448";
   public static final String gamma_4 = "6.000000000000000";
+  public static final String gamma_3_point_9 = "5.299329733809704";
+  public static final String gamma_3_point_8 = "4.694174205740423";
+  public static final String gamma_3_point_7 = "4.170651783796603";
+  public static final String gamma_3_point_6 = "3.717023853036791";
   public static final String gamma_3_point_5 = "3.323350970447842";
+  public static final String gamma_3_point_4 = "2.981206426810332";
+  public static final String gamma_3_point_3 = "2.683437381955768";
+  public static final String gamma_3_point_2 = "2.423965479935368";
+  public static final String gamma_3_point_1 = "2.197620278392477";
   public static final String gamma_3 = "2.000000000000000";
   public static final String gamma_2_point_9 = "1.827355080624036";
   public static final String gamma_2_point_8 = "1.676490787764436";
@@ -44,17 +57,47 @@ public class GammaTestData {
 
   public static void setupMathUtilsMock(MockedStatic<MathUtils> utilities) {
     utilities
-        .when(() -> MathUtils.gamma(BigDecimal.valueOf(5)))
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(101)))
+        .thenReturn(new BigDecimal(gamma_101));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(11)))
+        .thenReturn(new BigDecimal(gamma_11));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(6)))
         .thenReturn(new BigDecimal(gamma_6));
     utilities
-        .when(() -> MathUtils.gamma(BigDecimal.valueOf(5)))
-        .thenReturn(new BigDecimal(gamma_5));
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(4.5)))
+        .thenReturn(new BigDecimal(gamma_4_point_5));
     utilities
         .when(() -> MathUtils.gamma(BigDecimal.valueOf(4)))
         .thenReturn(new BigDecimal(gamma_4));
     utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(3.9)))
+        .thenReturn(new BigDecimal(gamma_3_point_9));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(3.8)))
+        .thenReturn(new BigDecimal(gamma_3_point_8));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(3.7)))
+        .thenReturn(new BigDecimal(gamma_3_point_7));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(3.6)))
+        .thenReturn(new BigDecimal(gamma_3_point_6));
+    utilities
         .when(() -> MathUtils.gamma(BigDecimal.valueOf(3.5)))
         .thenReturn(new BigDecimal(gamma_3_point_5));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(3.4)))
+        .thenReturn(new BigDecimal(gamma_3_point_4));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(3.3)))
+        .thenReturn(new BigDecimal(gamma_3_point_3));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(3.2)))
+        .thenReturn(new BigDecimal(gamma_3_point_2));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(3.1)))
+        .thenReturn(new BigDecimal(gamma_3_point_1));
     utilities
         .when(() -> MathUtils.gamma(BigDecimal.valueOf(3)))
         .thenReturn(new BigDecimal(gamma_3));
