@@ -2,6 +2,8 @@ server:
   port: 8080
 
 spring:
+  main:
+    banner-mode: off  # Removes Spring title banner when API starts
   application: fractional-calculus-computation-api
 
 logging:
