@@ -3,6 +3,8 @@
 A Java-based API for computing Caputo and Riemann-Liouville fractional derivatives of user-provided polynomial
 expressions.
 
+<br/>
+
 ## Table of Contents
 
 [Project Status](#project-status)  
@@ -26,12 +28,6 @@ expressions.
 ## Project Status
 
 This project is in active development with a current version of 1.0.0. Upcoming features include:
-
-- Support for the Caputo and Riemann-Liouville fractional integrals
-
-
-- Performance optimizations
-
 
 - Expanding capability to handle other types of math expressions  
   (logarithms, trig identities, and so on)
@@ -57,7 +53,8 @@ This project is in active development with a current version of 1.0.0. Upcoming 
 git clone https://github.com/trbaxter/fractional-computation-api.git
 ```
 
-&nbsp;
+<br/>
+<br/>
 
 2.) Navigate to the project directory:
 
@@ -65,7 +62,8 @@ git clone https://github.com/trbaxter/fractional-computation-api.git
 cd fractional-computation-api
 ```
 
-&nbsp;
+<br/>
+<br/>
 
 3.) Build the project using Maven:
 
@@ -91,15 +89,11 @@ mvn spring-boot:run
 
 ### Caputo Fractional Derivative Endpoint
 
-Endpoint URL:
-
-```
-/fractional-calculus-computation-api/derivative/caputo
-```
-
 Method: <b>POST</b>
 
-&nbsp;
+Endpoint URL: `/fractional-calculus-computation-api/derivative/caputo`
+
+<br/>
 
 Required request body:
 
@@ -114,10 +108,11 @@ Required request body:
 
 Parameters:
 
-```coefficients``` - An array of polynomial coefficients of type double.
+```coefficients``` - An array of polynomial coefficients of type double or integer.
 
 ```order``` - The derivative order of type double.  
-&nbsp;
+
+<br/>
 
 Response:
 
@@ -129,19 +124,16 @@ Response:
 
 Returns the closed-form expression of the Caputo derivative if successful.
 
-&nbsp;
+<br/>
+<br/>
 
 ### Riemann-Liouville Fractional Derivative Endpoint
 
-Endpoint URL:
-
-```
-/fractional-calculus-computation-api/derivative/riemann-liouville
-```
-
 Method: <b>POST</b>
 
-&nbsp;
+Endpoint URL: `/fractional-calculus-computation-api/derivative/riemann-liouville`
+
+<br/>
 
 Required request body:
 
@@ -152,14 +144,15 @@ Required request body:
 }
 ```
 
-&nbsp;
+<br/>
 
 Parameters:
 
-```coefficients``` - An array of polynomial coefficients of type double.
+```coefficients``` - An array of polynomial coefficients of type double or integer.
 
 ```order``` - The derivative order of type double.  
-&nbsp;
+
+<br/>
 
 Response:
 
@@ -171,7 +164,8 @@ Response:
 
 Returns the closed-form expression of the Riemann-Liouville derivative if successful.
 
-&nbsp;
+<br/>
+<br/>
 
 ## Examples
 
@@ -285,6 +279,9 @@ Output:
   "expression": "53.778x^1.76544 + 13.314x^-0.23456 + 2.335x^-1.23456"
 }
 ```
+
+<br/>
+<br/>
 
 ## Calculation Details
 
@@ -432,6 +429,16 @@ $$
     </details>
 </details>
 
+<br/>
+
+<details>
+    <summary>&nbsp;<i>Why are there two derivative endpoints, but only one integration endpoint?</i></summary>&nbsp;<br/>
+    This is because the Caputo and Riemann-Liouville techniques treat derivatives of constant values differently.
+    <br/>
+    <br/>
+    This distinction is not present in the API integration process, and both methods lead to the same results.<br/>
+</details>
+
 
 <br/>
 
@@ -455,9 +462,9 @@ Remember to update tests if necessary and provide responses to the questions as 
 
 ## Changelog
 
-### Version [1.0.0] - Released 2024-06-15
+### Version [1.0.0] - Released 2024-06-TBD
 
-- Initial release with Caputo and Riemann-Liouville fractional derivative calculation capabilities
+- Initial release with Caputo and Riemann-Liouville fractional derivative and Caputo fractional integration capabilities
 
 
 - Includes comprehensive test coverage
