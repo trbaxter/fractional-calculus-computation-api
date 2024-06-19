@@ -3,7 +3,8 @@
 This is a Java-based API that can produce expressions for derivatives and integrals of
 user-submitted expressions of integer or fractional order.
 
----
+
+<br/>
 
 ## Table of Contents
 
@@ -22,7 +23,8 @@ user-submitted expressions of integer or fractional order.
 [Support](#support)  
 [Contact Information](#contact-information)
 
----
+
+<br/>
 
 ## Project Status
 
@@ -37,7 +39,7 @@ Upcoming features include:
 
 - Frontend UI
 
----
+<br/>
 
 ## Technologies Used
 
@@ -67,7 +69,7 @@ Upcoming features include:
 - **SLF4J**: Version 2.0.13
 - **Hibernate Validator**: Version 8.0.1.Final
 
----
+<br/>
 
 ## Getting Started
 
@@ -106,9 +108,9 @@ mvn spring-boot:run
 <br/>
 
 Upon successful start, endpoints may be accessed by using cURL commands or API testing software
-(Postman / Insomnia / etc.).
+(Postman / Insomnia / etc).
 
----
+<br/>
 
 ## Endpoint Information
 
@@ -214,7 +216,7 @@ Response:
 
 Returns the closed-form expression of the Caputo integral if successful.
 
----
+<br/>
 
 ## Examples
 
@@ -340,21 +342,107 @@ Output:
 }
 ```
 
----
+<br/>
 
 ## Calculation Details
 
 <details>
-<summary>Caputo Fractional Derivative of $3x^2 + 2x + 1$ with $\alpha = 0.35$</summary>
-<p>The Caputo fractional derivative of order $\alpha$ for a function $f(x)$ is defined as:</p>
-$${}^{C} D^{0.5} f(x) = \dfrac{1}{\Gamma(n-\alpha)} \int_{0}^{x} \dfrac{f^{(n)}(t)}{(x-t^
-{\alpha + 1 - n})}dt $$
-<p>Where:  
-- $n = ⌈\alpha⌉$ (the smallest integer greater than or equal to $\alpha$
+<summary>Caputo Fractional Derivative of $3x^2 + 2x + 1$ with $\alpha = 0.35$ (full derivation process)</summary>&nbsp;<br/>
+The Caputo fractional derivative of order $\alpha$ for a function $f(x)$ is defined as:
+$${}^{C} D^{\alpha} f(x) = \dfrac{1}{\Gamma(n-\alpha)} \int_{0}^{x} \dfrac{f^{(n)}(t)}{(x-t)^
+{(\alpha + 1 - n})}dt $$
+
+Where:  
+  
+- $n = ⌈\alpha⌉$ (the smallest integer greater than or equal to $\alpha$)
 - $\Gamma$ is the Gamma function
-</p>
+- $f^{(n)}(t)$ is the $n$-th derivative of $f(t)$.
+- $f(t)$ is the same expression as $f(x)$, except with $t$ substituted for all $x$.
+
+For $\alpha = 0.35$, $⌈0.35⌉ = 1$ and thus, $n = 1$. The definition can then be simplified to:
+$${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \int_{0}^{x} \dfrac{f^{(1)}(t)}{(x-t)^
+{(0.35)}}dt$$
+
+First, compute the derivative of $f(t)$:
+
+$$\dfrac{d}{dt}(3t^2 + 2t + 1) = 6t + 2$$
+
+Thus, 
+
+$${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \int_{0}^{x} \dfrac{6t + 2}{(x-t)^
+{(0.35)}}dt$$
+
+To simplify evaluation of the integral, it can be split into the following two parts: 
+
+$${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(\int_{0}^{x} \dfrac{6t}{(x-t)^
+{(0.35)}}dt + \int_{0}^{x} \dfrac{2}{(x-t)^{(0.35)}}dt \Big)$$
+
+For both integral parts, a u-substitution of $t$ will be required. Let $u = \dfrac{t}{x}$
+and $du = \dfrac{dt}{x}$.
+
+The lower limit of $t$ is zero. Therefore, the lower limit of $u$ is $\dfrac{0}{x} = 0.$
+
+Similarly, the upper limit of $t$ is $x$. Therefore, the upper limit of $u$ is $\dfrac{x}{x} = 1$. 
+
+With the u-substitution applied, the integral expression now takes the following form: 
+
+$${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(\int_{0}^{1} \dfrac{6(ux)}{(x-(ux))^
+{(0.35)}}(x \cdot du) + \int_{0}^{1} \dfrac{2}{(x-(ux))^{(0.35)}}(x \cdot du) \Big)$$
+
+The integrands can be simplified by factoring out the numerical coefficients and factors of $x$:
+
+$${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(6x^2 \int_{0}^{1} \dfrac{u}{(x-ux)^
+{(0.35)}}du + 2x\int_{0}^{1} \dfrac{1}{(x-ux)^{(0.35)}}du \Big)$$
+
+Followed by factoring out $x^{0.35}$ from the denominators:
+
+$${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(\dfrac{6x^2}{x^{0.35}} \int_{0}^{1} \dfrac{u}{(1-u)^
+{(0.35)}}du + \dfrac{2x}{x^{0.35}} \int_{0}^{1} \dfrac{1}{(1-u)^{(0.35)}}du \Big)$$
+
+Then simplifying the coefficients on both integrals:
+
+$${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \int_{0}^{1} \dfrac{u}{(1-u)^
+{(0.35)}}du + 2x^{0.65} \int_{0}^{1} \dfrac{1}{(1-u)^{(0.35)}}du \Big)$$
+
+The integrands can now be rewritten in the following way to match the form of the Beta function: 
+
+$${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \int_{0}^{1} u(1-u)^{0.35}du + 2x^{0.65} \int_{0}^{1} (1-u)^{0.35}du \Big)$$
+
+Where the Beta function has the following form:
+
+$$\beta(p,q) = \int_{0}^{1} t^{p-1}(1-t)^{q-1}dt$$
+
+With the following solution:
+
+$$\beta(p,q) = \dfrac{\Gamma(p) \Gamma(q)}{\Gamma(p+q)}$$
+
+The first integral is equivalent to $\beta(2,0.65)$, and the second integral is equivalent to $\beta(1,0.65)$. Substituting the solutions in:
+
+$${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \dfrac{\Gamma(2) \Gamma(0.65)}{\Gamma(2.65)} + 2x^{0.65} \dfrac{\Gamma(1) \Gamma(0.65)}{\Gamma(1.65)} \Big)$$
+
+Upon canceling like terms:
+
+$${}^{C} D^{0.35} f(x) = \cancel{\dfrac{1}{\Gamma(0.65)}} \Big(6x^{1.65} \dfrac{\Gamma(2) \cancel{\Gamma(0.65)}}{\Gamma(2.65)} + 2x^{0.65} \dfrac{\Gamma(1) \cancel{\Gamma(0.65)}}{\Gamma(1.65)} \Big)$$
+
+Therefore:
+
+$${}^{C} D^{0.35} f(x) = 6x^{1.65} \dfrac{\Gamma(2)}{\Gamma(2.65)} + 2x^{0.65} \dfrac{\Gamma(1)}{\Gamma(1.65)}$$
+
+Using $\Gamma(1) = 1$, $\Gamma(1.65) \approx 0.9001168$, $\Gamma(2) = 1$, and $\Gamma(2.65) \approx 1.4851927$:
+
+$${}^{C} D^{0.35} f(x) \approx \dfrac{6x^{1.65}}{1.4851927} +  \dfrac{2x^{0.65}}{0.9001168}$$
+
+Upon simplifying to three decimal places:
+
+$${}^{C} D^{0.35} f(x) \approx 4.040x^{1.65} + 2.222x^{0.65}$$
+
+This matches the output of the API and verifies the fractional derivative process. 
 
 </details>
+
+---
+---
+---
 
 Given the polynomial $f(x) = 3x^2 + 2x + 1$, and the order $\alpha = 0.5$, the Caputo fractional
 derivative
