@@ -1,17 +1,16 @@
 # Fractional Calculus Computation API
 
-A Java-based API for computing Caputo and Riemann-Liouville fractional derivatives of user-provided polynomial
-expressions.
+This is a Java-based API that can produce expressions for derivatives and integrals of
+user-submitted expressions of integer or fractional order.
 
-<br/>
+---
 
 ## Table of Contents
 
 [Project Status](#project-status)  
 [Technologies Used](#technologies-used)  
-[Getting Started](#getting-started)  
-[Usage](#usage)  
-[API Reference](#api-reference)  
+[Getting Started](#getting-started)
+[Endpoint Information](#endpoint-information)  
 [Examples](#examples)  
 [Calculation Details](#calculation-details)  
 [FAQ](#faq)  
@@ -23,49 +22,74 @@ expressions.
 [Support](#support)  
 [Contact Information](#contact-information)
 
-<br/>
+---
 
 ## Project Status
 
-This project is in active development with a current version of 1.0.0. Upcoming features include:
+This project is in active development with a current version of 1.0.0.  
+Upcoming features include:
 
-- Expanding capability to handle other types of math expressions  
-  (logarithms, trig identities, and so on)
+- Support for other types of expressions (logarithms, trig identities, etc.)
 
-<br/>
+- Support for mixed expressions
+
+- Support for nested functions
+
+- Frontend UI
+
+---
 
 ## Technologies Used
 
-- Java 22
+### Core Technologies
 
+- **Java**: OpenJDK Version 22.0.1
 
-- Maven
+### Build Tools
 
-<br/>
+- **Maven**: Version 3.9.6
+
+### Frameworks
+
+- **Spring Boot**: Version 3.2.5
+- **Spring MVC**: Version 6.1.6
+
+### Testing
+
+- **JUnit**: JUnit 5 (JUnit Jupiter) Version 5.10.2
+- **Mockito**: Version 5.11.0
+
+### Libraries
+
+- **Apache Commons Math**: Version 3.6.1
+- **Jackson Databind**: Version 2.15.4
+- **Logback**: Version 1.4.14
+- **SLF4J**: Version 2.0.13
+- **Hibernate Validator**: Version 8.0.1.Final
+
+---
 
 ## Getting Started
 
-### Prerequisites
-
-1.) Clone the repository:
+Clone the repository:
 
 ```sh
 git clone https://github.com/trbaxter/fractional-computation-api.git
 ```
 
 <br/>
-<br/>
 
-2.) Navigate to the project directory:
+
+Navigate to the project directory:
 
 ```sh
 cd fractional-computation-api
 ```
 
 <br/>
-<br/>
 
-3.) Build the project using Maven:
+
+Build the project using Maven:
 
 ```sh
 mvn clean install
@@ -73,11 +97,7 @@ mvn clean install
 
 <br/>
 
-## Usage
-
-### Application Start
-
-To start the application, use the following command:
+Start the application using the following command:
 
 ```sh
 mvn spring-boot:run
@@ -85,15 +105,20 @@ mvn spring-boot:run
 
 <br/>
 
-## API Reference
+Upon successful start, endpoints may be accessed by using cURL commands or API testing software
+(Postman / Insomnia / etc.).
 
-### Caputo Fractional Derivative Endpoint
+---
+
+## Endpoint Information
+
+### 1.) Caputo Fractional Derivative Endpoint
 
 Method: <b>POST</b>
 
 Endpoint URL: `/fractional-calculus-computation-api/derivative/caputo`
 
-<br/>
+
 
 Required request body:
 
@@ -104,15 +129,11 @@ Required request body:
 }
 ```
 
-&nbsp;
-
 Parameters:
 
 ```coefficients``` - An array of polynomial coefficients of type double or integer.
 
-```order``` - The derivative order of type double.  
-
-<br/>
+```order``` - The derivative order of type double.
 
 Response:
 
@@ -127,13 +148,11 @@ Returns the closed-form expression of the Caputo derivative if successful.
 <br/>
 <br/>
 
-### Riemann-Liouville Fractional Derivative Endpoint
+### 2.) Riemann-Liouville Fractional Derivative Endpoint
 
 Method: <b>POST</b>
 
 Endpoint URL: `/fractional-calculus-computation-api/derivative/riemann-liouville`
-
-<br/>
 
 Required request body:
 
@@ -144,15 +163,13 @@ Required request body:
 }
 ```
 
-<br/>
-
 Parameters:
 
 ```coefficients``` - An array of polynomial coefficients of type double or integer.
 
-```order``` - The derivative order of type double.  
+```order``` - The derivative order of type double.
 
-<br/>
+
 
 Response:
 
@@ -165,15 +182,45 @@ Response:
 Returns the closed-form expression of the Riemann-Liouville derivative if successful.
 
 <br/>
-<br/>
+
+### 3.) Caputo Fractional Integral Endpoint
+
+Method: <b>POST</b>
+
+Endpoint URL: `/fractional-calculus-computation-api/integral/caputo`
+
+Required request body:
+
+```
+{
+  "coefficients": [],
+  "order": 
+}
+```
+
+Parameters:
+
+```coefficients``` - An array of polynomial coefficients of type double or integer.
+
+```order``` - The derivative order of type double.
+
+Response:
+
+```
+{
+    "expression": 
+}
+```
+
+Returns the closed-form expression of the Caputo integral if successful.
+
+---
 
 ## Examples
 
-### Example 1: Caputo Derivative with Non-Zero Integer Coefficients
+### Example #1: Caputo Derivative with Non-Zero Integer Coefficients
 
-Obtain an expression for the 0.35th Caputo derivative of $3x^2 + 2x + 1$.
-
-&nbsp;
+**Goal**: Obtain an expression for the 0.35th Caputo derivative of $3x^2 + 2x + 1$.
 
 Input:
 
@@ -183,8 +230,6 @@ Input:
   "order": 0.35
 }
 ```
-
-&nbsp;
 
 Output:
 
@@ -197,11 +242,9 @@ Output:
 <br/>
 <br/>
 
-### Example 2: Caputo Derivative with Zero and Non-Zero Coefficients
+### Example #2: Caputo Derivative with Zero and Non-Zero Coefficients
 
-Obtain an expression for the 1.23456th Caputo derivative of $14.6x^3 + 16.049x - 12$.
-
-&nbsp;
+**Goal**: Obtain an expression for the 1.23456th Caputo derivative of $14.6x^3 + 16.049x - 12$.
 
 Input:
 
@@ -211,8 +254,6 @@ Input:
   "order": 1.23456
 }
 ```
-
-&nbsp;
 
 Output:
 
@@ -225,11 +266,9 @@ Output:
 <br/>
 <br/>
 
-### Example 3: Riemann-Liouville Derivative with Non-Zero Integer Coefficients
+### Example #3: Riemann-Liouville Derivative with Non-Zero Integer Coefficients
 
-Obtain an expression for the 0.35th Riemann-Liouville derivative of $3x^2 + 2x + 1$.
-
-&nbsp;
+**Goal**: Obtain an expression for the 0.35th Riemann-Liouville derivative of $3x^2 + 2x + 1$.
 
 Input:
 
@@ -239,8 +278,6 @@ Input:
   "order": 0.35
 }
 ```
-
-&nbsp;
 
 Output:
 
@@ -255,11 +292,10 @@ Output:
 <br/>
 <br/>
 
-### Example 4: Riemann-Liouville Derivative with Zero and Non-Zero Coefficients
+### Example #4: Riemann-Liouville Derivative with Zero and Non-Zero Coefficients
 
-Obtain an expression for the 1.23456th Riemann-Liouville derivative of $14.6x^3 + 16.049x - 12$.
-
-&nbsp;
+**Goal**: Obtain an expression for the 1.23456th Riemann-Liouville derivative of $14.6x^3 + 16.
+049x - 12$.
 
 Input:
 
@@ -283,15 +319,52 @@ Output:
 <br/>
 <br/>
 
+### Example #5: Caputo Integral with Non-Zero Integer Coefficients
+
+**Goal**: Obtain an expression for the 0.35th Caputo integral of $3x^2 + 2x + 1$.
+
+Input:
+
+```
+{
+  "coefficients": [3,2,1],
+  "order": 0.35
+}
+```
+
+Output:
+
+```
+{
+  "expression": "2.122x^2.35 + 1.662x^1.35 + 1.122x^0.35 + C"
+}
+```
+
+---
+
 ## Calculation Details
 
-Given the polynomial $f(x) = 3x^2 + 2x + 1$, and the order $\alpha = 0.5$, the Caputo fractional derivative
+<details>
+<summary>Caputo Fractional Derivative of $3x^2 + 2x + 1$ with $\alpha = 0.35$</summary>
+<p>The Caputo fractional derivative of order $\alpha$ for a function $f(x)$ is defined as:</p>
+$${}^{C} D^{0.5} f(x) = \dfrac{1}{\Gamma(n-\alpha)} \int_{0}^{x} \dfrac{f^{(n)}(t)}{(x-t^
+{\alpha + 1 - n})}dt $$
+<p>Where:  
+- $n = ⌈\alpha⌉$ (the smallest integer greater than or equal to $\alpha$
+- $\Gamma$ is the Gamma function
+</p>
+
+</details>
+
+Given the polynomial $f(x) = 3x^2 + 2x + 1$, and the order $\alpha = 0.5$, the Caputo fractional
+derivative
 ${}^{C} D^{0.5} f(x)$ is computed by applying the Caputo derivative formula to each term:
 
 Term $3x^2$:
 
 $$
-{}^{C} D^{0.5}{\text{&nbsp;}}[3x^2] = 3 \cdot \dfrac{\Gamma(3)}{\Gamma(3-0.5)} x^{2-0.5} = 3 \cdot \dfrac{2!}{\Gamma(
+{}^{C} D^{0.5}{\text{&nbsp;}}[3x^2] = 3 \cdot \dfrac{\Gamma(3)}{\Gamma(3-0.5)} x^{2-0.5} = 3 \cdot
+\dfrac{2!}{\Gamma(
 2.5)} x^{1.5}
 $$
 
@@ -302,7 +375,8 @@ Since $\Gamma(3) = 2$ amd $\Gamma(2.5) = \dfrac{3\sqrt{\pi}}{4}$:
 &nbsp;
 
 $$
-{}^{C} D^{0.5}{\text{&nbsp;}}[3x^2] = 3 \cdot \dfrac{2}{\dfrac{3\sqrt{\pi}}{4}}x^{1.5} = \dfrac{8}{\sqrt{\pi}}x^{1.5}
+{}^{C} D^{0.5}{\text{&nbsp;}}[3x^2] = 3 \cdot \dfrac{2}{\dfrac{3\sqrt{\pi}}{4}}x^{1.5} =
+\dfrac{8}{\sqrt{\pi}}x^{1.5}
 $$
 
 &nbsp;
@@ -310,7 +384,8 @@ $$
 Term $2x$:
 
 $$
-{}^{C} D^{0.5}{\text{&nbsp;}}[2x] = 2 \cdot \dfrac{\Gamma(2)}{\Gamma(2 - 0.5)} x^{1-0.5} = 2 \cdot \dfrac{1!}{\Gamma(
+{}^{C} D^{0.5}{\text{&nbsp;}}[2x] = 2 \cdot \dfrac{\Gamma(2)}{\Gamma(2 - 0.5)} x^{1-0.5} = 2 \cdot
+\dfrac{1!}{\Gamma(
 1.5)} x^{0.5}
 $$
 
@@ -321,7 +396,8 @@ Since $\Gamma(2) = 1$ and $\Gamma(1.5) = \dfrac{\sqrt{\pi}}{2}$:
 &nbsp;
 
 $$
-{}^{C} D^{0.5}{\text{&nbsp;}}[2x] = 2 \cdot \dfrac{1}{\dfrac{\sqrt{\pi}}{2}}x^{0.5} = \dfrac{4}{\sqrt{\pi}}x^{0.5}
+{}^{C} D^{0.5}{\text{&nbsp;}}[2x] = 2 \cdot \dfrac{1}{\dfrac{\sqrt{\pi}}{2}}x^{0.5} =
+\dfrac{4}{\sqrt{\pi}}x^{0.5}
 $$
 
 &nbsp;
@@ -456,7 +532,8 @@ Contributions towards this project are welcome! If interested, please follow the
 
 5.) Open a pull request
 
-Remember to update tests if necessary and provide responses to the questions as outlined in the pull request template.
+Remember to update tests if necessary and provide responses to the questions as outlined in the
+pull request template.
 
 <br/>
 
@@ -464,7 +541,8 @@ Remember to update tests if necessary and provide responses to the questions as 
 
 ### Version [1.0.0] - Released 2024-06-TBD
 
-- Initial release with Caputo and Riemann-Liouville fractional derivative and Caputo fractional integration capabilities
+- Initial release with Caputo and Riemann-Liouville fractional derivative and Caputo fractional
+  integration capabilities
 
 
 - Includes comprehensive test coverage
@@ -473,7 +551,8 @@ Remember to update tests if necessary and provide responses to the questions as 
 
 ## Known Issues
 
-- When polynomial coefficients are very large, or very small, numerical precision errors may occur.
+- When polynomial coefficients are very large, or very small, numerical precision errors may
+  occur.
 
 
 - The current implementation does not support multi-threading for large-scale computations.
@@ -482,7 +561,7 @@ Remember to update tests if necessary and provide responses to the questions as 
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License. See the LICENSE file for details.
 
 <br/>
 
