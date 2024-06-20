@@ -114,13 +114,20 @@ Upon successful start, endpoints may be accessed by using cURL commands or API t
 
 ## Endpoint Information
 
-### 1.) Caputo Fractional Derivative Endpoint
+<details>
+  <summary>
 
-Method: <b>POST</b>
+### Caputo Fractional Derivative Endpoint
+    
+  </summary>
+
+  <table>
+  <tr>
+  <td>
+
+HTTP Verb: **POST**
 
 Endpoint URL: `/fractional-calculus-computation-api/derivative/caputo`
-
-
 
 Required request body:
 
@@ -131,13 +138,11 @@ Required request body:
 }
 ```
 
-Parameters:
-
 ```coefficients``` - An array of polynomial coefficients of type double or integer.
 
-```order``` - The derivative order of type double.
+```order``` - Operation order of type double. Can be integer, non-integer, or zero.
 
-Response:
+API Response:
 
 ```
 {
@@ -145,14 +150,27 @@ Response:
 }
 ```
 
-Returns the closed-form expression of the Caputo derivative if successful.
+Returns the closed-form expression of the Caputo fractional derivative if successful. &nbsp;
 
-<br/>
-<br/>
 
-### 2.) Riemann-Liouville Fractional Derivative Endpoint
+        
+  </td>
+  </tr>
+  </table>
+</details>
 
-Method: <b>POST</b>
+<details>
+  <summary>
+
+### Riemann-Liouville Fractional Derivative Endpoint
+    
+  </summary>
+
+  <table>
+  <tr>
+  <td>
+
+HTTP Verb: <b>POST</b>
 
 Endpoint URL: `/fractional-calculus-computation-api/derivative/riemann-liouville`
 
@@ -165,15 +183,11 @@ Required request body:
 }
 ```
 
-Parameters:
-
 ```coefficients``` - An array of polynomial coefficients of type double or integer.
 
-```order``` - The derivative order of type double.
+```order``` - Operation order of type double. Can be integer, non-integer, or zero.
 
-
-
-Response:
+API Response:
 
 ```
 {
@@ -181,13 +195,25 @@ Response:
 }
 ```
 
-Returns the closed-form expression of the Riemann-Liouville derivative if successful.
+Returns the closed-form expression of the Riemann-Liouville fractional derivative if successful.  &nbsp;
+    
+  </td>  
+  </tr>
+  </table>
+</details>
 
-<br/>
+<details>
+  <summary>
 
-### 3.) Caputo Fractional Integral Endpoint
+### Caputo Fractional Integral Endpoint
+    
+  </summary>
 
-Method: <b>POST</b>
+  <table>
+   <tr>
+   <td>
+
+   HTTP Verb: <b>POST</b>
 
 Endpoint URL: `/fractional-calculus-computation-api/integral/caputo`
 
@@ -200,11 +226,9 @@ Required request body:
 }
 ```
 
-Parameters:
-
 ```coefficients``` - An array of polynomial coefficients of type double or integer.
 
-```order``` - The derivative order of type double.
+```order``` - Operation order of type double. Can be integer, non-integer, or zero.
 
 Response:
 
@@ -215,21 +239,34 @@ Response:
 ```
 
 Returns the closed-form expression of the Caputo integral if successful.
+        
+  </td>
+  </tr>
+  </table>
+
+
+  
+</details>
+
+
 
 <br/>
 
 ## Examples
 
-### Example #1: Caputo Derivative with Non-Zero Integer Coefficients
+<details>
+  <summary>
 
-**Goal**: Obtain an expression for the 0.35th Caputo derivative of $3x^2 + 2x + 1$.
+### 0.35724th Caputo Fractional Derivative of 4.27x² + 2.016x + 1
+    
+  </summary>
 
 Input:
 
 ```
 {
-  "coefficients": [3,2,1],
-  "order": 0.35
+  "coefficients": [4.27, 2.016, 1],
+  "order": 0.35724
 }
 ```
 
@@ -237,9 +274,17 @@ Output:
 
 ```
 {
-  "expression": "4.040x^1.65 + 2.222x^0.65"
+  "expression": "5.782x^1.64276 + 2.242x^0.64276"
 }
 ```
+  
+</details>
+
+
+
+
+
+
 
 <br/>
 <br/>
@@ -347,8 +392,13 @@ Output:
 ## Calculation Details
 
 <details>
-<summary>Caputo Fractional Derivative of $3x^2 + 2x + 1$ with $\alpha = 0.35$ (full derivation process)</summary>&nbsp;<br/>
-The Caputo fractional derivative of order $\alpha$ for a function $f(x)$ is defined as:
+<summary>Caputo Fractional Derivative of $3x^2 + 2x + 1$ with $\alpha = 0.35$ (full derivation process)</summary>&nbsp;<br/><br/>
+
+<table>
+  <tr>
+    <td>
+
+The Caputo fractional derivative of order $\alpha$ for a function $f(x)$ is defined as follows:
 $${}^{C} D^{\alpha} f(x) = \dfrac{1}{\Gamma(n-\alpha)} \int_{0}^{x} \dfrac{f^{(n)}(t)}{(x-t)^
 {(\alpha + 1 - n})}dt $$
 
@@ -357,9 +407,10 @@ Where:
 - $n = ⌈\alpha⌉$ (the smallest integer greater than or equal to $\alpha$)
 - $\Gamma$ is the Gamma function
 - $f^{(n)}(t)$ is the $n$-th derivative of $f(t)$.
-- $f(t)$ is the same expression as $f(x)$, except with $t$ substituted for all $x$.
+- $f(t)$ is the same expression as $f(x)$, except with $t$ instead of $x$.
+<br/>
 
-For $\alpha = 0.35$, $⌈0.35⌉ = 1$ and thus, $n = 1$. The definition can then be simplified to:
+For $\alpha = 0.35$, $⌈0.35⌉ = 1$ and thus, $n = 1$. The definition can then be rewritten as:
 $${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \int_{0}^{x} \dfrac{f^{(1)}(t)}{(x-t)^
 {(0.35)}}dt$$
 
@@ -367,15 +418,19 @@ First, compute the derivative of $f(t)$:
 
 $$\dfrac{d}{dt}(3t^2 + 2t + 1) = 6t + 2$$
 
-Thus, 
+Plugging this back into the definition 
 
 $${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \int_{0}^{x} \dfrac{6t + 2}{(x-t)^
 {(0.35)}}dt$$
+
+<br/>
 
 To simplify evaluation of the integral, it can be split into the following two parts: 
 
 $${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(\int_{0}^{x} \dfrac{6t}{(x-t)^
 {(0.35)}}dt + \int_{0}^{x} \dfrac{2}{(x-t)^{(0.35)}}dt \Big)$$
+
+<br/>
 
 For both integral parts, a u-substitution of $t$ will be required. Let $u = \dfrac{t}{x}$
 and $du = \dfrac{dt}{x}$.
@@ -384,31 +439,41 @@ The lower limit of $t$ is zero. Therefore, the lower limit of $u$ is $\dfrac{0}{
 
 Similarly, the upper limit of $t$ is $x$. Therefore, the upper limit of $u$ is $\dfrac{x}{x} = 1$. 
 
+<br/>
+
 With the u-substitution applied, the integral expression now takes the following form: 
 
 $${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(\int_{0}^{1} \dfrac{6(ux)}{(x-(ux))^
 {(0.35)}}(x \cdot du) + \int_{0}^{1} \dfrac{2}{(x-(ux))^{(0.35)}}(x \cdot du) \Big)$$
+
+<br/>
 
 The integrands can be simplified by factoring out the numerical coefficients and factors of $x$:
 
 $${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(6x^2 \int_{0}^{1} \dfrac{u}{(x-ux)^
 {(0.35)}}du + 2x\int_{0}^{1} \dfrac{1}{(x-ux)^{(0.35)}}du \Big)$$
 
-Followed by factoring out $x^{0.35}$ from the denominators:
+<br/>
+
+Then factoring out $x^{0.35}$ from the denominators:
 
 $${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(\dfrac{6x^2}{x^{0.35}} \int_{0}^{1} \dfrac{u}{(1-u)^
 {(0.35)}}du + \dfrac{2x}{x^{0.35}} \int_{0}^{1} \dfrac{1}{(1-u)^{(0.35)}}du \Big)$$
+
+<br/>
 
 Then simplifying the coefficients on both integrals:
 
 $${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \int_{0}^{1} \dfrac{u}{(1-u)^
 {(0.35)}}du + 2x^{0.65} \int_{0}^{1} \dfrac{1}{(1-u)^{(0.35)}}du \Big)$$
 
-The integrands can now be rewritten in the following way to match the form of the Beta function: 
+<br/>
+
+At this point, the integrands can be rewritten in the following way: 
 
 $${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \int_{0}^{1} u(1-u)^{0.35}du + 2x^{0.65} \int_{0}^{1} (1-u)^{0.35}du \Big)$$
 
-Where the Beta function has the following form:
+This is done to match the form of the Beta function, which has the following definition:
 
 $$\beta(p,q) = \int_{0}^{1} t^{p-1}(1-t)^{q-1}dt$$
 
@@ -437,6 +502,12 @@ Upon simplifying to three decimal places:
 $${}^{C} D^{0.35} f(x) \approx 4.040x^{1.65} + 2.222x^{0.65}$$
 
 This matches the output of the API and verifies the fractional derivative process. 
+      
+  </td>
+  </tr>
+</table>
+
+
 
 </details>
 
