@@ -151,7 +151,10 @@ Returns the closed-form expression of the Caputo fractional derivative if succes
 <br/>
 
 <details>
-<summary><strong>Riemann-Liouville Fractional Derivative</strong></summary>
+<summary><strong>
+Riemann-Liouville Fractional Derivative
+</strong></summary>
+&nbsp;<br/>
 
 <table>
 <tr>
@@ -190,7 +193,11 @@ Returns the closed-form expression of the Riemann-Liouville fractional derivativ
 <br/>
 
 <details>
-<summary><strong>Caputo Fractional Integral Endpoint</strong></summary>
+<summary><strong>
+Caputo Fractional Integral Endpoint
+</strong></summary>
+&nbsp;<br/>
+
 <table>
 <tr>
 <td>
@@ -232,6 +239,8 @@ Returns the closed-form expression of the Caputo integral if successful.
 <summary><strong>
 0.35724th Caputo Fractional Derivative of 4.27x² + 2.016x + 1
 </strong></summary>
+&nbsp;<br/>
+
 <table>
 <tr>
 <td>
@@ -264,6 +273,8 @@ API Output:
 <summary><strong>
 3.14159th Riemann-Liouville Fractional Derivative of 3x² + 2x + 1
 </strong></summary>
+&nbsp;<br/>
+
 <table>
 <tr>
 <td>
@@ -297,8 +308,10 @@ API Output:
 <br/>
 
 <details>
-<summary><strong>1.79th Caputo Fractional Integral of 3x³ - x + 12</strong></summary>
-
+<summary><strong>
+1.79th Caputo Fractional Integral of 3x³ - x + 12
+</strong></summary>
+&nbsp;<br/>
 <table>
 <tr>
 <td>
@@ -337,8 +350,10 @@ Output:
 ## Calculation Details
 
 <details>
-<summary>Caputo Fractional Derivative of 3x² + 2x + 1 using $\alpha$ = 0.35 (full derivation 
-process)</summary>&nbsp;<br/><br/>
+<summary>
+Caputo Fractional Derivative of 3x² + 2x + 1 using $\alpha$ = 0.35 (full derivation process)
+</summary>
+&nbsp;<br/>
 
 <table>
   <tr>
