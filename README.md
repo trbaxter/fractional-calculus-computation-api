@@ -170,7 +170,7 @@ Required request body:
 ```
 
 `coefficients` - An array of polynomial coefficients of type double or integer.  
-`order` - Operation order of type double. Can be integer, non-integer, or zero.
+`order` - Operation order value. Can be integer, zero, or non-integer of type double.
 
 API Response:
 
