@@ -1,3 +1,4 @@
+<!-- @formatter:off -->
 # Fractional Calculus Computation API
 
 This is a Java-based API that can produce expressions for derivatives and integrals of
@@ -286,11 +287,7 @@ Input:
 
 ```json
 {
-  "coefficients": [
-    3,
-    2,
-    1
-  ],
+  "coefficients": [3, 2, 1],
   "order": "3.14159"
 }
 ```
@@ -323,12 +320,7 @@ Input:
 
 ```json
 {
-  "coefficients": [
-    3,
-    0,
-    -1,
-    12
-  ],
+  "coefficients": [3, 0, -1, 12],
   "order": "1.79"
 }
 ```
