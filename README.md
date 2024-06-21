@@ -114,7 +114,11 @@ Upon successful start, endpoints may be accessed by using cURL commands or API t
 ## Endpoint Information
 
 <details>
-<summary><strong>Caputo Fractional Derivative</strong></summary>
+<summary><strong>
+Caputo Fractional Derivative
+</strong></summary>
+&nbsp;<br/>
+
 <table>
 <tr>
 <td>
