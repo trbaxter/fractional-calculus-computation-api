@@ -115,15 +115,15 @@ Upon successful start, endpoints may be accessed by using cURL commands or API t
 ## Endpoint Information
 
 <details>
-  <summary>
+<summary> 
 
 ### Caputo Fractional Derivative Endpoint
-    
-  </summary>
 
-  <table>
-  <tr>
-  <td>
+</summary>
+
+<table>
+<tr>
+<td>
 
 HTTP Verb: **POST**
 
@@ -153,22 +153,22 @@ API Response:
 Returns the closed-form expression of the Caputo fractional derivative if successful. &nbsp;
 
 
-        
-  </td>
-  </tr>
-  </table>
+
+</td>
+</tr>
+</table>
 </details>
 
 <details>
-  <summary>
+<summary>
 
 ### Riemann-Liouville Fractional Derivative Endpoint
-    
-  </summary>
 
-  <table>
-  <tr>
-  <td>
+</summary>
+
+<table>
+<tr>
+<td>
 
 HTTP Verb: <b>POST</b>
 
@@ -196,22 +196,22 @@ API Response:
 ```
 
 Returns the closed-form expression of the Riemann-Liouville fractional derivative if successful.  &nbsp;
-    
-  </td>  
-  </tr>
-  </table>
+
+</td>  
+</tr>
+</table>
 </details>
 
 <details>
-  <summary>
+<summary>
 
 ### Caputo Fractional Integral Endpoint
-    
-  </summary>
 
-  <table>
-   <tr>
-   <td>
+</summary>
+
+<table>
+<tr>
+<td>
 
    HTTP Verb: <b>POST</b>
 
@@ -239,27 +239,22 @@ Response:
 ```
 
 Returns the closed-form expression of the Caputo integral if successful.
-        
-  </td>
-  </tr>
-  </table>
 
-
-  
+</td>
+</tr>
+</table>
 </details>
-
-
 
 <br/>
 
 ## Examples
 
 <details>
-  <summary>
+<summary>
 
 ### 0.35724th Caputo Fractional Derivative of 4.27x² + 2.016x + 1
-    
-  </summary>
+
+</summary>
 
 Input:
 
@@ -279,9 +274,6 @@ Output:
 ```
   
 </details>
-
-
-
 
 
 
