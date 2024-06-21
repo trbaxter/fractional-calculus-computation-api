@@ -20,8 +20,7 @@ user-submitted expressions of integer or fractional order.
 [Known Issues](#known-issues)  
 [License](#license)  
 [Acknowledgements](#acknowledgements)  
-[Support](#support)  
-[Contact Information](#contact-information)
+[Support](#support)
 
 
 <br/>
@@ -117,7 +116,7 @@ Upon successful start, endpoints may be accessed by using cURL commands or API t
 <summary><strong>
 Caputo Fractional Derivative
 </strong></summary>
-&nbsp;<br/>
+<br/>
 
 <table>
 <tr>
@@ -158,7 +157,7 @@ Returns the closed-form expression of the Caputo fractional derivative if succes
 <summary><strong>
 Riemann-Liouville Fractional Derivative
 </strong></summary>
-&nbsp;<br/>
+<br/>
 
 <table>
 <tr>
@@ -200,7 +199,7 @@ Returns the closed-form expression of the Riemann-Liouville fractional derivativ
 <summary><strong>
 Caputo Fractional Integral Endpoint
 </strong></summary>
-&nbsp;<br/>
+<br/>
 
 <table>
 <tr>
@@ -243,7 +242,7 @@ Returns the closed-form expression of the Caputo integral if successful.
 <summary><strong>
 0.35724th Caputo Fractional Derivative of 4.27x² + 2.016x + 1
 </strong></summary>
-&nbsp;<br/>
+<br/>
 
 <table>
 <tr>
@@ -277,7 +276,7 @@ API Output:
 <summary><strong>
 3.14159th Riemann-Liouville Fractional Derivative of 3x² + 2x + 1
 </strong></summary>
-&nbsp;<br/>
+<br/>
 
 <table>
 <tr>
@@ -315,7 +314,7 @@ API Output:
 <summary><strong>
 1.79th Caputo Fractional Integral of 3x³ - x + 12
 </strong></summary>
-&nbsp;<br/>
+<br/>
 <table>
 <tr>
 <td>
@@ -357,11 +356,11 @@ Output:
 <summary>
 Caputo Fractional Derivative of 3x² + 2x + 1 using $\alpha$ = 0.35 (full derivation process)
 </summary>
-&nbsp;<br/>
+<br/>
 
 <table>
-  <tr>
-    <td>
+<tr>
+<td>
 
 The Caputo fractional derivative of order $\alpha$ for a function $f(x)$ is defined as follows:
 $${}^{C} D^{\alpha} f(x) = \dfrac{1}{\Gamma(n-\alpha)} \int_{0}^{x} \dfrac{f^{(n)}(t)}{(x-t)^
@@ -422,8 +421,9 @@ $${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(6x^2 \int_{0}^{1} \dfrac{u
 
 Then factoring out $x^{0.35}$ from the denominators:
 
-$${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(\dfrac{6x^2}{x^{0.35}} \int_{0}^{1} \dfrac{u}{(1-u)^
-{(0.35)}}du + \dfrac{2x}{x^{0.35}} \int_{0}^{1} \dfrac{1}{(1-u)^{(0.35)}}du \Big)$$
+$${}^{C} D^{0.35} f(x) =
+\dfrac{1}{\Gamma(0.65)} \Big(\dfrac{6x^2}{x^{0.35}} \int_{0}^{1} \dfrac{u}{(1-u)^{(0.35)}}du +
+\dfrac{2x}{x^{0.35}} \int_{0}^{1} \dfrac{1}{(1-u)^{(0.35)}}du \Big)$$
 
 <br/>
 
@@ -436,7 +436,8 @@ $${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \int_{0}^{1} \df
 
 At this point, the integrands can be rewritten in the following way: 
 
-$${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \int_{0}^{1} u(1-u)^{0.35}du + 2x^{0.65} \int_{0}^{1} (1-u)^{0.35}du \Big)$$
+$${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \int_{0}^{1} u(1-u)^{0.35}du +
+2x^{0.65} \int_{0}^{1} (1-u)^{0.35}du \Big)$$
 
 This is done to match the form of the Beta function, which has the following definition:
 
@@ -446,19 +447,26 @@ With the following solution:
 
 $$\beta(p,q) = \dfrac{\Gamma(p) \Gamma(q)}{\Gamma(p+q)}$$
 
-The first integral is equivalent to $\beta(2,0.65)$, and the second integral is equivalent to $\beta(1,0.65)$. Substituting the solutions in:
+The first integral is equivalent to $\beta(2,0.65)$, and the second integral is equivalent to
+$\beta(1,0.65)$. Substituting the solutions in:
 
-$${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \dfrac{\Gamma(2) \Gamma(0.65)}{\Gamma(2.65)} + 2x^{0.65} \dfrac{\Gamma(1) \Gamma(0.65)}{\Gamma(1.65)} \Big)$$
+$${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65}
+\dfrac{\Gamma(2) \Gamma(0.65)}{\Gamma(2.65)} +
+2x^{0.65} \dfrac{\Gamma(1) \Gamma(0.65)}{\Gamma(1.65)} \Big)$$
 
 Upon canceling like terms:
 
-$${}^{C} D^{0.35} f(x) = \cancel{\dfrac{1}{\Gamma(0.65)}} \Big(6x^{1.65} \dfrac{\Gamma(2) \cancel{\Gamma(0.65)}}{\Gamma(2.65)} + 2x^{0.65} \dfrac{\Gamma(1) \cancel{\Gamma(0.65)}}{\Gamma(1.65)} \Big)$$
+$${}^{C} D^{0.35} f(x) = \cancel{\dfrac{1}{\Gamma(0.65)}} \Big(6x^{1.65}
+\dfrac{\Gamma(2) \cancel{\Gamma(0.65)}}{\Gamma(2.65)} +
+2x^{0.65} \dfrac{\Gamma(1) \cancel{\Gamma(0.65)}}{\Gamma(1.65)} \Big)$$
 
 Therefore:
 
-$${}^{C} D^{0.35} f(x) = 6x^{1.65} \dfrac{\Gamma(2)}{\Gamma(2.65)} + 2x^{0.65} \dfrac{\Gamma(1)}{\Gamma(1.65)}$$
+$${}^{C} D^{0.35} f(x) = 6x^{1.65} \dfrac{\Gamma(2)}{\Gamma(2.65)} +
+2x^{0.65} \dfrac{\Gamma(1)}{\Gamma(1.65)}$$
 
-Using $\Gamma(1) = 1$, $\Gamma(1.65) \approx 0.9001168$, $\Gamma(2) = 1$, and $\Gamma(2.65) \approx 1.4851927$:
+Using $\Gamma(1) = 1$, $\Gamma(1.65) \approx 0.9001168$, $\Gamma(2) = 1$,
+and $\Gamma(2.65) \approx 1.4851927$:
 
 $${}^{C} D^{0.35} f(x) \approx \dfrac{6x^{1.65}}{1.4851927} +  \dfrac{2x^{0.65}}{0.9001168}$$
 
@@ -467,13 +475,10 @@ Upon simplifying to three decimal places:
 $${}^{C} D^{0.35} f(x) \approx 4.040x^{1.65} + 2.222x^{0.65}$$
 
 This matches the output of the API and verifies the fractional derivative process. 
-      
-  </td>
-  </tr>
+
+</td>
+</tr>
 </table>
-
-
-
 </details>
 
 <br/>
@@ -632,15 +637,4 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ## Support
 
-For any questions or assistance, please feel free to reach out to the project creator via email.  
-(trb7074@gmail.com)
-
-<br/>
-
-## Contact Information
-
-**Author:** Tyler Baxter
-
-**Email:** trb7074@gmail.com
-
-**GitHub:** trbaxter
+For any questions or assistance, please reach out to the project creator.
