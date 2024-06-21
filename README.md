@@ -107,139 +107,118 @@ mvn spring-boot:run
 
 <br/>
 
-Upon successful start, endpoints may be accessed by using cURL commands or API testing software
-(Postman / Insomnia / etc).
+Upon successful start, endpoints may be accessed by using cURL commands or API testing software.
 
 <br/>
 
 ## Endpoint Information
 
 <details>
-<summary> 
-
-### Caputo Fractional Derivative Endpoint
-
-</summary>
-
+<summary><strong>Caputo Fractional Derivative</strong></summary>
 <table>
 <tr>
 <td>
 
-HTTP Verb: **POST**
-
-Endpoint URL: `/fractional-calculus-computation-api/derivative/caputo`
+HTTP Verb: **POST**  
+URL: `/fractional-calculus-computation-api/derivative/caputo`
 
 Required request body:
 
-```
+```json
 {
   "coefficients": [],
-  "order": 
+  "order": ""
 }
 ```
 
-```coefficients``` - An array of polynomial coefficients of type double or integer.
-
-```order``` - Operation order of type double. Can be integer, non-integer, or zero.
+`coefficients` - An array of polynomial coefficients of type double or integer.  
+`order` - Operation order value. Can be integer, zero, or non-integer of type double.
 
 API Response:
 
-```
+```json
 {
-    "expression": 
+  "expression": ""
 }
 ```
 
-Returns the closed-form expression of the Caputo fractional derivative if successful. &nbsp;
-
-
-
+Returns the closed-form expression of the Caputo fractional derivative if successful.
 </td>
 </tr>
 </table>
 </details>
 
+<br/>
+
 <details>
-<summary>
-
-### Riemann-Liouville Fractional Derivative Endpoint
-
-</summary>
+<summary><strong>Riemann-Liouville Fractional Derivative</strong></summary>
 
 <table>
 <tr>
-<td>
+<td>  
 
-HTTP Verb: <b>POST</b>
-
+HTTP Verb: <b>POST</b>  
 Endpoint URL: `/fractional-calculus-computation-api/derivative/riemann-liouville`
 
 Required request body:
 
-```
+```json
 {
   "coefficients": [],
-  "order": 
+  "order": ""
 }
 ```
 
-```coefficients``` - An array of polynomial coefficients of type double or integer.
-
-```order``` - Operation order of type double. Can be integer, non-integer, or zero.
+`coefficients` - An array of polynomial coefficients of type double or integer.  
+`order` - Operation order of type double. Can be integer, non-integer, or zero.
 
 API Response:
 
-```
+```json
 {
-    "expression": 
+  "expression": ""
 }
 ```
 
-Returns the closed-form expression of the Riemann-Liouville fractional derivative if successful.  &nbsp;
+Returns the closed-form expression of the Riemann-Liouville fractional derivative if successful.
 
 </td>  
 </tr>
 </table>
 </details>
 
+<br/>
+
 <details>
-<summary>
-
-### Caputo Fractional Integral Endpoint
-
-</summary>
-
+<summary><strong>Caputo Fractional Integral Endpoint</strong></summary>
 <table>
 <tr>
 <td>
 
-   HTTP Verb: <b>POST</b>
-
+HTTP Verb: <b>POST</b>  
 Endpoint URL: `/fractional-calculus-computation-api/integral/caputo`
 
 Required request body:
 
-```
+```json
 {
   "coefficients": [],
-  "order": 
+  "order": ""
 }
 ```
 
-```coefficients``` - An array of polynomial coefficients of type double or integer.
+```coefficients``` - An array of polynomial coefficients of type double or integer.  
+```order``` - Operation order value. Can be integer, zero, or non-integer of type double.
 
-```order``` - Operation order of type double. Can be integer, non-integer, or zero.
+API Response:
 
-Response:
-
-```
+```json
 {
-    "expression": 
+  "expression": ""
 }
 ```
 
 Returns the closed-form expression of the Caputo integral if successful.
-
 </td>
 </tr>
 </table>
@@ -250,141 +229,116 @@ Returns the closed-form expression of the Caputo integral if successful.
 ## Examples
 
 <details>
-<summary>
-
-### 0.35724th Caputo Fractional Derivative of 4.27x² + 2.016x + 1
-
-</summary>
+<summary><strong>
+0.35724th Caputo Fractional Derivative of 4.27x² + 2.016x + 1
+</strong></summary>
+<table>
+<tr>
+<td>
 
 Input:
 
-```
+```json
 {
   "coefficients": [4.27, 2.016, 1],
-  "order": 0.35724
+  "order": "0.35724"
 }
 ```
 
-Output:
+API Output:
 
-```
+```json
 {
   "expression": "5.782x^1.64276 + 2.242x^0.64276"
 }
 ```
-  
+
+</td>
+</tr>
+</table>
+</details>
+
+<br/>
+
+<details>
+<summary><strong>
+3.14159th Riemann-Liouville Fractional Derivative of 3x² + 2x + 1
+</strong></summary>
+<table>
+<tr>
+<td>
+
+Input:
+
+```json
+{
+  "coefficients": [
+    3,
+    2,
+    1
+  ],
+  "order": "3.14159"
+}
+```
+
+API Output:
+
+```json
+{
+  "expression": "-0.769x^-1.14159 + 0.293x^-2.14159 - 0.313x^-3.14159"
+}
+```
+
+</td>
+</tr>
+</table>
+</details>
+
+<br/>
+
+<details>
+<summary><strong>1.79th Caputo Fractional Integral of 3x³ - x + 12</strong></summary>
+
+<table>
+<tr>
+<td>
+
+Input:
+
+```json
+{
+  "coefficients": [
+    3,
+    0,
+    -1,
+    12
+  ],
+  "order": "1.79"
+}
+```
+
+Output:
+
+```json
+{
+  "expression": "0.214x^4.79 - 0.216x^2.79 + 7.218x^1.79 + C"
+}
+```
+
+</td>
+</tr>
+</table>
 </details>
 
 
-
-
-<br/>
-<br/>
-
-### Example #2: Caputo Derivative with Zero and Non-Zero Coefficients
-
-**Goal**: Obtain an expression for the 1.23456th Caputo derivative of $14.6x^3 + 16.049x - 12$.
-
-Input:
-
-```
-{
-  "coefficients": [14.6, 0, 16.049, -12],
-  "order": 1.23456
-}
-```
-
-Output:
-
-```
-{
-    "expression": "53.778x^1.76544"
-}
-```
-
-<br/>
-<br/>
-
-### Example #3: Riemann-Liouville Derivative with Non-Zero Integer Coefficients
-
-**Goal**: Obtain an expression for the 0.35th Riemann-Liouville derivative of $3x^2 + 2x + 1$.
-
-Input:
-
-```
-{
-  "coefficients": [3,2,1],
-  "order": 0.35
-}
-```
-
-Output:
-
-```
-{
-  "expression": "4.040x^1.65 + 2.222x^0.65 + 0.722x^-0.35"
-}
-```
-
-&nbsp;
-
-<br/>
-<br/>
-
-### Example #4: Riemann-Liouville Derivative with Zero and Non-Zero Coefficients
-
-**Goal**: Obtain an expression for the 1.23456th Riemann-Liouville derivative of $14.6x^3 + 16.
-049x - 12$.
-
-Input:
-
-```
-{
-  "coefficients": [14.6, 0, 16.049, -12],
-  "order": 1.23456
-}
-```
-
-&nbsp;
-
-Output:
-
-```
-{
-  "expression": "53.778x^1.76544 + 13.314x^-0.23456 + 2.335x^-1.23456"
-}
-```
-
-<br/>
-<br/>
-
-### Example #5: Caputo Integral with Non-Zero Integer Coefficients
-
-**Goal**: Obtain an expression for the 0.35th Caputo integral of $3x^2 + 2x + 1$.
-
-Input:
-
-```
-{
-  "coefficients": [3,2,1],
-  "order": 0.35
-}
-```
-
-Output:
-
-```
-{
-  "expression": "2.122x^2.35 + 1.662x^1.35 + 1.122x^0.35 + C"
-}
-```
 
 <br/>
 
 ## Calculation Details
 
 <details>
-<summary>Caputo Fractional Derivative of $3x^2 + 2x + 1$ with $\alpha = 0.35$ (full derivation process)</summary>&nbsp;<br/><br/>
+<summary>Caputo Fractional Derivative of 3x² + 2x + 1 using $\alpha$ = 0.35 (full derivation 
+process)</summary>&nbsp;<br/><br/>
 
 <table>
   <tr>
