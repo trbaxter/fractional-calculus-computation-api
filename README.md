@@ -113,20 +113,7 @@ Upon successful start, endpoints may be accessed by using cURL commands or API t
 
 ## Endpoint Information
 
-<details>
-<summary><strong>
-Caputo Fractional Derivative
-</strong></summary>
-<br/>
-
-<table>
-<tr>
-<td>
-
-HTTP Verb: **POST**  
-URL: `/fractional-calculus-computation-api/derivative/caputo`
-
-Required request body:
+All endpoints use the following request body format:
 
 ```json
 {
@@ -138,7 +125,9 @@ Required request body:
 `coefficients` - An array of polynomial coefficients of type double or integer.  
 `order` - Operation order value. Can be integer, zero, or non-integer of type double.
 
-API Response:
+<br/>
+
+The API response output is also the same for all endpoints: 
 
 ```json
 {
@@ -146,103 +135,36 @@ API Response:
 }
 ```
 
-Returns the closed-form expression of the Caputo fractional derivative if successful.
-</td>
-</tr>
-</table>
-</details>
+<br/>
+
+<strong>Caputo Fractional Derivative</strong>  
+HTTP Verb: POST  
+URL: `/fractional-calculus-computation-api/derivative/caputo`  
+Returns the closed-form expression of the Caputo fractional derivative.
 
 <br/>
 
-<details>
-<summary><strong>
-Riemann-Liouville Fractional Derivative
-</strong></summary>
-<br/>
-
-<table>
-<tr>
-<td>  
-
-HTTP Verb: <b>POST</b>  
-Endpoint URL: `/fractional-calculus-computation-api/derivative/riemann-liouville`
-
-Required request body:
-
-```json
-{
-  "coefficients": [],
-  "order": ""
-}
-```
-
-`coefficients` - An array of polynomial coefficients of type double or integer.  
-`order` - Operation order value. Can be integer, zero, or non-integer of type double.
-
-API Response:
-
-```json
-{
-  "expression": ""
-}
-```
-
-Returns the closed-form expression of the Riemann-Liouville fractional derivative if successful.
-
-</td>  
-</tr>
-</table>
-</details>
+<strong>Riemann-Liouville Fractional Derivative</strong>  
+HTTP Verb: POST  
+Endpoint URL: `/fractional-calculus-computation-api/derivative/riemann-liouville`  
+Returns the closed-form expression of the Riemann-Liouville fractional derivative.
 
 <br/>
 
-<details>
-<summary><strong>
-Caputo Fractional Integral Endpoint
-</strong></summary>
-<br/>
-
-<table>
-<tr>
-<td>
-
-HTTP Verb: <b>POST</b>  
-Endpoint URL: `/fractional-calculus-computation-api/integral/caputo`
-
-Required request body:
-
-```json
-{
-  "coefficients": [],
-  "order": ""
-}
-```
-
-```coefficients``` - An array of polynomial coefficients of type double or integer.  
-```order``` - Operation order value. Can be integer, zero, or non-integer of type double.
-
-API Response:
-
-```json
-{
-  "expression": ""
-}
-```
-
-Returns the closed-form expression of the Caputo integral if successful.
-</td>
-</tr>
-</table>
-</details>
+<strong>Caputo Fractional Integral Endpoint</strong>  
+HTTP Verb: POST  
+Endpoint URL: `/fractional-calculus-computation-api/integral/caputo`  
+Returns the closed-form expression of the Caputo fractional integral.
 
 <br/>
 
 ## Examples
 
 <details>
-<summary><strong>
+<summary>
 0.35724th Caputo Fractional Derivative of 4.27x² + 2.016x + 1
-</strong></summary>
+</summary>
+  
 <br/>
 
 <table>
@@ -258,6 +180,8 @@ Input:
 }
 ```
 
+<br/>
+
 API Output:
 
 ```json
@@ -265,6 +189,8 @@ API Output:
   "expression": "5.782x^1.64276 + 2.242x^0.64276"
 }
 ```
+
+Notice that the derivative of the constant term is 0 using the Caputo method.
 
 </td>
 </tr>
@@ -274,9 +200,10 @@ API Output:
 <br/>
 
 <details>
-<summary><strong>
+<summary>
 3.14159th Riemann-Liouville Fractional Derivative of 3x² + 2x + 1
-</strong></summary>
+</summary>
+  
 <br/>
 
 <table>
@@ -292,6 +219,8 @@ Input:
 }
 ```
 
+<br/>
+
 API Output:
 
 ```json
@@ -299,6 +228,9 @@ API Output:
   "expression": "-0.769x^-1.14159 + 0.293x^-2.14159 - 0.313x^-3.14159"
 }
 ```
+
+The derivative of a constant term using the Riemann-Liouville method does <i><strong>not</strong></i> result in zero.  
+It treats constants in the expression as coefficients of 0th-power variables (e.g. 1x⁰ instead of just 1).
 
 </td>
 </tr>
@@ -308,9 +240,9 @@ API Output:
 <br/>
 
 <details>
-<summary><strong>
+<summary>
 1.79th Caputo Fractional Integral of 3x³ - x + 12
-</strong></summary>
+</summary>
 <br/>
 <table>
 <tr>
@@ -325,6 +257,8 @@ Input:
 }
 ```
 
+<br/>
+
 Output:
 
 ```json
@@ -332,6 +266,9 @@ Output:
   "expression": "0.214x^4.79 - 0.216x^2.79 + 7.218x^1.79 + C"
 }
 ```
+
+The Caputo and Riemann-Liouville fractional integrals return the same value for the current API functionality.  
+Thus, only the Caputo endpoint is provided to reduce code duplication.
 
 </td>
 </tr>
