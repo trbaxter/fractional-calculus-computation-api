@@ -4,8 +4,7 @@
 This is a Java-based API that can produce expressions for derivatives and integrals of
 user-submitted expressions of integer or fractional order.
 
-
-<br/>
+<br />
 
 ## Table of Contents
 
@@ -23,8 +22,7 @@ user-submitted expressions of integer or fractional order.
 [Acknowledgements](#acknowledgements)  
 [Support](#support)
 
-
-<br/>
+<br />
 
 ## Project Status
 
@@ -39,7 +37,7 @@ Upcoming features include:
 
 - Frontend UI
 
-<br/>
+<br />
 
 ## Technologies Used
 
@@ -69,7 +67,7 @@ Upcoming features include:
 - **SLF4J**: Version 2.0.13
 - **Hibernate Validator**: Version 8.0.1.Final
 
-<br/>
+<br />
 
 ## Getting Started
 
@@ -79,8 +77,7 @@ Clone the repository:
 git clone https://github.com/trbaxter/fractional-computation-api.git
 ```
 
-<br/>
-
+<br />
 
 Navigate to the project directory:
 
@@ -88,8 +85,7 @@ Navigate to the project directory:
 cd fractional-computation-api
 ```
 
-<br/>
-
+<br />
 
 Build the project using Maven:
 
@@ -97,7 +93,7 @@ Build the project using Maven:
 mvn clean install
 ```
 
-<br/>
+<br />
 
 Start the application using the following command:
 
@@ -105,11 +101,11 @@ Start the application using the following command:
 mvn spring-boot:run
 ```
 
-<br/>
+<br />
 
 Upon successful start, endpoints may be accessed by using cURL commands or API testing software.
 
-<br/>
+<br />
 
 ## Endpoint Information
 
@@ -125,7 +121,7 @@ All endpoints use the following request body format:
 `coefficients` - An array of polynomial coefficients of type double or integer.  
 `order` - Operation order value. Can be integer, zero, or non-integer of type double.
 
-<br/>
+<br />
 
 The API response output is also the same for all endpoints: 
 
@@ -135,28 +131,28 @@ The API response output is also the same for all endpoints:
 }
 ```
 
-<br/>
+<br />
 
 <strong>Caputo Fractional Derivative</strong>  
 HTTP Verb: POST  
 URL: `/fractional-calculus-computation-api/derivative/caputo`  
 Returns the closed-form expression of the Caputo fractional derivative.
 
-<br/>
+<br />
 
 <strong>Riemann-Liouville Fractional Derivative</strong>  
 HTTP Verb: POST  
 Endpoint URL: `/fractional-calculus-computation-api/derivative/riemann-liouville`  
 Returns the closed-form expression of the Riemann-Liouville fractional derivative.
 
-<br/>
+<br />
 
 <strong>Caputo Fractional Integral Endpoint</strong>  
 HTTP Verb: POST  
 Endpoint URL: `/fractional-calculus-computation-api/integral/caputo`  
 Returns the closed-form expression of the Caputo fractional integral.
 
-<br/>
+<br />
 
 ## Examples
 
@@ -165,7 +161,7 @@ Returns the closed-form expression of the Caputo fractional integral.
 0.35724th Caputo Fractional Derivative of 4.27x² + 2.016x + 1
 </summary>
   
-<br/>
+<br />
 
 <table>
 <tr>
@@ -180,7 +176,7 @@ Input:
 }
 ```
 
-<br/>
+<br />
 
 API Output:
 
@@ -197,14 +193,14 @@ Notice that the derivative of the constant term is 0 using the Caputo method.
 </table>
 </details>
 
-<br/>
+<br />
 
 <details>
 <summary>
 3.14159th Riemann-Liouville Fractional Derivative of 3x² + 2x + 1
 </summary>
   
-<br/>
+<br />
 
 <table>
 <tr>
@@ -219,7 +215,7 @@ Input:
 }
 ```
 
-<br/>
+<br />
 
 API Output:
 
@@ -237,13 +233,15 @@ It treats constants in the expression as coefficients of 0th-power variables (e.
 </table>
 </details>
 
-<br/>
+<br />
 
 <details>
 <summary>
 1.79th Caputo Fractional Integral of 3x³ - x + 12
 </summary>
-<br/>
+  
+<br />
+
 <table>
 <tr>
 <td>
@@ -257,7 +255,7 @@ Input:
 }
 ```
 
-<br/>
+<br />
 
 Output:
 
@@ -275,21 +273,24 @@ Thus, only the Caputo endpoint is provided to reduce code duplication.
 </table>
 </details>
 
-
-
-<br/>
+<br />
 
 ## Calculation Details
 
 <details>
 <summary>
-Caputo Fractional Derivative Example
+Caputo Fractional Derivative
 </summary>
-<br/>
+  
+<br />
 
 <table>
 <tr>
 <td>
+
+<section>
+
+$\Large \underline{\text{Derivative Definition}}$
 
 The Caputo fractional derivative of order $\alpha$ for a generic function $f(x)$ is defined as:
 
@@ -300,11 +301,19 @@ Where:
 - $n = \lceil \alpha \rceil$ is the ceiling of $\alpha$ (the smallest integer $\geq$ to $\alpha$)
 - $\Gamma$ is the Gamma function
 - $f^{(n)}(t)$ is the $n$-th derivative of $f(t)$
-- $f(t)$ is the same expression as $f(x)$, except with $t$ instead of $x$
+- $f(t)$ is the same expression as $f(x)$, except with $t$ instead of $x$  
+</section>
 
-<br/>
+<br />
 
-For example purposes, let $f(x) = 3x^2 + 2x + 1$ and $\alpha = 0.35$. For this order value, $\lceil0.35\rceil = 1$. Therefore, $n = 1$.
+<br />
+
+<section>
+
+$\Large \underline{\text{Using the Derivative on a Polynomial Function}}$
+
+Let $f(x) = 3x^2 + 2x + 1$ and $\alpha = 0.35$. For this order value, $\lceil0.35\rceil = 1$.  
+Therefore, $n = 1$.  
 
 The definition can then be rewritten as:
 
@@ -317,91 +326,108 @@ $$\dfrac{d}{dt}(3t^2 + 2t + 1) = 6t + 2$$
 Plugging this back into the definition:
 
 $${}^{C} D^{0.35} (3x^2 + 2x + 1) = \dfrac{1}{\Gamma(0.65)} \int_{0}^{x} \dfrac{6t + 2}{(x-t)^{(0.35)}}dt$$
+</section>
+
+<br />
+
+<br />
+
+<section>
+  
+$\Large \underline{\text{Evaluating the Expression}}$
 
 To simplify evaluation of the integral, it can be split into the following two parts:
 
-$${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(\int_{0}^{x} \dfrac{6t}{(x-t)^{(0.35)}}dt + \int_{0}^{x} \dfrac{2}{(x-t)^{(0.35)}}dt \Big)$$
+$${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Biggl( \int_{0}^{x} \dfrac{6t}{(x-t)^{(0.35)}}dt + \int_{0}^{x}  \dfrac{2}{(x-t)^{(0.35)}}dt \Biggl)$$
 
-<br/>
+<br />
 
 For both integrals, a $u$-substitution of $t$ will be required. Let $u = \dfrac{t}{x}$ and $du = \dfrac{dt}{x}$.  
 
 The lower limit of $t$ is zero. Therefore, the lower limit of $u$ is $\dfrac{0}{x} = 0.$  
 Similarly, the upper limit of $t$ is $x$. Therefore, the upper limit of $u$ is $\dfrac{x}{x} = 1$.
 
-<br/>
+<br />
 
 Using these new limits and the u-substitution definitions:
 
 $${}^{C} D^{0.35} (3x^2 + 2x + 1) = \dfrac{1}{\Gamma(0.65)} \Big(\int_{0}^{1} \dfrac{6(ux)}{(x-(ux))^{(0.35)}}(x \cdot du) + \int_{0}^{1} \dfrac{2}{(x-(ux))^{(0.35)}}(x \cdot du) \Big)$$
 
-<br/>
+<br />
 
 The integrands can be simplified by factoring out the numerical coefficients and the factors of $x$ in the numerators:
 
 $$= \dfrac{1}{\Gamma(0.65)} \Big(6x^2 \int_{0}^{1} \dfrac{u}{(x-ux)^{(0.35)}}du + 2x\int_{0}^{1} \dfrac{1}{(x-ux)^{(0.35)}}du \Big)$$
 
-<br/>
+<br />
 
 Simplifying the coefficients on both integrals:
 
 $$= \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \int_{0}^{1} \dfrac{u}{(1-u)^{(0.35)}}du + 2x^{0.65} \int_{0}^{1} \dfrac{1}{(1-u)^{(0.35)}}du \Big)$$
 
-<br/>
+<br />
 
 Followed by factoring out $x^{0.35}$ from the denominators:
 
 $$= \dfrac{1}{\Gamma(0.65)} \Big(\dfrac{6x^2}{x^{0.35}} \int_{0}^{1} \dfrac{u}{(1-u)^{(0.35)}}du + \dfrac{2x}{x^{0.35}} \int_{0}^{1} \dfrac{1}{(1-u)^{(0.35)}}du \Big)$$
 
-<br/>
+<br />
+  
+</section>
+
+
+
+
+
+
 
 At this point, the integrands can be rewritten in the following way:
 
 $$= \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \int_{0}^{1} u(1-u)^{0.35}du + 2x^{0.65} \int_{0}^{1} (1-u)^{0.35}du \Big)$$
 
-<br/><br/>
+<br /><br />
 
 This is done to match the form of the Beta function, which has the following definition:
 
 $$\beta(p,q) = \int_{0}^{1} t^{(p-1)}(1-t)^{(q-1)}dt$$
 
-<br/>
+<br />
 
 The solution to the Beta function is:
 
 $$\dfrac{\Gamma(p) \Gamma(q)}{\Gamma(p+q)}$$
 
-<br/>
+<br />
 
 The first integral in the Caputo derivative is equivalent to $\beta(2,0.65)$, and the second integral is equivalent to $\beta(1,0.65)$. Using the Beta solution with these $p$ and $q$ values in the derivative yields the following:
 
 $${}^{C} D^{0.35} (3x^2 + 2x + 1) = \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \cdot \dfrac{\Gamma(2) \Gamma(0.65)}{\Gamma(2.65)} + 2x^{0.65} \cdot \dfrac{\Gamma(1) \Gamma(0.65)}{\Gamma(1.65)} \Big)$$
 
-<br/>
+<br />
 
 Like terms can now be cancelled:
 
 $$= \cancel{\dfrac{1}{\Gamma(0.65)}} \Big(6x^{1.65} \cdot \dfrac{\Gamma(2) \cancel{\Gamma(0.65)}}{\Gamma(2.65)} + 2x^{0.65} \cdot \dfrac{\Gamma(1) \cancel{\Gamma(0.65)}}{\Gamma(1.65)} \Big)$$
 
-<br/>
+<br />
 
 Which simplifies to:
 
 $$= \dfrac{6x^{1.65} \cdot \Gamma(2)}{\Gamma(2.65)} +  \dfrac{2x^{0.65} \cdot \Gamma(1)}{\Gamma(1.65)}$$
 
-<br/>
+<br />
 
 Using $\Gamma(1) = 1$, $\Gamma(1.65) \approx 0.900$, $\Gamma(2) = 1$, and $\Gamma(2.65) \approx 1.485$:
 
 $$= \dfrac{6x^{1.65}}{1.485} +  \dfrac{2x^{0.65}}{0.900}$$
 
-<br/>
+<br />
 
 Finally, the result of the derivative (to three decimal places) is:
 
 $$\boxed{{}^{C} D^{0.35} (3x^2 + 2x + 1) \approx 4.040x^{1.65} + 2.222x^{0.65}}$$
 
-<br/>
+<br />
 
 Thankfully, this result can be generalized for polynomial terms using the following formula:
 
@@ -413,13 +439,13 @@ For the first term, $3x^2$:
 
 $${}^{C} D^{0.35}\ [3x^2] = 3 \cdot \dfrac{\Gamma(2 + 1)}{\Gamma(2 - 0.35 + 1)} x^{2 - 0.35} = \dfrac{3 \cdot \Gamma(3)}{\Gamma(2.65)} x^{1.65}$$
 
-<br/>
+<br />
 
 For the second term, $2x$:
 
 $${}^{C} D^{0.35}\ [2x] = 2 \cdot \dfrac{\Gamma(1 + 1)}{\Gamma(1 - 0.35 + 1)} x^{1 - 0.35} = \dfrac{2 \cdot \Gamma(2)}{\Gamma(1.65)} x^{0.65}$$
 
-<br/>
+<br />
 
 For the third term, $1$:
 
@@ -437,7 +463,138 @@ $$&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&thinsp;&thinsp;&thinsp;&thins
 
 </details>
 
-<br/>
+<br />
+
+<details>
+<summary>
+Riemann-Liouville Fractional Derivative Example
+</summary>
+
+<br />
+
+<table>
+<tr>
+<td>
+
+The Riemann-Liouville fractional derivative of order $\alpha$ for a generic function $f(x)$ is defined as:
+
+<br />
+
+$${}^{RL} D^{\alpha} f(x) = \dfrac{1}{\Gamma(n-\alpha)} \dfrac{d^{n}}{dx^{n}} \Big( \int_{0}^{x} (x-t)^{n-\alpha-1}f(t)dt \Big)$$
+
+<br />
+
+Where:
+- ${}^{RL}$ indicates that the fractional derivative being performed is the Riemann-Liouville type
+- $n = \lceil \alpha \rceil$ is the ceiling of $\alpha$ (the smallest integer $\geq$ to $\alpha$)
+- $\Gamma$ is the Gamma function
+- $f(t)$ is the same expression as $f(x)$, except with $t$ instead of $x$  
+For example purposes, let $f(x) = 3x^2 + 2x + 1$ and $\alpha = 0.35$. For this order value, $\lceil0.35\rceil = 1$. Therefore, $n = 1$.
+
+<br />
+
+The definition can then be rewritten as:
+
+<br />
+
+$${}^{RL} D^{0.35} (3x^2 + 2x + 1) = \dfrac{1}{\Gamma(0.65)} \dfrac{d}{dx} \Big( \int_{0}^{x} (x-t)^{-0.35}(3t^2 + 2t + 1)dt \Big)$$
+
+<br />
+
+Expanding the integral:
+
+<br />
+
+$$= \dfrac{1}{\Gamma(0.65)} \dfrac{d}{dx} \Big( \int_{0}^{x} (x-t)^{-0.35}3t^2 dt + \int_{0}^{x} (x-t)^{-0.35}2t dt + \int_{0}^{x} (x-t)^{-0.35}dt \Big)$$
+
+<br />
+
+Factoring out constants:
+
+<br />
+
+
+$$= \dfrac{1}{\Gamma(0.65)} \dfrac{d}{dx} \Big(3\int_{0}^{x} (x-t)^{-0.35}t^2 dt + 2\int_{0}^{x} (x-t)^{-0.35}t dt + \int_{0}^{x} (x-t)^{-0.35}dt \Big)$$
+
+<br />
+
+A $u$-substitution will be necessary for each individual integral within the parentheses.
+
+<br />
+
+<section>
+<h3>The first integral</h3> 
+
+Let $u = x -t$ and $du = -dt$.  
+The lower limit of $t$ is zero. Therefore, the lower limit of $u$ is $x - 0 = x$.  
+Similarly, the upper limit of $t$ is $x$. Therefore, the upper limit of $u$ is $x - x = 0$.  
+
+The $u$-form of the first integral is then:
+
+<br />
+
+$$3\int_{x}^{0} (u)^{-0.35}(x - u)^2 (-du)$$
+
+<br />
+
+Factoring the negative sign outside the integral:
+
+<br />
+
+$$-3\int_{x}^{0} (u)^{-0.35}(x - u)^2 du$$
+
+<br />
+
+Expanding the squared term in the integrand:
+
+<br />
+
+$$-3\int_{x}^{0} (u)^{-0.35}(x^2 - 2xu + u^2) du$$
+
+<br />
+
+Distributing the contents of the integrand:
+
+<br />
+
+$$-3\int_{x}^{0} (x^2u^{-0.35} - 2xu^{0.65} + u^{1.65}) du$$
+
+<br />
+
+Distributing the integral operation itself:
+
+<br />
+
+$$-3 \Bigg[\ \int_{x}^{0} x^2u^{-0.35}du\ - \int_{x}^{0} 2xu^{0.65}du\ + \int_{x}^{0} u^{1.65}du \ \Bigg]$$
+
+<br />
+
+Factoring out constants:  
+
+$$-3 \Bigg[ \ x^2 \cdot \int_{x}^{0} u^{-0.35}du \ - \ 2x \cdot \int_{x}^{0} u^{0.65}du \ + \int_{x}^{0} u^{1.65}du \ \Bigg]$$  
+
+Performing the integration:
+
+<br />
+
+$$-3 \Bigg[ \ x^2 \cdot \left\lbrack \dfrac{u^{0.65}}{0.65} \right\rbrack_x^0 \ - \ 2x \cdot \left\lbrack \dfrac{u^{1.65}}{1.65} \right\rbrack_x^0 \ + \left\lbrack \dfrac{u^{2.65}}{2.65} \right\rbrack_x^0 \ \Bigg]$$
+
+<br />
+
+Evaluating:
+
+</section>
+
+
+
+
+
+</td>
+</tr>
+</table>
+</details>
+
+<br />
 
 ## FAQ
 
@@ -447,7 +604,7 @@ $$&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&thinsp;&thinsp;&thinsp;&thins
     to include non-integer values.
 </details>
 
-<br/>
+<br />
 
 <details>
     <summary>&nbsp;<i>Why is this important?</i>&nbsp;<br/></summary>&nbsp;<br/>
@@ -455,8 +612,7 @@ $$&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&thinsp;&thinsp;&thinsp;&thins
     that exhibit memory effects or hereditary properties in its behavior.
 </details>
 
-
-<br/>
+<br />
 
 <details>
     <summary>&nbsp;<i>What is meant by "memory effects"?</i></summary>&nbsp;<br/>
@@ -467,7 +623,7 @@ $$&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&thinsp;&thinsp;&thinsp;&thins
     <i><b>also</b></i> on how it was stretched recently.
 </details>
 
-<br/>
+<br />
 
 <details>
     <summary>&nbsp;<i>What about "hereditary properties"?</i></summary>&nbsp;<br/>
@@ -479,7 +635,7 @@ $$&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&thinsp;&thinsp;&thinsp;&thins
     of the material.
 </details>
 
-<br/>
+<br />
 
 <details>
     <summary>&nbsp;<i>How does all this relate to the Caputo and Riemann-Liouville derivatives?</i></summary>&nbsp;<br/>
@@ -489,7 +645,7 @@ $$&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&thinsp;&thinsp;&thinsp;&thins
     If the entire system's "memory" is needed, then the Riemann-Liouville derivative is used. 
 </details>
 
-<br/>
+<br />
 
 <details>
     <summary>&nbsp;<i>There are multiple coefficients in my input, but the output doesn't show the same amount. Why?</i>
@@ -500,7 +656,7 @@ $$&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&thinsp;&thinsp;&thinsp;&thins
         For an array with multiple coefficients, the right-most coefficient represents a constant term, and the 
         fractional derivative of a constant is always zero for a Caputo fractional derivative. <br/><br/>
         If the fractional derivative of a constant is needed, use the Riemann-Liouville option.
-    </details> <br/>
+    </details> <br />
     <details>
         <summary>&nbsp; General Behavior of a Caputo Derivative</summary>&nbsp;<br/>
         For a Caputo derivative, if the exponent value of the term minus the order value is a negative number, then that 
@@ -516,18 +672,18 @@ $$&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&thinsp;&thinsp;&thinsp;&thins
     </details>
 </details>
 
-<br/>
+<br />
 
 <details>
     <summary>&nbsp;<i>Why are there two derivative endpoints, but only one integration endpoint?</i></summary>&nbsp;<br/>
     This is because the Caputo and Riemann-Liouville techniques treat derivatives of constant values differently.
-    <br/>
-    <br/>
+    <br />
+    <br />
     This distinction is not present in the API integration process, and both methods lead to the same results.<br/>
 </details>
 
 
-<br/>
+<br />
 
 ## Contributing
 
@@ -546,7 +702,7 @@ Contributions towards this project are welcome! If interested, please follow the
 Remember to update tests if necessary and provide responses to the questions as outlined in the
 pull request template.
 
-<br/>
+<br />
 
 ## Changelog
 
@@ -558,7 +714,7 @@ pull request template.
 
 - Includes comprehensive test coverage
 
-<br/>
+<br />
 
 ## Known Issues
 
@@ -568,13 +724,13 @@ pull request template.
 
 - The current implementation does not support multi-threading for large-scale computations.
 
-<br/>
+<br />
 
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-<br/>
+<br />
 
 ## Acknowledgements
 
@@ -589,7 +745,7 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 - <a href="https://openai.com/">OpenAI GPT-4o</a>
 
-<br/>
+<br />
 
 ## Support
 
