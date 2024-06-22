@@ -373,8 +373,7 @@ $$\dfrac{\Gamma(p) \Gamma(q)}{\Gamma(p+q)}$$
 
 <br/>
 
-The first integral in the Caputo derivative is equivalent to $\beta(2,0.65)$, and the second integral is equivalent to $\beta(1,0.65)$.    
-Using the Beta solution with these $p$ and $q$ values in the derivative yields the following:
+The first integral in the Caputo derivative is equivalent to $\beta(2,0.65)$, and the second integral is equivalent to $\beta(1,0.65)$. Using the Beta solution with these $p$ and $q$ values in the derivative yields the following:
 
 $${}^{C} D^{0.35} (3x^2 + 2x + 1) = \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \cdot \dfrac{\Gamma(2) \Gamma(0.65)}{\Gamma(2.65)} + 2x^{0.65} \cdot \dfrac{\Gamma(1) \Gamma(0.65)}{\Gamma(1.65)} \Big)$$
 
