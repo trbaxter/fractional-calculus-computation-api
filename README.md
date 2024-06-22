@@ -283,14 +283,134 @@ Thus, only the Caputo endpoint is provided to reduce code duplication.
 
 <details>
 <summary>
-Caputo Fractional Derivative of 3x² + 2x + 1 using $\alpha$ = 0.35 (full derivation process)
+Caputo Fractional Derivative Example
 </summary>
 <br/>
 
-<img alt="Caputo Example pg. 1" src="documentation/caputo-derivative/Caputo-1.jpg"/>
-<img alt="Caputo Example pg. 2" src="documentation/caputo-derivative/Caputo-2.jpg"/>
-<img alt="Caputo Example pg. 3" src="documentation/caputo-derivative/Caputo-3.jpg"/>
-<img alt="Caputo Example pg. 4" src="documentation/caputo-derivative/Caputo-4.jpg"/>
+<table>
+<tr>
+<td>
+
+The Caputo fractional derivative of order $\alpha$ for a generic function $f(x)$ is defined as:
+
+$${}^{C} D^{\alpha} f(x) = \dfrac{1}{\Gamma(n-\alpha)} \int_{0}^{x} \dfrac{f^{(n)}(t)}{(x-t)^{(\alpha + 1 - n})}dt$$
+
+Where:
+- ${}^{C}$ specifies the Caputo fractional derivative is being used
+- $n = \lceil \alpha \rceil$ is the ceiling of $\alpha$ (the smallest integer $\geq$ to $\alpha$)
+- $\Gamma$ is the Gamma function
+- $f^{(n)}(t)$ is the $n$th derivative of $f(t)$
+- $f(t)$ is the same expression as $f(x)$, except with $t$ instead of $x$
+
+<br/>
+
+For example purposes, let $f(x) = 3x^2 + 2x + 1$ and $\alpha = 0.35$. For this order value, $\lceil0.35\rceil = 1$. Therefore, $n = 1$.
+
+The definition can then be rewritten as:
+
+$${}^{C} D^{0.35} (3x^2 + 2x + 1) = \dfrac{1}{\Gamma(0.65)} \int_{0}^{x} \dfrac{f^{(1)}(3t^2 + 2t + 1)}{(x-t)^{(0.35)}}dt$$
+
+The first derivative of $f(t)$ is: 
+
+$$\dfrac{d}{dt}(3t^2 + 2t + 1) = 6t + 2$$
+
+Plugging this back into the definition:
+
+$${}^{C} D^{0.35} (3x^2 + 2x + 1) = \dfrac{1}{\Gamma(0.65)} \int_{0}^{x} \dfrac{6t + 2}{(x-t)^{(0.35)}}dt$$
+
+To simplify evaluation of the integral, it can be split into the following two parts:
+
+$${}^{C} D^{0.35} f(x) = \dfrac{1}{\Gamma(0.65)} \Big(\int_{0}^{x} \dfrac{6t}{(x-t)^{(0.35)}}dt + \int_{0}^{x} \dfrac{2}{(x-t)^{(0.35)}}dt \Big)$$
+
+<br/>
+
+For both integrals, a $u$-substitution of $t$ will be required. Let $u = \dfrac{t}{x}$ and $du = \dfrac{dt}{x}$.  
+
+The lower limit of $t$ is zero. Therefore, the lower limit of $u$ is $\dfrac{0}{x} = 0.$  
+Similarly, the upper limit of $t$ is $x$. Therefore, the upper limit of $u$ is $\dfrac{x}{x} = 1$.
+
+<br/>
+
+Using these new limits and the u-substitution definitions:
+
+$${}^{C} D^{0.35} (3x^2 + 2x + 1) = \dfrac{1}{\Gamma(0.65)} \Big(\int_{0}^{1} \dfrac{6(ux)}{(x-(ux))^{(0.35)}}(x \cdot du) + \int_{0}^{1} \dfrac{2}{(x-(ux))^{(0.35)}}(x \cdot du) \Big)$$
+
+<br/>
+
+The integrands can be simplified by factoring out the numerical coefficients and the factors of $x$ in the numerators:
+
+$$= \dfrac{1}{\Gamma(0.65)} \Big(6x^2 \int_{0}^{1} \dfrac{u}{(x-ux)^{(0.35)}}du + 2x\int_{0}^{1} \dfrac{1}{(x-ux)^{(0.35)}}du \Big)$$
+
+<br/>
+
+Simplifying the coefficients on both integrals:
+
+$$= \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \int_{0}^{1} \dfrac{u}{(1-u)^{(0.35)}}du + 2x^{0.65} \int_{0}^{1} \dfrac{1}{(1-u)^{(0.35)}}du \Big)$$
+
+<br/>
+
+Followed by factoring out $x^{0.35}$ from the denominators:
+
+$$= \dfrac{1}{\Gamma(0.65)} \Big(\dfrac{6x^2}{x^{0.35}} \int_{0}^{1} \dfrac{u}{(1-u)^{(0.35)}}du + \dfrac{2x}{x^{0.35}} \int_{0}^{1} \dfrac{1}{(1-u)^{(0.35)}}du \Big)$$
+
+<br/>
+
+At this point, the integrands can be rewritten in the following way:
+
+$$= \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \int_{0}^{1} u(1-u)^{0.35}du + 2x^{0.65} \int_{0}^{1} (1-u)^{0.35}du \Big)$$
+
+<br/><br/>
+
+This is done to match the form of the Beta function, which has the following definition:
+
+$$\beta(p,q) = \int_{0}^{1} t^{(p-1)}(1-t)^{(q-1)}dt$$
+
+<br/>
+
+The solution to the Beta function is:
+
+$$\dfrac{\Gamma(p) \Gamma(q)}{\Gamma(p+q)}$$
+
+<br/>
+
+The first integral in the Caputo derivative is equivalent to $\beta(2,0.65)$, and the second integral is equivalent to $\beta(1,0.65)$.  
+Using the Beta solution with these $p$ and $q$ values in the derivative yields the following:
+
+$${}^{C} D^{0.35} (3x^2 + 2x + 1) = \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \cdot \dfrac{\Gamma(2) \Gamma(0.65)}{\Gamma(2.65)} + 2x^{0.65} \cdot \dfrac{\Gamma(1) \Gamma(0.65)}{\Gamma(1.65)} \Big)$$
+
+<br/>
+
+Like terms can now be cancelled:
+
+$$= \cancel{\dfrac{1}{\Gamma(0.65)}} \Big(6x^{1.65} \cdot \dfrac{\Gamma(2) \cancel{\Gamma(0.65)}}{\Gamma(2.65)} + 2x^{0.65} \cdot \dfrac{\Gamma(1) \cancel{\Gamma(0.65)}}{\Gamma(1.65)} \Big)$$
+
+<br/>
+
+Which simplifies to:
+
+$$= \dfrac{6x^{1.65} \cdot \Gamma(2)}{\Gamma(2.65)} +  \dfrac{2x^{0.65} \cdot \Gamma(1)}{\Gamma(1.65)}$$
+
+<br/>
+
+Using $\Gamma(1) = 1$, $\Gamma(1.65) \approx 0.900$, $\Gamma(2) = 1$, and $\Gamma(2.65) \approx 1.485$:
+
+$$= \dfrac{6x^{1.65}}{1.485} +  \dfrac{2x^{0.65}}{0.900}$$
+
+<br/>
+
+Finally, the result of the derivative (to three decimal places) is:
+
+$$\boxed{{}^{C} D^{0.35} (3x^2 + 2x + 1) \approx 4.040x^{1.65} + 2.222x^{0.65}}$$
+
+<br/>
+
+Thankfully, this result can be generalized for polynomial terms using the following formula:
+
+$${}^{C} D^{\alpha}\ [a \cdot x^k] = a \cdot \dfrac{\Gamma(k + 1)}{\Gamma(k - \alpha + 1)} x^{k - \alpha}$$
+      
+</td>
+</tr>
+</table>
 
 </details>
 
