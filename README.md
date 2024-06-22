@@ -296,10 +296,10 @@ The Caputo fractional derivative of order $\alpha$ for a generic function $f(x)$
 $${}^{C} D^{\alpha} f(x) = \dfrac{1}{\Gamma(n-\alpha)} \int_{0}^{x} \dfrac{f^{(n)}(t)}{(x-t)^{(\alpha + 1 - n})}dt$$
 
 Where:
-- ${}^{C}$ specifies the Caputo fractional derivative is being used
+- ${}^{C}$ indicates that the fractional derivative being performed is the Caputo type
 - $n = \lceil \alpha \rceil$ is the ceiling of $\alpha$ (the smallest integer $\geq$ to $\alpha$)
 - $\Gamma$ is the Gamma function
-- $f^{(n)}(t)$ is the $n$th derivative of $f(t)$
+- $f^{(n)}(t)$ is the $n$-th derivative of $f(t)$
 - $f(t)$ is the same expression as $f(x)$, except with $t$ instead of $x$
 
 <br/>
@@ -407,6 +407,30 @@ $$\boxed{{}^{C} D^{0.35} (3x^2 + 2x + 1) \approx 4.040x^{1.65} + 2.222x^{0.65}}$
 Thankfully, this result can be generalized for polynomial terms using the following formula:
 
 $${}^{C} D^{\alpha}\ [a \cdot x^k] = a \cdot \dfrac{\Gamma(k + 1)}{\Gamma(k - \alpha + 1)} x^{k - \alpha}$$
+
+For any user-provided polynomial, the formula is then applied to each individual term.  
+
+For the first term, $3x^2$:
+
+$${}^{C} D^{0.35}\ [3x^2] = 3 \cdot \dfrac{\Gamma(2 + 1)}{\Gamma(2 - 0.35 + 1)} x^{2 - 0.35} = \dfrac{3 \cdot \Gamma(3)}{\Gamma(2.65)} x^{1.65}$$
+
+<br/>
+
+For the second term, $2x$:
+
+$${}^{C} D^{0.35}\ [2x] = 2 \cdot \dfrac{\Gamma(1 + 1)}{\Gamma(1 - 0.35 + 1)} x^{1 - 0.35} = \dfrac{2 \cdot \Gamma(2)}{\Gamma(1.65)} x^{0.65}$$
+
+<br/>
+
+For the third term, $1$:
+
+$${}^{C} D^{0.35}\ [1] = 0$$
+
+Thus,
+
+$${}^{C} D^{0.35}\ [3x^2 + 2x + 1] = \dfrac{3 \cdot 2}{1.485} x^{1.65} + \dfrac{2 \cdot 1}{0.900} x^{0.65}$$
+$$&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;\ \ \ \ &thinsp; = \dfrac{6}{1.485} x^{1.65} + \dfrac{2}{0.900} x^{0.65}$$
+$$&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&thinsp;&thinsp;&thinsp;&thinsp;&thinsp; \boxed{\approx &thinsp; 4.040 x^{1.65} + 2.222 x^{0.65}}$$
       
 </td>
 </tr>
