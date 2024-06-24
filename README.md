@@ -10,7 +10,7 @@ user-submitted expressions of integer or fractional order.
 
 [Project Status](#project-status)  
 [Technologies Used](#technologies-used)  
-[Getting Started](#getting-started)
+[Getting Started](#getting-started)  
 [Endpoint Information](#endpoint-information)  
 [Examples](#examples)  
 [Calculation Details](#calculation-details)  
@@ -293,7 +293,7 @@ Caputo Fractional Derivative
 $\Large \underline{\text{Derivative Definition}}$
 
 The Caputo fractional derivative of order $\alpha$ for a generic function $f(x)$ is defined as:
-$${}^{C} D^{\alpha} f(x) = \dfrac{1}{\Gamma(n-\alpha)} \int_{0}^{x} \dfrac{f^{(n)}(t)}{(x-t)^{(\alpha + 1 - n})}dt$$
+$${}^{C} D^{\alpha} f(x) = \dfrac{1}{\Gamma(n-\alpha)} \int_{0}^{x} \dfrac{f^{(n)}(t)}{(x-t)^{(\alpha + 1 - n})} \ \mathrm{d} t$$
 Where:
 - ${}^{C}$ indicates that the fractional derivative being performed is the Caputo type
 - $n = \lceil \alpha \rceil$ is the ceiling of $\alpha$ (the smallest integer $\geq$ to $\alpha$)
@@ -306,6 +306,8 @@ Where:
 
 <br />
 
+<br />
+
 <section>
 
 $\Large \underline{\text{Using the Derivative on an Example Polynomial Function}}$
@@ -313,16 +315,18 @@ $\Large \underline{\text{Using the Derivative on an Example Polynomial Function}
 Let $f(x) = 3x^2 + 2x + 1$ and $\alpha = 0.35$. For this order value, $\lceil0.35\rceil = 1$.  
 Therefore, $n = 1$. The definition can then be rewritten as:
 
-$${}^{C} D^{0.35} (3x^2 + 2x + 1) = \dfrac{1}{\Gamma(0.65)} \int_{0}^{x} \dfrac{f^{(1)}(3t^2 + 2t + 1)}{(x-t)^{(0.35)}}dt$$
+$${}^{C} D^{0.35} \big(3x^2 + 2x + 1 \big) = \dfrac{1}{\Gamma(0.65)} \int_{0}^{x} \dfrac{f^{(1)}(3t^2 + 2t + 1)}{(x-t)^{(0.35)}} \ \mathrm{d} t$$
 
 The first derivative of $f(t)$ is: 
 
-$$\dfrac{d}{dt}(3t^2 + 2t + 1) = 6t + 2$$
+$$\dfrac{ \mathrm{d} }{ \mathrm{d} t} \big(3t^2 + 2t + 1 \big) = 6t + 2$$
 
 Plugging this back into the definition:
 
-$${}^{C} D^{0.35} (3x^2 + 2x + 1) = \dfrac{1}{\Gamma(0.65)} \int_{0}^{x} \dfrac{6t + 2}{(x-t)^{(0.35)}}dt$$
+$${}^{C} D^{0.35} \big(3x^2 + 2x + 1 \big) = \dfrac{1}{\Gamma(0.65)} \int_{0}^{x} \dfrac{6t + 2}{(x-t)^{(0.35)}} \ \mathrm{d} t$$
 </section>
+
+<br />
 
 <br />
 
@@ -330,18 +334,20 @@ $${}^{C} D^{0.35} (3x^2 + 2x + 1) = \dfrac{1}{\Gamma(0.65)} \int_{0}^{x} \dfrac{
 
 <section>
   
-$\Large \underline{\text{Linearity of Integration and U-Substitution}}$
+$\Large \underline{\text{Applying Linearity of Integration and the U-Substitution Technique}}$
 
 To simplify evaluation of the integral, it can be split into the following two parts:
-$$= \dfrac{1}{\Gamma(0.65)} \Biggl( \int_{0}^{x} \dfrac{6t}{(x-t)^{(0.35)}}dt + \int_{0}^{x}  \dfrac{2}{(x-t)^{(0.35)}}dt \Biggl)$$
-For both integrals, a $u$-substitution of $t$ will be required. Let $u = \dfrac{t}{x}$ and $du = \dfrac{dt}{x}$.  
+$$= \dfrac{1}{\Gamma(0.65)} \Biggl( \int_{0}^{x} \dfrac{6t}{(x-t)^{(0.35)}} \ \mathrm{d} t \ + \int_{0}^{x}  \dfrac{2}{(x-t)^{(0.35)}} \ \mathrm{d} t \Biggl)$$
+For both integrals, a $u$-substitution of $t$ will be required. Let $u = \dfrac{t}{x}$ and $\mathrm{d} u = \dfrac{ \mathrm{d} t}{x}$.  
 
 The lower limit of $t$ is zero. Therefore, the lower limit of $u$ is $\dfrac{0}{x} = 0.$  
 Similarly, the upper limit of $t$ is $x$. Therefore, the upper limit of $u$ is $\dfrac{x}{x} = 1$.
 
 Using these new limits and the u-substitution definitions:
-$${}^{C} D^{0.35} (3x^2 + 2x + 1) = \dfrac{1}{\Gamma(0.65)} \Biggl( \int_{0}^{1} \dfrac{6(ux)}{(x-(ux))^{(0.35)}}(x \cdot du) + \int_{0}^{1} \dfrac{2}{(x-(ux))^{(0.35)}}(x \cdot du) \Biggl)$$
+$${}^{C} D^{0.35} \big(3x^2 + 2x + 1 \big) = \dfrac{1}{\Gamma(0.65)} \Biggl( \int_{0}^{1} \dfrac{6(ux)}{(x-(ux))^{(0.35)}}(x \cdot \mathrm{d} u) \ + \int_{0}^{1} \dfrac{2}{(x-(ux))^{(0.35)}}(x \cdot \mathrm{d} u) \Biggl)$$
 </section>
+
+<br />
 
 <br />
 
@@ -352,12 +358,14 @@ $${}^{C} D^{0.35} (3x^2 + 2x + 1) = \dfrac{1}{\Gamma(0.65)} \Biggl( \int_{0}^{1}
 $\Large \underline{\text{Simplifying the Expression}}$
 
 First, factor out numerical coefficients and factors of $x$ from the numerators and denominators:
-$$= \dfrac{1}{\Gamma(0.65)} \Biggl( \dfrac{6x^2}{x^{0.35}} \int_{0}^{1} \dfrac{u}{(1-u)^{(0.35)}}du + \dfrac{2x}{x^{0.35}} \int_{0}^{1} \dfrac{1}{(1-u)^{(0.35)}}du \Biggl)$$
+$$= \dfrac{1}{\Gamma(0.65)} \Biggl( \dfrac{6x^2}{x^{0.35}} \int_{0}^{1} \dfrac{u}{(1-u)^{(0.35)}} \ \mathrm{d} u \ + \ \dfrac{2x}{x^{0.35}} \int_{0}^{1} \dfrac{1}{(1-u)^{(0.35)}} \ \mathrm{d} u \Biggl)$$
 Next, simplify the coefficients on both integrals:
-$$= \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \int_{0}^{1} \dfrac{u}{(1-u)^{(0.35)}}du + 2x^{0.65} \int_{0}^{1} \dfrac{1}{(1-u)^{(0.35)}}du \Big)$$
+$$= \dfrac{1}{\Gamma(0.65)} \Biggl(6x^{1.65} \int_{0}^{1} \dfrac{u}{(1-u)^{(0.35)}} \ \mathrm{d} u \ + \ 2x^{0.65} \int_{0}^{1} \dfrac{1}{(1-u)^{(0.35)}} \ \mathrm{d} u \Biggl)$$
 At this point, the integrands can be rewritten in the following way:
-$$= \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \int_{0}^{1} u(1-u)^{0.35}du + 2x^{0.65} \int_{0}^{1} (1-u)^{0.35}du \Big)$$
+$$= \dfrac{1}{\Gamma(0.65)} \Biggl(6x^{1.65} \int_{0}^{1} u(1-u)^{0.35} \ \mathrm{d} u \ + \ 2x^{0.65} \int_{0}^{1} (1-u)^{0.35} \ \mathrm{d} u \Biggl)$$
 </section>
+
+<br />
 
 <br />
 
@@ -368,11 +376,13 @@ $$= \dfrac{1}{\Gamma(0.65)} \Big(6x^{1.65} \int_{0}^{1} u(1-u)^{0.35}du + 2x^{0.
 $\Large \underline{\text{The Beta Function}}$
 
 There exists a special type of function, known as the Beta function, that has the exact same form as the integrals adjusted above:
-$$\beta(p,q) = \int_{0}^{1} t^{(p-1)}(1-t)^{(q-1)}dt$$
+$$\beta(p,q) = \int_{0}^{1} t^{(p-1)}(1-t)^{(q-1)} \mathrm{d} t$$
 The solution to the Beta function is:
 $$\dfrac{\Gamma(p) \Gamma(q)}{\Gamma(p+q)}$$
 The first integral in the Caputo derivative is equivalent to $\beta(2,0.65)$, and the second integral is equivalent to $\beta(1,0.65)$.
 </section>
+
+<br />
 
 <br />
 
@@ -383,16 +393,18 @@ The first integral in the Caputo derivative is equivalent to $\beta(2,0.65)$, an
 $\Large \underline{\text{Applying the Beta Function Solution and the Final Derivative Result}}$
 
 Using the solution to the Beta function with the derivative yields the following:
-$$= \dfrac{1}{\Gamma(0.65)} \Biggl( \dfrac{\Gamma(2) \Gamma(0.65)}{\Gamma(2.65)} \cdot 6x^{1.65} + \dfrac{\Gamma(1) \Gamma(0.65)}{\Gamma(1.65)} \cdot 2x^{0.65} \Biggl)$$
+$$= \dfrac{1}{\Gamma(0.65)} \Biggl( \dfrac{\Gamma(2) \Gamma(0.65)}{\Gamma(2.65)} \cdot 6x^{1.65} \ + \ \dfrac{\Gamma(1) \Gamma(0.65)}{\Gamma(1.65)} \cdot 2x^{0.65} \Biggl)$$
 Like terms can now be cancelled:
-$$= \cancel{\dfrac{1}{\Gamma(0.65)}} \Biggl( \dfrac{\Gamma(2) \cancel{\Gamma(0.65)}}{\Gamma(2.65)} \cdot 6x^{1.65} + \dfrac{\Gamma(1) \cancel{\Gamma(0.65)}}{\Gamma(1.65)} \cdot 2x^{0.65} \Biggl)$$
+$$= \cancel{\dfrac{1}{\Gamma(0.65)}} \Biggl( \dfrac{\Gamma(2) \cancel{\Gamma(0.65)}}{\Gamma(2.65)} \cdot 6x^{1.65} \ + \ \dfrac{\Gamma(1) \cancel{\Gamma(0.65)}}{\Gamma(1.65)} \cdot 2x^{0.65} \Biggl)$$
 Which simplifies to:
-$$= \dfrac{6 \cdot \Gamma(2)}{\Gamma(2.65)} x^{1.65} + \dfrac{2 \cdot \Gamma(1)}{\Gamma(1.65)} x^{0.65} $$
+$$= \dfrac{6 \cdot \Gamma(2)}{\Gamma(2.65)} x^{1.65} \ + \ \dfrac{2 \cdot \Gamma(1)}{\Gamma(1.65)} x^{0.65} $$
 Using $\Gamma(1) = 1$, $\Gamma(1.65) \approx 0.900$, $\Gamma(2) = 1$, and $\Gamma(2.65) \approx 1.485$:
-$$= \dfrac{6}{1.485}x^{1.65} +  \dfrac{2}{0.900}x^{0.65}$$
+$$= \dfrac{6}{1.485}x^{1.65} \ + \ \dfrac{2}{0.900}x^{0.65}$$
 Finally, the result of the derivative (to three decimal places) is:
-$$\boxed{{}^{C} D^{0.35} (3x^2 + 2x + 1) \approx 4.040x^{1.65} + 2.222x^{0.65}}$$
+$$\boxed{{}^{C} D^{0.35} (3x^2 + 2x + 1) \approx 4.040x^{1.65} \ + \ 2.222x^{0.65}}$$
 </section>
+
+<br />
 
 <br />
 
@@ -406,6 +418,8 @@ Thankfully, the Caputo fractional derivative can be generalized for polynomial t
 $${}^{C} D^{\alpha}\ [c \cdot x^k] = c \cdot \dfrac{\Gamma(k + 1)}{\Gamma(k - \alpha + 1)} x^{k - \alpha}$$
 Where $c$ is just a constant numerical coefficient of any value. For a polynomial with multiple terms, this formula is applied to each term.
 </section>
+
+<br />
 
 <br />
 
@@ -452,7 +466,7 @@ Riemann-Liouville Fractional Derivative
 $\Large \underline{\text{Derivative Definition}}$
 
 The Riemann-Liouville fractional derivative of order $\alpha$ for a generic function $f(x)$ is defined as:
-$${}^{RL} D^{\alpha} f(x) = \dfrac{1}{\Gamma(n-\alpha)} \dfrac{d^{n}}{dx^{n}} \Big( \int_{0}^{x} (x-t)^{n-\alpha-1}f(t)dt \Big)$$
+$${}^{RL} D^{\alpha} f(x) = \dfrac{1}{\Gamma(n-\alpha)} \dfrac{\mathrm{d} ^{n}}{\mathrm{d} x^{n}} \Biggl( \int_{0}^{x} (x-t)^{n-\alpha-1}f(t) \ \mathrm{d} t \Biggl)$$
 Where:
 - ${}^{RL}$ indicates that the fractional derivative being performed is the Riemann-Liouville type
 - $n = \lceil \alpha \rceil$ is the ceiling of $\alpha$ (the smallest integer $\geq$ to $\alpha$)
@@ -464,15 +478,17 @@ Where:
 
 <br />
 
+<br />
+
 <section>
 
 $\Large \underline{\text{Using the Derivative on an Example Polynomial Function}}$
 
 Let $f(x) = 3x^2 + 2x + 1$ and $\alpha = 0.35$. For this order value, $\lceil0.35\rceil = 1$.  
 Plugging these into the definition:
-$${}^{RL} D^{0.35} (3x^2 + 2x + 1) = \dfrac{1}{\Gamma(0.65)} \dfrac{d}{dx} \Big( \int_{0}^{x} (x-t)^{-0.35}(3t^2 + 2t + 1)dt \Big)$$
+$${}^{RL} D^{0.35} (3x^2 + 2x + 1) = \dfrac{1}{\Gamma(0.65)} \dfrac{\mathrm{d} }{\mathrm{d} x} \Biggl( \int_{0}^{x} (x-t)^{-0.35}(3t^2 + 2t + 1) \ \mathrm{d} t \Biggl)$$
 Expanding the integral within the parentheses with factored out constants:
-$$= \dfrac{1}{\Gamma(0.65)} \dfrac{d}{dx} \Big(3\int_{0}^{x} (x-t)^{-0.35}t^2 dt \ \ + \ 2\int_{0}^{x} (x-t)^{-0.35}t dt \ \ + \ \int_{0}^{x} (x-t)^{-0.35}dt \Big)$$
+$$= \dfrac{1}{\Gamma(0.65)} \dfrac{\mathrm{d} }{\mathrm{d} x} \Biggl(3\int_{0}^{x} \Big( (x-t)^{-0.35} \cdot t^2 \Big) \ \mathrm{d} t \ \ + \ 2\int_{0}^{x} \Big( (x-t)^{-0.35} \cdot t \Big) \ \mathrm{d} t \ \ + \ \int_{0}^{x} \Big( (x-t)^{-0.35} \Big) \ \mathrm{d} t \Biggl)$$
 A $u$-substitution will be necessary for each of the three integrals.  
 
 Let $u = x - t$ and $du = -dt$.  
@@ -484,33 +500,38 @@ Similarly, the upper limit of $t$ is $x$. Therefore, the upper limit of $u$ is $
 
 <br />
 
+<br />
+
 <section>
   
 $\Large \underline{\text{U-Substitution of the First Integral}}$
 
 The $u$-form of the first integral is:
-$$3\int_{x}^{0} (u)^{-0.35}(x - u)^2 (-du)$$
+$$3 \int_{x}^{0} \Big( u^{-0.35}(x - u)^2 \Big)\big(- \mathrm{d} u \big)$$
 Factoring the negative sign outside the integral:
-$$-3\int_{x}^{0} (u)^{-0.35}(x - u)^2 du$$
+$$-3\int_{x}^{0} \Big( u^{-0.35}(x - u)^2 \Big) \ \mathrm{d} u$$
+
 Expanding the squared term in the integrand:
-$$-3\int_{x}^{0} (u)^{-0.35}(x^2 - 2xu + u^2) du$$
+$$-3\int_{x}^{0} u^{-0.35} (x^2 \ - \ 2xu \ + \ u^2) \ \mathrm{d} u$$
 Distributing the contents of the integrand:
-$$-3\int_{x}^{0} (x^2u^{-0.35} - 2xu^{0.65} + u^{1.65}) du$$
+$$-3\int_{x}^{0} \big(x^2u^{-0.35} \ - \ 2xu^{0.65} \ + \ u^{1.65}\big) \ \mathrm{d} u$$
 Applying linearity of integration:
-$$-3 \Bigg[\ \int_{x}^{0} x^2u^{-0.35}du\ - \int_{x}^{0} 2xu^{0.65}du\ + \int_{x}^{0} u^{1.65}du \ \Bigg]$$
+$$-3\Bigg[\ \int_{x}^{0} x^2u^{-0.35} \ \mathrm{d} u\ - \int_{x}^{0} 2xu^{0.65} \ \mathrm{d} u\ + \int_{x}^{0} u^{1.65} \ \mathrm{d} u \ \Bigg]$$
 Factoring out constants:  
-$$-3 \Bigg[ \ x^2 \cdot \int_{x}^{0} u^{-0.35}du \ - \ 2x \cdot \int_{x}^{0} u^{0.65}du \ + \int_{x}^{0} u^{1.65}du \ \Bigg]$$
+$$-3\Bigg[ \ x^2 \cdot \int_{x}^{0} u^{-0.35} \mathrm{d} u \ - \ 2x \cdot \int_{x}^{0} u^{0.65} \mathrm{d} u \ + \int_{x}^{0} u^{1.65} \mathrm{d} u \ \Bigg]$$
 Performing the integration:
-$$-3 \Bigg[ \ x^2 \cdot \left\lbrack \dfrac{u^{0.65}}{0.65} \right\rbrack_x^0 \ - \ 2x \cdot \left\lbrack \dfrac{u^{1.65}}{1.65} \right\rbrack_x^0 \ + \left\lbrack \dfrac{u^{2.65}}{2.65} \right\rbrack_x^0 \ \ \Bigg]$$
+$$-3\Bigg[ \ x^2 \cdot \left\lbrack \dfrac{u^{0.65}}{0.65} \right\rbrack_x^0 \ - \ 2x \cdot \left\lbrack \dfrac{u^{1.65}}{1.65} \right\rbrack_x^0 \ + \left\lbrack \dfrac{u^{2.65}}{2.65} \right\rbrack_x^0 \ \ \Bigg]$$
 Evaluating:
-$$-3 \Bigg[ \ x^2 \cdot \bigg(0 - \dfrac{x^{0.65}}{0.65} \bigg) \ - \ 2x \cdot \bigg(0 - \dfrac{x^{1.65}}{1.65} \bigg) \ + \ \bigg(0 - \dfrac{x^{2.65}}{2.65} \bigg) \Bigg]$$
+$$-3\Bigg[ \ x^2 \cdot \bigg(0 - \dfrac{x^{0.65}}{0.65} \bigg) \ - \ 2x \cdot \bigg(0 - \dfrac{x^{1.65}}{1.65} \bigg) \ + \ \bigg(0 - \dfrac{x^{2.65}}{2.65} \bigg) \Bigg]$$
 Simplifying the result:
-$$-3 \Bigg[ \ x^2 \cdot \bigg(-\dfrac{x^{0.65}}{0.65} \bigg) \ - \ 2x \cdot \bigg(-\dfrac{x^{1.65}}{1.65} \bigg) \ + \ \bigg(-\dfrac{x^{2.65}}{2.65} \bigg) \Bigg]$$
-$$-3 \Bigg[ \ \bigg(-\dfrac{x^{2.65}}{0.65} \bigg) \ + \ \bigg(\dfrac{2x^{2.65}}{1.65} \bigg) \ - \ \bigg(\dfrac{x^{2.65}}{2.65} \bigg) \Bigg]$$
-$$3 \Bigg[ \ \bigg(\dfrac{x^{2.65}}{0.65} \bigg) \ - \ \bigg(\dfrac{2x^{2.65}}{1.65} \bigg) \ + \ \bigg(\dfrac{x^{2.65}}{2.65} \bigg) \Bigg]$$
+$$-3\Bigg[ \ x^2 \cdot \bigg(-\dfrac{x^{0.65}}{0.65} \bigg) \ - \ 2x \cdot \bigg(-\dfrac{x^{1.65}}{1.65} \bigg) \ + \ \bigg(-\dfrac{x^{2.65}}{2.65} \bigg) \Bigg]$$
+$$-3\Bigg[ \ \bigg(-\dfrac{x^{2.65}}{0.65} \bigg) \ + \ \bigg(\dfrac{2x^{2.65}}{1.65} \bigg) \ - \ \bigg(\dfrac{x^{2.65}}{2.65} \bigg) \Bigg]$$
+$$3\Bigg[ \ \bigg(\dfrac{x^{2.65}}{0.65} \bigg) \ - \ \bigg(\dfrac{2x^{2.65}}{1.65} \bigg) \ + \ \bigg(\dfrac{x^{2.65}}{2.65} \bigg) \Bigg]$$
 $$\Bigg[ \ \bigg(\dfrac{3}{0.65} \bigg) \ - \ \bigg(\dfrac{6}{1.65} \bigg) \ + \ \bigg(\dfrac{3}{2.65} \bigg) \Bigg] x^{2.65}$$
 $$\bigg( \dfrac{16,000}{7,579} \bigg) x^{2.65}$$
 </section>
+
+<br />
 
 <br />
 
@@ -521,15 +542,15 @@ $$\bigg( \dfrac{16,000}{7,579} \bigg) x^{2.65}$$
 $\Large \underline{\text{U-Substitution of the Second Integral}}$
 
 The $u$-form of the second integral is:
-$$2\int_{x}^{0} (u)^{-0.35}(x-u)(-du)$$
+$$2 \int_{x}^{0} \Biggl( u^{-0.35}(x-u)\Biggl)(- \mathrm{d} u)$$
 Factoring the negative sign outside the integral:
-$$-2\int_{x}^{0} (u)^{-0.35}(x-u)du$$
+$$-2 \int_{x}^{0} \Biggl( u^{-0.35}(x-u) \Biggl) \mathrm{d} u$$
 Distributing the integrand:
-$$-2\int_{x}^{0} x(u)^{-0.35} - u^{0.65}du$$
+$$-2\int_{x}^{0} \Biggl( xu^{-0.35} - u^{0.65} \Biggl) \mathrm{d} u$$
 Applying linearity of integration:
-$$-2 \Bigg[ \int_{x}^{0} xu^{-0.35}du \ - \ \int_{x}^{0} u^{0.65}du \Bigg]$$
+$$-2 \Bigg[ \int_{x}^{0} xu^{-0.35} \mathrm{d} u \ - \ \int_{x}^{0} u^{0.65} \mathrm{d} u \Bigg]$$
 Factoring out $x$ from the first integrand:
-$$-2 \Bigg[ x \cdot \int_{x}^{0} u^{-0.35}du \ - \ \int_{x}^{0} u^{0.65}du \Bigg]$$
+$$-2 \Bigg[ x \cdot \int_{x}^{0} u^{-0.35} \mathrm{d} u \ - \ \int_{x}^{0} u^{0.65} \mathrm{d} u \Bigg]$$
 Performing the integration:
 $$-2 \Bigg[ \ x \cdot \left\lbrack \dfrac{u^{0.65}}{0.65} \right\rbrack_x^0 \ - \ \left\lbrack \dfrac{u^{1.65}}{1.65} \right\rbrack_x^0 \ \Bigg]$$
 Evaluating:
@@ -551,11 +572,11 @@ $$\bigg( \dfrac{800}{429} \bigg) x^{1.65}$$
 $\Large \underline{\text{U-Substitution of the Third Integral}}$
 
 The $u$-form of the third integral is:
-$$\int_{x}^{0} (u)^{-0.35}(-du)$$
+$$\int_x^0 (u^{-0.35})(- \mathrm{d} u)$$
 Factoring the negative sign outside the integral:
-$$-\int_{x}^{0} (u)^{-0.35}du$$
+$$- \int_x^0 (u^{-0.35}) \mathrm{d} u$$
 Performing the integration:
-$$-\left\lbrack \dfrac{u^{0.65}}{0.65} \right\rbrack_x^0$$
+$$- \large\left\lbrack \dfrac{u^{0.65}}{0.65} \large\right\rbrack_x^0$$
 Evaluating:
 $$-\bigg(0 - \dfrac{x^{0.65}}{0.65} \bigg)$$
 Simplifying:
