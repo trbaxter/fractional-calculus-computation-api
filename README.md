@@ -352,9 +352,9 @@ integral operations, please see the documentation folder.
 > <br />
 > 
 > As an example, consider a material that hardens over time, like concrete. <br /> The current 
-> "hardness" of concrete is a comprehensive function of its entire history - the starting mix 
-> ratio of cement and water, <br /> the curing conditions, the amount of cumulative elemental 
-> exposure - all of these historical factors represent the hereditary <br /> properties of the
+> "hardness" of concrete is a comprehensive function of its entire history - the initial
+> ratio of cement and water, the curing conditions, the amount of cumulative elemental 
+> exposure - all of these historical factors represent the hereditary properties of the
 > material.
 
 </details>
