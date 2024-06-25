@@ -4,6 +4,10 @@ import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
 import java.math.BigDecimal;
 import org.mockito.MockedStatic;
 
+/**
+ * GammaTestData provides precomputed values for the gamma function to be used in unit tests. It
+ * includes a method to set up mock values for the MathUtils class.
+ */
 public final class GammaTestData {
   public static final String gamma_101 =
       "933262154439441526816992388562667004907159682643816"
@@ -55,6 +59,16 @@ public final class GammaTestData {
   public static final String gamma_0_point_1 = "9.513507698668731";
   public static final String neg_gamma_0_point_5 = "-3.54490770181103";
 
+  /** Private constructor to prevent instantiation. */
+  private GammaTestData() {
+    throw new UnsupportedOperationException("Utility class for test data");
+  }
+
+  /**
+   * Sets up mock values for the MathUtils class.
+   *
+   * @param utilities the MockedStatic object for MathUtils.
+   */
   public static void setupMathUtilsMock(MockedStatic<MathUtils> utilities) {
     utilities
         .when(() -> MathUtils.gamma(BigDecimal.valueOf(101)))

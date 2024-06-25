@@ -5,21 +5,33 @@ import com.trbaxter.github.fractionalcomputationapi.service.derivation.BaseForma
 import java.math.BigDecimal;
 import org.springframework.stereotype.Service;
 
+/**
+ * CaputoDerivativeFormattingService is a service that provides formatting for the results of Caputo
+ * fractional derivative computations. It extends the BaseFormattingService to apply specific rules
+ * for Caputo derivatives.
+ */
 @Service
 public class CaputoDerivativeFormattingService extends BaseFormattingService {
 
+  /**
+   * Determines whether a term should be skipped based on its coefficient and power.
+   *
+   * @param term the term of the polynomial to be evaluated.
+   * @return true if the term should be skipped, false otherwise.
+   */
   @Override
   protected boolean shouldSkipTerm(Term term) {
-
-    // Skip terms with zero coefficients or negative exponents
     return term.coefficient().compareTo(BigDecimal.ZERO) == 0
         || term.power().compareTo(BigDecimal.ZERO) < 0;
   }
 
+  /**
+   * Provides the result for the derivative of a zero polynomial.
+   *
+   * @return a String representing the derivative of a zero polynomial.
+   */
   @Override
   protected String getZeroPolynomialResult() {
-
-    // Derivative of 0 polynomial is always 0
     return "0";
   }
 }

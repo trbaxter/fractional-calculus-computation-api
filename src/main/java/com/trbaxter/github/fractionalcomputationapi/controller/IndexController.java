@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * IndexController is a REST controller that handles requests for computing fractional calculus
+ * operations including the Caputo derivative, Riemann-Liouville derivative, and the Caputo
+ * integral.
+ */
 @RestController
 @RequestMapping("fractional-calculus-computation-api/")
 @Validated
@@ -23,6 +28,13 @@ public class IndexController {
   private final CaputoIntegrationService caputoIntegrationService;
   private final RiemannLiouvilleDerivativeService riemannLiouvilleDerivativeService;
 
+  /**
+   * Constructs an IndexController with the specified services.
+   *
+   * @param caputoDerivativeService service for computing Caputo derivatives.
+   * @param riemannLiouvilleDerivativeService service for computing Riemann-Liouville derivatives.
+   * @param caputoIntegrationService service for computing Caputo integrals.
+   */
   @Autowired
   public IndexController(
       CaputoDerivativeService caputoDerivativeService,
@@ -33,6 +45,12 @@ public class IndexController {
     this.caputoIntegrationService = caputoIntegrationService;
   }
 
+  /**
+   * Computes the Caputo derivative of a given polynomial expression.
+   *
+   * @param request request containing the polynomial coefficients and the derivative order.
+   * @return result of the Caputo derivative computation or an error message.
+   */
   @PostMapping("derivative/caputo")
   public ResponseEntity<String> computeCaputoDerivative(
       @Valid @RequestBody ControllerRequest request) {
@@ -45,6 +63,12 @@ public class IndexController {
     }
   }
 
+  /**
+   * Computes the Riemann-Liouville derivative of a given polynomial expression.
+   *
+   * @param request request containing the polynomial coefficients and the derivative order.
+   * @return result of the Riemann-Liouville derivative computation or an error message.
+   */
   @PostMapping("derivative/riemann-liouville")
   public ResponseEntity<String> computeRiemannLiouvilleDerivative(
       @Valid @RequestBody ControllerRequest request) {
@@ -58,6 +82,12 @@ public class IndexController {
     }
   }
 
+  /**
+   * Computes the Caputo integral of a given polynomial expression.
+   *
+   * @param request request containing the polynomial coefficients and the integral order.
+   * @return result of the Caputo integral computation or an error message.
+   */
   @PostMapping("integral/caputo")
   public ResponseEntity<String> computeCaputoIntegral(
       @Valid @RequestBody ControllerRequest request) {

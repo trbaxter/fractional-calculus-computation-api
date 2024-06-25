@@ -10,11 +10,23 @@ import java.util.List;
 import java.util.logging.Logger;
 import org.springframework.stereotype.Service;
 
+/**
+ * CaputoDerivativeComputationService provides methods to compute the terms of the Caputo fractional
+ * derivative for polynomial expressions.
+ */
 @Service
 public class CaputoDerivativeComputationService {
   private static final Logger logger =
       Logger.getLogger(CaputoDerivativeComputationService.class.getName());
 
+  /**
+   * Computes the terms of the Caputo fractional derivative for the given polynomial coefficients
+   * and order alpha.
+   *
+   * @param coefficients the coefficients of the polynomial, must not be null.
+   * @param alpha the order of the Caputo fractional derivative, must not be null.
+   * @return a list of computed terms of the Caputo fractional derivative.
+   */
   public List<Term> computeTerms(double[] coefficients, BigDecimal alpha) {
     List<Term> terms = new ArrayList<>();
     int degree = coefficients.length - 1;
@@ -36,6 +48,15 @@ public class CaputoDerivativeComputationService {
     return terms;
   }
 
+  /**
+   * Computes the terms for an integer-order derivative for the given polynomial coefficients and
+   * order intAlpha.
+   *
+   * @param coefficients the coefficients of the polynomial, must not be null.
+   * @param intAlpha the integer order of the derivative.
+   * @param terms the list to which computed terms will be added.
+   * @param degree the degree of the polynomial.
+   */
   private void computeIntegerOrderDerivativeTerms(
       double[] coefficients, int intAlpha, List<Term> terms, int degree) {
     for (int i = 0; i <= degree; i++) {
@@ -55,6 +76,15 @@ public class CaputoDerivativeComputationService {
     }
   }
 
+  /**
+   * Computes the terms for a fractional-order derivative for the given polynomial coefficients and
+   * order alpha.
+   *
+   * @param coefficients the coefficients of the polynomial, must not be null.
+   * @param alpha the fractional order of the derivative, must not be null.
+   * @param terms the list to which computed terms will be added.
+   * @param degree the degree of the polynomial.
+   */
   private void computeFractionalOrderDerivativeTerms(
       double[] coefficients, BigDecimal alpha, List<Term> terms, int degree) {
     for (int i = 0; i <= degree; i++) {

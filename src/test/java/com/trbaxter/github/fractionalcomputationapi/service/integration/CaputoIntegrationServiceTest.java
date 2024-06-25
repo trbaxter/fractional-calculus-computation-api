@@ -26,6 +26,10 @@ import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+/**
+ * CaputoIntegrationServiceTest is a test class for the CaputoIntegrationService. It uses
+ * SpringBootTest to test the service in a Spring Boot context.
+ */
 @SpringBootTest
 public class CaputoIntegrationServiceTest {
 
@@ -33,6 +37,13 @@ public class CaputoIntegrationServiceTest {
 
   @Autowired private CaputoIntegralComputationService computationService;
 
+  /**
+   * Tests the Caputo integration service with different coefficient combinations.
+   *
+   * @param coefficientString the coefficients of the polynomial as a comma-separated string.
+   * @param alpha the fractional order of the Caputo integral.
+   * @param expected the expected result of the integral computation.
+   */
   @ParameterizedTest
   @MethodSource(
       "com.trbaxter.github.fractionalcomputationapi.testdata.integral"
@@ -49,6 +60,10 @@ public class CaputoIntegrationServiceTest {
     }
   }
 
+  /**
+   * Tests the Caputo integral computation service when an ArithmeticException is thrown by the
+   * gamma function.
+   */
   @Test
   public void testGammaFunctionException() {
     double[] coefficients = {1, 2, 3};

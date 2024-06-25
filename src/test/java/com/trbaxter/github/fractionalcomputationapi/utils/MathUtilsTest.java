@@ -15,8 +15,13 @@ import java.math.RoundingMode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
+/**
+ * MathUtilsTest is a test class for the MathUtils utility class. It tests various cases for the
+ * gamma function and ensures proper behavior of the MathUtils class.
+ */
 public class MathUtilsTest {
 
+  /** Tests the gamma function for positive integer values. */
   @Test
   public void testGammaFunctionPositiveValues() {
     BigDecimal input = new BigDecimal("5");
@@ -25,6 +30,7 @@ public class MathUtilsTest {
     assertEquals(expected, result, "Gamma function failed for positive values");
   }
 
+  /** Tests the gamma function for half values (e.g., 0.5). */
   @Test
   public void testGammaFunctionHalfValues() {
     BigDecimal input = new BigDecimal("0.5");
@@ -33,6 +39,7 @@ public class MathUtilsTest {
     assertEquals(expected, result, "Gamma function failed for half values");
   }
 
+  /** Tests the gamma function for negative values. */
   @Test
   public void testGammaFunctionNegativeValues() {
     BigDecimal input = new BigDecimal("-0.5");
@@ -41,6 +48,7 @@ public class MathUtilsTest {
     assertEquals(expected, result, "Gamma function failed for negative values");
   }
 
+  /** Tests the gamma function for values near zero. */
   @Test
   public void testGammaFunctionNearZero() {
     BigDecimal input = new BigDecimal("0.01");
@@ -49,6 +57,7 @@ public class MathUtilsTest {
     assertEquals(expected, result, "Gamma function failed near zero");
   }
 
+  /** Tests the gamma function for the special case of input value 1. */
   @Test
   public void testGammaFunctionSpecialCase() {
     BigDecimal input = new BigDecimal("1");
@@ -57,6 +66,7 @@ public class MathUtilsTest {
     assertEquals(expected, result, "Gamma function failed for special case");
   }
 
+  /** Tests that the constructor of the MathUtils class throws an UnsupportedOperationException. */
   @Test
   public void testMathUtilsConstructorThrowsException() {
     Constructor<MathUtils> constructor = null;
@@ -86,6 +96,7 @@ public class MathUtilsTest {
     }
   }
 
+  /** Tests the gamma function with invalid input. */
   @Test
   public void testGammaFunctionWithInvalidInput() {
     BigDecimal invalidInput = mock(BigDecimal.class);

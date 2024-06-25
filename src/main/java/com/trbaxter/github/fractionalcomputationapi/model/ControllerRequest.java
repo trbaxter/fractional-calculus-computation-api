@@ -6,6 +6,10 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * ControllerRequest represents a request to perform fractional calculus operations.<br>
+ * It contains the polynomial coefficients and the order of the operation.
+ */
 @Getter
 @Setter
 public class ControllerRequest {

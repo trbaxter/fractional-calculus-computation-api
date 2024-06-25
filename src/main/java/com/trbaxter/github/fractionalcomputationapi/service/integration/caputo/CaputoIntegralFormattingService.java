@@ -9,21 +9,44 @@ import java.math.RoundingMode;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+/**
+ * CaputoIntegralFormattingService is a service that provides formatting for the results of Caputo
+ * fractional integrals. It extends the BaseFormattingService to apply specific rules for Caputo
+ * integrals.
+ */
 @Service
 public class CaputoIntegralFormattingService extends BaseFormattingService {
 
+  /**
+   * Determines whether a term should be skipped based on its coefficient and power.<br>
+   * For integrals, no terms are skipped based on the coefficient.
+   *
+   * @param term the term to be evaluated.
+   * @return false, indicating no terms should be skipped.
+   */
   @Override
   protected boolean shouldSkipTerm(Term term) {
-    // Do not skip any terms based on the coefficient for integrals
     return false;
   }
 
+  /**
+   * Provides the result for the integral of a zero polynomial.
+   *
+   * @return a String representing the integral of a zero polynomial, which is always a constant.
+   */
   @Override
   protected String getZeroPolynomialResult() {
-    // Integral of 0 polynomial is always a constant
     return "C";
   }
 
+  /**
+   * Formats the terms of the Caputo fractional integral with consideration for the order alpha.
+   *
+   * @param terms the list of polynomial terms to format.
+   * @param alpha the order of the Caputo fractional integral.
+   * @return the formatted string representation of the polynomial terms including constants of
+   *     integration.
+   */
   public String formatTerms(List<Term> terms, double alpha) {
     String result = super.formatTerms(terms);
 
@@ -45,6 +68,13 @@ public class CaputoIntegralFormattingService extends BaseFormattingService {
     return result;
   }
 
+  /**
+   * Appends the constants of integration to the formatted result for integer order integrals.
+   *
+   * @param result the current formatted result.
+   * @param alphaInt the integer order of the integral.
+   * @return the updated result including constants of integration.
+   */
   private String appendConstantsOfIntegration(String result, int alphaInt) {
     StringBuilder sb = new StringBuilder(result);
     for (int i = 0; i < alphaInt; i++) {

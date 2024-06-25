@@ -3,8 +3,24 @@ package com.trbaxter.github.fractionalcomputationapi.testdata.derivative;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.provider.Arguments;
 
+/**
+ * RiemannLiouvilleDerivativeTestData provides a collection of test data for testing the
+ * Riemann-Liouville derivative computations. It includes various combinations of polynomial
+ * coefficients and fractional orders.
+ */
 public final class RiemannLiouvilleDerivativeTestData {
 
+  /** Private constructor to prevent instantiation. */
+  private RiemannLiouvilleDerivativeTestData() {
+    throw new UnsupportedOperationException("Utility class for test data");
+  }
+
+  /**
+   * Provides a stream of arguments representing different combinations of polynomial coefficients
+   * and fractional orders for testing Riemann-Liouville derivative computations.
+   *
+   * @return a stream of arguments for parameterized tests.
+   */
   public static Stream<Arguments> coefficientCombinations() {
     return Stream.of(
 
