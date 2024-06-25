@@ -427,13 +427,13 @@ pull request template.
 
 ## Changelog
 
-### Version [1.0.0] - Released 2024-06-TBD
+### Version [1.0.0] - Released 2024-06-25
 
 - Initial release with Caputo and Riemann-Liouville fractional derivative and Caputo fractional
-  integration capabilities
+  integration capabilities.
 
 
-- Includes comprehensive test coverage
+- Includes comprehensive (99%) test coverage.
 
 <br />
 
