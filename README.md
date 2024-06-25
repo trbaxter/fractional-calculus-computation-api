@@ -225,8 +225,9 @@ API Output:
 }
 ```
 
-The derivative of a constant term using the Riemann-Liouville method does <i><strong>not</strong></i> result in zero.  
-It treats constants in the expression as coefficients of 0th-power variables (e.g. 1x⁰ instead of just 1).
+The derivative of a constant term using the Riemann-Liouville method does 
+<i><strong>not</strong></i> result in zero. It treats constants in the expression as 
+coefficients of 0th-power variables (e.g. 1x⁰ instead of just 1).
 
 </td>
 </tr>
@@ -285,87 +286,115 @@ integral operations, please see the documentation folder.
 ## FAQ
 
 <details>
-    <summary>&nbsp;<i>What is a fractional derivative?</i></summary>&nbsp;<br/>
-    A fractional derivative is a generalization of the traditional integer-order derivative extended 
-    to include non-integer values.
+<summary>&nbsp;<i>What are fractional derivatives and fractional integrals?
+</i></summary>&nbsp;<br/>
+These operations are generalizations of the traditional integer-order calculus operations 
+that have been extended to include non-integer values.
 </details>
 
 <br />
 
 <details>
-    <summary>&nbsp;<i>Why is this important?</i>&nbsp;<br/></summary>&nbsp;<br/>
-    This type of analytical technique is particularly useful for investigating or modeling physical phenomena 
-    that exhibit memory effects or hereditary properties in its behavior.
+<summary>&nbsp;<i>What is the physical interpretation of a fractional derivative?
+</i></summary>&nbsp;<br/>
+This can represent systems where rates of change is influenced by the history of physical
+processes involved, which may involve unique features like non-locality, memory effects, and 
+complex dynamics where rates of change are not proportional to the integer powers of time. 
 </details>
 
 <br />
 
 <details>
-    <summary>&nbsp;<i>What is meant by "memory effects"?</i></summary>&nbsp;<br/>
-    "Memory effects" refers to how a system's <i><b>recent</b></i> past influences its present behavior. <br/> 
-    In other words, the system "remembers" its recent history. <br/><br/>
-    For example, consider a rubber band that's been stretched and released multiple times. 
-    The current "stretchiness" of the rubber band not only depends on how it's being stretched right now, but 
-    <i><b>also</b></i> on how it was stretched recently.
+<summary>&nbsp;<i>What about the physical interpretation of a fractional integral?
+</i></summary>&nbsp;<br/>
+This can represent processes with long-range time-dependent correlations, where past states 
+influence the current state more gradually and over a longer period than would be captured 
+by a standard integer-order integral.
 </details>
 
 <br />
 
 <details>
-    <summary>&nbsp;<i>What about "hereditary properties"?</i></summary>&nbsp;<br/>
-    "Hereditary properties" refers to the characteristics of a system that depend on its <i><b>entire</b></i> history. 
-    <br/><br/>
-    As an example, consider a material that hardens over time, like concrete. The current "hardness" of concrete is a 
-    comprehensive function of its entire history - the starting mix ratio of cement and water, the curing conditions, 
-    the amount of cumulative elemental exposure - all of these historical factors represent the hereditary properties 
-    of the material.
+<summary>&nbsp;<i>Why is this important?</i>&nbsp;<br/></summary>&nbsp;<br/>
+This type of analytical technique is particularly useful for investigating or modeling  
+physical phenomena that exhibit memory effects or hereditary properties in its behavior.
 </details>
 
 <br />
 
 <details>
-    <summary>&nbsp;<i>How does all this relate to the Caputo and Riemann-Liouville derivatives?</i></summary>&nbsp;<br/>
-    These two derivatives give us an option to select how much of a system's "memory" we wish to consider in 
-    the mathematical analysis of a given phenomena. <br/><br/>
-    If only a portion of a system's "memory" is needed, then the Caputo derivative is used. <br/>
-    If the entire system's "memory" is needed, then the Riemann-Liouville derivative is used. 
+<summary>&nbsp;<i>What is meant by "memory effects"?</i>
+</summary>&nbsp;<br/>
+"Memory effects" refers to how a system's <i><b>recent</b></i> past influences its present 
+behavior. <br/> 
+In other words, the system "remembers" its recent history. <br/><br/>
+For example, consider a rubber band that's been stretched and released multiple times. 
+The current "stretchiness" of the rubber band not only depends on how it's being stretched 
+right now, but <i><b>also</b></i> on how it was stretched recently.
 </details>
 
 <br />
 
 <details>
-    <summary>&nbsp;<i>There are multiple coefficients in my input, but the output doesn't show the same amount. Why?</i>
-    </summary>&nbsp;<br/>
-    There are two reasons why this occurs:&nbsp;<br/><br/>
-    <details>
-        <summary>&nbsp; Fractional Derivatives of Constants</summary>&nbsp;<br/>
-        For an array with multiple coefficients, the right-most coefficient represents a constant term, and the 
-        fractional derivative of a constant is always zero for a Caputo fractional derivative. <br/><br/>
-        If the fractional derivative of a constant is needed, use the Riemann-Liouville option.
-    </details> <br />
-    <details>
-        <summary>&nbsp; General Behavior of a Caputo Derivative</summary>&nbsp;<br/>
-        For a Caputo derivative, if the exponent value of the term minus the order value is a negative number, then that 
-        term's calculation will be omitted from the result. This is due to the way in which the Caputo derivative is 
-        designed to handle "well-behaved" finite functions. 
-        <br/><br/>
-        Consider the following example where $f(x) = x$ and $\alpha = 2$: <br/><br/>
-        ${}^{C} D^{2}{\text{&nbsp;}}[x] = \dfrac{\Gamma(2)}{\Gamma(2-2)}x^{1-2} = \dfrac{1}{\Gamma(0)}x^{-1}$
-        <br/><br/>
-        Since $\Gamma(0)$ is undefined, this result would be omitted from the output expression. 
-        <br/>
-        This applies to negative values of the gamma function as well.
-    </details>
+<summary>&nbsp;<i>What about "hereditary properties"?</i></summary>&nbsp;<br/>
+"Hereditary properties" refers to the characteristics of a system that depend on its 
+<i><b>entire</b></i> history. 
+<br/><br/>
+As an example, consider a material that hardens over time, like concrete. The current 
+"hardness" of concrete is a comprehensive function of its entire history - the starting mix 
+ratio of cement and water, the curing conditions, the amount of cumulative elemental exposure 
+- all of these historical factors represent the hereditary properties of the material.
 </details>
 
 <br />
 
 <details>
-    <summary>&nbsp;<i>Why are there two derivative endpoints, but only one integration endpoint?</i></summary>&nbsp;<br/>
-    This is because the Caputo and Riemann-Liouville techniques treat derivatives of constant values differently.
-    <br />
-    <br />
-    This distinction is not present in the API integration process, and both methods lead to the same results.<br/>
+<summary>&nbsp;<i>How does all this relate to the Caputo and Riemann-Liouville derivatives?</i>
+</summary>&nbsp;<br/>
+These two derivatives give us an option to select how much of a system's "memory" we wish 
+to consider in the mathematical analysis of a given phenomena. <br /><br />
+If only a portion of a system's "memory" is needed, then the Caputo derivative is used. <br />
+If the entire system's "memory" is needed, then the Riemann-Liouville derivative is used. 
+</details>
+
+<br />
+
+<details>
+<summary>&nbsp;<i>There are multiple coefficients in my input, but the output doesn't show 
+the same amount. Why?</i>
+</summary>&nbsp;<br/>
+There are two reasons why this occurs:&nbsp;<br/><br/>
+    
+1.) For an array with multiple coefficients, the right-most coefficient represents a 
+constant term, and the fractional derivative of a constant is always zero for a Caputo 
+derivative. If the fractional derivative of a constant is needed, use the 
+Riemann-Liouville option.
+<br />
+
+2.) For a Caputo derivative, if the exponent value of the term minus the order value is a 
+negative number, then that term's calculation will be omitted from the result. This is due to 
+the way in which the Caputo derivative is designed to handle "well-behaved" finite functions. 
+<br /><br />
+Consider the following example where $f(x) = x$ and $\alpha = 2$: <br/><br/>
+${}^{C} D^{2}{\text{&nbsp;}}[x] = \dfrac{\Gamma(2)}{\Gamma(2-2)}x^{1-2} = \dfrac{1}{\Gamma(0)}x^{-1}$
+<br/><br/>
+Since $\Gamma(0)$ is undefined, this result would be omitted from the output expression. 
+<br/>
+This applies to negative values of the gamma function as well.
+</details>
+
+<br />
+
+<details>
+<summary>&nbsp;<i>Why are there two derivative endpoints, but only one integration endpoint?</i>
+</summary>&nbsp;<br/>
+This is because the Caputo and Riemann-Liouville techniques treat derivatives of constant 
+values differently.
+<br />
+<br />
+This distinction is not present in the API integration process, and both methods lead to the 
+same results.
+<br/>
 </details>
 
 
