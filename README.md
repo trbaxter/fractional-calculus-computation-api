@@ -1,8 +1,8 @@
 <!-- @formatter:off -->
 # Fractional Calculus Computation API
 
-This is a Java-based API that can produce expressions for derivatives and integrals of
-user-submitted expressions of integer or fractional order.
+This is a Java-based API that can produce expressions for derivatives or integrals of
+user-submitted polynomial expressions using integer or fractional operational orders.
 
 <br />
 
