@@ -3,8 +3,24 @@ package com.trbaxter.github.fractionalcomputationapi.testdata.derivative;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.provider.Arguments;
 
+/**
+ * CaputoDerivativeTestData provides a collection of test data for testing the Caputo derivative
+ * computations.<br>
+ * It includes various combinations of polynomial coefficients and fractional orders.
+ */
 public final class CaputoDerivativeTestData {
 
+  /** Private constructor to prevent instantiation. */
+  private CaputoDerivativeTestData() {
+    throw new UnsupportedOperationException("Utility class for test data");
+  }
+
+  /**
+   * Provides a stream of arguments representing different combinations of polynomial coefficients
+   * and fractional orders for testing Caputo derivative computations.
+   *
+   * @return a stream of arguments for parameterized tests.
+   */
   public static Stream<Arguments> coefficientCombinations() {
     return Stream.of(
 

@@ -8,6 +8,6 @@ spring:
 
 logging:
   level:
-    root: INFO
-    com.trbaxter.github.fractionalcomputationapi: DEBUG
-    org.springframework: INFO
+    root: INFO  # Only logs messages at INFO level and above (WARN, ERROR, FATAL)
+    com.trbaxter.github.fractionalcomputationapi: DEBUG  # Logs DEBUG, INFO, WARN, ERROR, and FATAL messages
+    org.springframework: INFO  # Only logs messages at INFO level and above (WARN, ERROR, FATAL)

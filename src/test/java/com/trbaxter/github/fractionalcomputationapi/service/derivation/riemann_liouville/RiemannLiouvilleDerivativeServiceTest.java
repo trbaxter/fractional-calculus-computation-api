@@ -16,11 +16,22 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+/**
+ * RiemannLiouvilleDerivativeServiceTest is a test class for the RiemannLiouvilleDerivativeService.
+ * It uses SpringBootTest to test the service in a Spring Boot context.
+ */
 @SpringBootTest
 public class RiemannLiouvilleDerivativeServiceTest {
 
   @Autowired RiemannLiouvilleDerivativeService derivativeService;
 
+  /**
+   * Tests the Riemann-Liouville derivative service with different coefficient combinations.
+   *
+   * @param coefficientString the coefficients of the polynomial as a comma-separated string.
+   * @param alpha the fractional order of the Riemann-Liouville derivative.
+   * @param expected the expected result of the derivative computation.
+   */
   @ParameterizedTest
   @MethodSource(
       "com.trbaxter.github.fractionalcomputationapi.testdata.derivative"
@@ -36,6 +47,13 @@ public class RiemannLiouvilleDerivativeServiceTest {
     }
   }
 
+  /**
+   * Tests the Riemann-Liouville derivative service with shared coefficient combinations.
+   *
+   * @param coefficientString the coefficients of the polynomial as a comma-separated string.
+   * @param alpha the fractional order of the Riemann-Liouville derivative.
+   * @param expected the expected result of the derivative computation.
+   */
   @ParameterizedTest
   @MethodSource(
       "com.trbaxter.github.fractionalcomputationapi.testdata.derivative"
@@ -52,6 +70,7 @@ public class RiemannLiouvilleDerivativeServiceTest {
     }
   }
 
+  /** Tests the Riemann-Liouville derivative service when an ArithmeticException is thrown. */
   @Test
   public void testComputeDerivative_ThrowsArithmeticException() {
     double[] coefficients = {3.0, 2.0, 1.0};
@@ -77,6 +96,7 @@ public class RiemannLiouvilleDerivativeServiceTest {
     }
   }
 
+  /** Tests the Riemann-Liouville derivative service when a generic exception is thrown. */
   @Test
   public void testComputeDerivative_ThrowsGenericException() {
     double[] coefficients = {1.0};

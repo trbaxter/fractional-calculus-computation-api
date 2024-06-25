@@ -3,8 +3,24 @@ package com.trbaxter.github.fractionalcomputationapi.testdata.integral;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.provider.Arguments;
 
+/**
+ * CaputoIntegrationTestData provides a collection of test data for testing the Caputo integral
+ * computations.<br>
+ * It includes various combinations of polynomial coefficients and fractional orders.
+ */
 public final class CaputoIntegrationTestData {
 
+  /** Private constructor to prevent instantiation. */
+  private CaputoIntegrationTestData() {
+    throw new UnsupportedOperationException("Utility class for test data");
+  }
+
+  /**
+   * Provides a stream of arguments representing different combinations of polynomial coefficients
+   * and fractional orders for testing Caputo integral computations.
+   *
+   * @return a stream of arguments for parameterized tests.
+   */
   public static Stream<Arguments> coefficientCombinations() {
     return Stream.of(
 

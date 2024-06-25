@@ -21,11 +21,22 @@ import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+/**
+ * CaputoDerivativeServiceTest is a test class for the CaputoDerivativeService. It uses
+ * SpringBootTest to test the service in a Spring Boot context.
+ */
 @SpringBootTest
 public class CaputoDerivativeServiceTest {
 
   @Autowired private CaputoDerivativeService derivativeService;
 
+  /**
+   * Tests the Caputo derivative service with different coefficient combinations.
+   *
+   * @param coefficientString the coefficients of the polynomial as a comma-separated string.
+   * @param alpha the fractional order of the Caputo derivative.
+   * @param expected the expected result of the derivative computation.
+   */
   @ParameterizedTest
   @MethodSource(
       "com.trbaxter.github.fractionalcomputationapi.testdata.derivative"
@@ -42,6 +53,13 @@ public class CaputoDerivativeServiceTest {
     }
   }
 
+  /**
+   * Tests the Caputo derivative service with shared coefficient combinations.
+   *
+   * @param coefficientString the coefficients of the polynomial as a comma-separated string.
+   * @param alpha the fractional order of the Caputo derivative.
+   * @param expected the expected result of the derivative computation.
+   */
   @ParameterizedTest
   @MethodSource(
       "com.trbaxter.github.fractionalcomputationapi.testdata.derivative"
@@ -58,6 +76,10 @@ public class CaputoDerivativeServiceTest {
     }
   }
 
+  /**
+   * Tests the handling of an exception thrown by the gamma function in the Caputo derivative
+   * service.
+   */
   @Test
   public void testGammaFunctionException() {
     double[] coefficients = {1, 2, 3};

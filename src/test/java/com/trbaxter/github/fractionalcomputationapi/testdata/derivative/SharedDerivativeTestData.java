@@ -3,8 +3,24 @@ package com.trbaxter.github.fractionalcomputationapi.testdata.derivative;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.provider.Arguments;
 
+/**
+ * SharedDerivativeTestData provides a collection of test data for testing both Caputo and
+ * Riemann-Liouville derivative computations that result in the same output. It includes various
+ * combinations of polynomial coefficients and fractional orders.
+ */
 public final class SharedDerivativeTestData {
 
+  /** Private constructor to prevent instantiation. */
+  private SharedDerivativeTestData() {
+    throw new UnsupportedOperationException("Utility class for test data");
+  }
+
+  /**
+   * Provides a stream of arguments representing different combinations of polynomial coefficients
+   * and fractional orders for testing Caputo and Riemann-Liouville derivative computations.
+   *
+   * @return a stream of arguments for parameterized tests.
+   */
   public static Stream<Arguments> coefficientCombinations() {
     return Stream.of(
 

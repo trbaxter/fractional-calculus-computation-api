@@ -12,16 +12,27 @@ import java.util.List;
 import java.util.logging.Logger;
 import org.springframework.stereotype.Service;
 
+/**
+ * CaputoIntegralComputationService provides methods to compute the terms of the Caputo fractional
+ * integral for polynomial expressions.
+ */
 @Service
 public class CaputoIntegralComputationService {
   private static final Logger logger =
       Logger.getLogger(CaputoIntegralComputationService.class.getName());
 
+  /**
+   * Computes the terms of the Caputo fractional integral for the given polynomial coefficients and
+   * order alpha.
+   *
+   * @param coefficients the coefficients of the polynomial, must not be null.
+   * @param alpha the order of the Caputo fractional integral, must not be null.
+   * @return a list of computed terms of the Caputo fractional integral.
+   */
   public List<Term> computeTerms(double[] coefficients, BigDecimal alpha) {
     List<Term> terms = new ArrayList<>();
     int degree = coefficients.length - 1;
 
-    // Special case for alpha = 0
     if (alpha.compareTo(BigDecimal.ZERO) == 0) {
       for (int i = 0; i <= degree; i++) {
         BigDecimal coefficient = BigDecimal.valueOf(coefficients[i]);
@@ -38,6 +49,15 @@ public class CaputoIntegralComputationService {
     return terms;
   }
 
+  /**
+   * Computes the terms of the integer-order integral for the given polynomial coefficients and
+   * order intAlpha.
+   *
+   * @param coefficients the coefficients of the polynomial, must not be null.
+   * @param intAlpha the integer order of the integral.
+   * @param terms the list to which computed terms will be added.
+   * @param degree the degree of the polynomial.
+   */
   private void computeIntegerOrderTerms(
       double[] coefficients, int intAlpha, List<Term> terms, int degree) {
     for (int i = 0; i <= degree; i++) {
@@ -53,6 +73,15 @@ public class CaputoIntegralComputationService {
     }
   }
 
+  /**
+   * Computes the terms of the fractional-order integral for the given polynomial coefficients and
+   * order alpha.
+   *
+   * @param coefficients the coefficients of the polynomial, must not be null.
+   * @param alpha the fractional order of the integral, must not be null.
+   * @param terms the list to which computed terms will be added.
+   * @param degree the degree of the polynomial.
+   */
   private void computeFractionalOrderTerms(
       double[] coefficients, BigDecimal alpha, List<Term> terms, int degree) {
     for (int i = 0; i <= degree; i++) {

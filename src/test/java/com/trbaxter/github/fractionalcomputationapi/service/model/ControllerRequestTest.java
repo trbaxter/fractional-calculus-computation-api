@@ -17,11 +17,17 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+/** ControllerRequestTest tests the validation and behavior of the ControllerRequest class. */
 public class ControllerRequestTest {
 
   private static final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
   private static final Validator validator = factory.getValidator();
 
+  /**
+   * Provides valid ControllerRequest instances for parameterized tests.
+   *
+   * @return a stream of valid ControllerRequest arguments.
+   */
   private static Stream<Arguments> provideValidRequests() {
     return Stream.of(
         Arguments.of(new double[] {1.0, 2.0, 3.0}, 1.5),
@@ -30,6 +36,11 @@ public class ControllerRequestTest {
         Arguments.of(new double[] {Double.MAX_VALUE, Double.MIN_VALUE}, Double.MAX_VALUE));
   }
 
+  /**
+   * Provides invalid ControllerRequest instances for parameterized tests.
+   *
+   * @return a stream of invalid ControllerRequest arguments.
+   */
   private static Stream<Arguments> provideInvalidRequests() {
     return Stream.of(
         Arguments.of(null, 1.5, "Coefficients must not be null"),
@@ -37,6 +48,12 @@ public class ControllerRequestTest {
         Arguments.of(new double[] {1.0, 2.0, 3.0}, -1.0, "Order must be zero or positive"));
   }
 
+  /**
+   * Tests the setters and getters of the ControllerRequest class with valid inputs.
+   *
+   * @param coefficients the coefficients of the polynomial.
+   * @param order the order of the operation.
+   */
   @ParameterizedTest
   @MethodSource("provideValidRequests")
   public void testControllerRequestSettersAndGetters(double[] coefficients, double order) {
@@ -49,6 +66,7 @@ public class ControllerRequestTest {
     assertEquals(order, request.getOrder(), "Order should be set correctly");
   }
 
+  /** Tests the ControllerRequest class with an empty array of coefficients. */
   @Test
   public void testControllerRequestEmptyCoefficients() {
     ControllerRequest request = new ControllerRequest();
@@ -63,6 +81,7 @@ public class ControllerRequestTest {
     assertEquals(order, request.getOrder(), "Order should handle normal values");
   }
 
+  /** Tests the ControllerRequest class with a negative order value. */
   @Test
   public void testControllerRequestNegativeOrder() {
     ControllerRequest request = new ControllerRequest();
@@ -77,6 +96,7 @@ public class ControllerRequestTest {
     assertEquals(order, request.getOrder(), "Order should handle negative values");
   }
 
+  /** Tests the ControllerRequest class with large coefficient and order values. */
   @Test
   public void testControllerRequestLargeValues() {
     ControllerRequest request = new ControllerRequest();
@@ -91,6 +111,13 @@ public class ControllerRequestTest {
     assertEquals(order, request.getOrder(), "Order should handle large values");
   }
 
+  /**
+   * Tests the validation of invalid ControllerRequest instances.
+   *
+   * @param coefficients the coefficients of the polynomial.
+   * @param order the order of the operation.
+   * @param expectedMessage the expected validation error message.
+   */
   @ParameterizedTest
   @MethodSource("provideInvalidRequests")
   public void testInvalidControllerRequests(
