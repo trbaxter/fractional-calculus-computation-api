@@ -2,6 +2,7 @@ package com.trbaxter.github.fractionalcomputationapi.service.derivation.riemann_
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import com.trbaxter.github.fractionalcomputationapi.service.FractionalCalculusService;
+import com.trbaxter.github.fractionalcomputationapi.utils.ExpressionParser;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,13 @@ public class RiemannLiouvilleDerivativeService implements FractionalCalculusServ
   }
 
   @Override
-  public String evaluateExpression(double[] coefficients, double alpha) {
-    List<Term> terms = computationService.computeTerms(coefficients, BigDecimal.valueOf(alpha));
-    return formattingService.formatTerms(terms);
+  public String evaluateExpression(List<Term> terms, double alpha) {
+    List<Term> computedTerms = computationService.computeTerms(terms, BigDecimal.valueOf(alpha));
+    return formattingService.formatTerms(computedTerms);
+  }
+
+  public String evaluateExpression(String polynomialExpression, double alpha) {
+    List<Term> terms = ExpressionParser.parse(polynomialExpression);
+    return evaluateExpression(terms, alpha);
   }
 }

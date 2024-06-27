@@ -20,81 +20,69 @@ public class CaputoDerivativeComputationService {
       Logger.getLogger(CaputoDerivativeComputationService.class.getName());
 
   /**
-   * Computes the terms of the Caputo fractional derivative for the given polynomial coefficients
-   * and order alpha.
+   * Computes the terms of the Caputo fractional derivative for the given polynomial terms and order
+   * alpha.
    *
-   * @param coefficients the coefficients of the polynomial, must not be null.
+   * @param terms the list of terms of the polynomial, must not be null.
    * @param alpha the order of the Caputo fractional derivative, must not be null.
    * @return a list of computed terms of the Caputo fractional derivative.
    */
-  public List<Term> computeTerms(double[] coefficients, BigDecimal alpha) {
-    List<Term> terms = new ArrayList<>();
-    int degree = coefficients.length - 1;
+  public List<Term> computeTerms(List<Term> terms, BigDecimal alpha) {
+    List<Term> computedTerms = new ArrayList<>();
 
-    // Special case for alpha = 0
     if (alpha.compareTo(BigDecimal.ZERO) == 0) {
-      for (int i = 0; i <= degree; i++) {
-        BigDecimal coefficient = BigDecimal.valueOf(coefficients[i]);
-        BigDecimal power = BigDecimal.valueOf(degree - i);
-        terms.add(new Term(coefficient, power));
-      }
+      computedTerms.addAll(terms);
     } else if (alpha.stripTrailingZeros().scale() <= 0) {
-      computeIntegerOrderDerivativeTerms(coefficients, alpha.intValue(), terms, degree);
+      computeIntegerOrderDerivativeTerms(terms, alpha.intValue(), computedTerms);
     } else {
-      computeFractionalOrderDerivativeTerms(coefficients, alpha, terms, degree);
+      computeFractionalOrderDerivativeTerms(terms, alpha, computedTerms);
     }
 
-    terms.sort(Comparator.comparing(Term::power).reversed());
-    return terms;
+    computedTerms.sort(Comparator.comparing(Term::power).reversed());
+    return computedTerms;
   }
 
   /**
-   * Computes the terms for an integer-order derivative for the given polynomial coefficients and
-   * order intAlpha.
+   * Computes the terms for an integer-order derivative for the given polynomial terms and order
+   * intAlpha.
    *
-   * @param coefficients the coefficients of the polynomial, must not be null.
+   * @param terms the list of terms of the polynomial, must not be null.
    * @param intAlpha the integer order of the derivative.
-   * @param terms the list to which computed terms will be added.
-   * @param degree the degree of the polynomial.
+   * @param computedTerms the list to which computed terms will be added.
    */
   private void computeIntegerOrderDerivativeTerms(
-      double[] coefficients, int intAlpha, List<Term> terms, int degree) {
-    for (int i = 0; i <= degree; i++) {
-      BigDecimal coefficient = BigDecimal.valueOf(coefficients[i]);
-      int currentDegree = degree - i;
+      List<Term> terms, int intAlpha, List<Term> computedTerms) {
+    for (Term term : terms) {
+      BigDecimal coefficient = term.coefficient();
+      BigDecimal currentDegree = term.power();
 
-      if (coefficient.compareTo(BigDecimal.ZERO) != 0 && currentDegree >= intAlpha) {
+      if (coefficient.compareTo(BigDecimal.ZERO) != 0
+          && currentDegree.compareTo(BigDecimal.valueOf(intAlpha)) >= 0) {
         BigDecimal newCoefficient = coefficient;
         for (int j = 0; j < intAlpha; j++) {
-          newCoefficient = newCoefficient.multiply(BigDecimal.valueOf(currentDegree - j));
+          newCoefficient = newCoefficient.multiply(currentDegree.subtract(BigDecimal.valueOf(j)));
         }
-        int newDegree = currentDegree - intAlpha;
-        if (newDegree >= 0) {
-          terms.add(new Term(newCoefficient, BigDecimal.valueOf(newDegree)));
+        BigDecimal newDegree = currentDegree.subtract(BigDecimal.valueOf(intAlpha));
+        if (newDegree.compareTo(BigDecimal.ZERO) >= 0) {
+          computedTerms.add(new Term(newCoefficient, newDegree));
         }
       }
     }
   }
 
   /**
-   * Computes the terms for a fractional-order derivative for the given polynomial coefficients and
-   * order alpha.
+   * Computes the terms for a fractional-order derivative for the given polynomial terms and order
+   * alpha.
    *
-   * @param coefficients the coefficients of the polynomial, must not be null.
+   * @param terms the list of terms of the polynomial, must not be null.
    * @param alpha the fractional order of the derivative, must not be null.
-   * @param terms the list to which computed terms will be added.
-   * @param degree the degree of the polynomial.
+   * @param computedTerms the list to which computed terms will be added.
    */
   private void computeFractionalOrderDerivativeTerms(
-      double[] coefficients, BigDecimal alpha, List<Term> terms, int degree) {
-    for (int i = 0; i <= degree; i++) {
-      BigDecimal coefficient = BigDecimal.valueOf(coefficients[i]);
-      BigDecimal k = BigDecimal.valueOf(degree - i);
-
-      // Special case: If k = 0, the term is a constant, and its derivative should be zero.
-      if (k.compareTo(BigDecimal.ZERO) == 0) {
-        continue;
-      }
+      List<Term> terms, BigDecimal alpha, List<Term> computedTerms) {
+    for (Term term : terms) {
+      BigDecimal coefficient = term.coefficient();
+      BigDecimal k = term.power();
 
       if (coefficient.compareTo(BigDecimal.ZERO) != 0) {
         try {
@@ -102,8 +90,8 @@ public class CaputoDerivativeComputationService {
           BigDecimal gammaDenominator = MathUtils.gamma(k.subtract(alpha).add(BigDecimal.ONE));
           logger.info(
               String.format(
-                  "Term %d: gammaNumerator = %s, gammaDenominator = %s",
-                  i, gammaNumerator, gammaDenominator));
+                  "Term with power %s: gammaNumerator = %s, gammaDenominator = %s",
+                  k, gammaNumerator, gammaDenominator));
 
           if (gammaDenominator.compareTo(BigDecimal.ZERO) != 0) {
             BigDecimal gammaCoefficient =
@@ -112,11 +100,11 @@ public class CaputoDerivativeComputationService {
             BigDecimal newPower = k.subtract(alpha);
             logger.info(
                 String.format(
-                    "Term %d: newCoefficient = %s, newPower = %s", i, newCoefficient, newPower));
-            terms.add(new Term(newCoefficient, newPower));
+                    "Computed Term: newCoefficient = %s, newPower = %s", newCoefficient, newPower));
+            computedTerms.add(new Term(newCoefficient, newPower));
           }
         } catch (Exception e) {
-          logger.severe(String.format("Error computing term %d: %s", i, e.getMessage()));
+          logger.severe(String.format("Error computing term with power %s: %s", k, e.getMessage()));
         }
       }
     }

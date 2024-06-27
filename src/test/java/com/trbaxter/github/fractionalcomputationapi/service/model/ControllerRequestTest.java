@@ -1,6 +1,5 @@
 package com.trbaxter.github.fractionalcomputationapi.service.model;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,11 +12,14 @@ import jakarta.validation.ValidatorFactory;
 import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /** ControllerRequestTest tests the validation and behavior of the ControllerRequest class. */
+@ExtendWith(SpringExtension.class)
 public class ControllerRequestTest {
 
   private static final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -30,10 +32,10 @@ public class ControllerRequestTest {
    */
   private static Stream<Arguments> provideValidRequests() {
     return Stream.of(
-        Arguments.of(new double[] {1.0, 2.0, 3.0}, 1.5),
-        Arguments.of(new double[] {}, 2.0),
-        Arguments.of(new double[] {1.0, 2.0, 3.0}, -1.0),
-        Arguments.of(new double[] {Double.MAX_VALUE, Double.MIN_VALUE}, Double.MAX_VALUE));
+        Arguments.of("3x^2 + 2x + 1", 1.5),
+        Arguments.of("x + 1", 2.0),
+        Arguments.of("5x^2 - 3x + 2", 0.5),
+        Arguments.of("2x^3 + 3x^2 + x + 1", 1.0));
   }
 
   /**
@@ -43,41 +45,46 @@ public class ControllerRequestTest {
    */
   private static Stream<Arguments> provideInvalidRequests() {
     return Stream.of(
-        Arguments.of(null, 1.5, "Coefficients must not be null"),
-        Arguments.of(new double[] {}, 1.5, "At least one coefficient must be provided"),
-        Arguments.of(new double[] {1.0, 2.0, 3.0}, -1.0, "Order must be zero or positive"));
+        Arguments.of(null, 0.5, "Polynomial expression must not be empty or null"),
+        Arguments.of("", 0.5, "Polynomial expression must not be empty or null"),
+        Arguments.of("x + 1", -0.5, "Order must be zero or positive"),
+        Arguments.of("x + 1", Double.NaN, "Order must be zero or positive"));
   }
 
   /**
    * Tests the setters and getters of the ControllerRequest class with valid inputs.
    *
-   * @param coefficients the coefficients of the polynomial.
+   * @param polynomialExpression the polynomial expression as a string.
    * @param order the order of the operation.
    */
   @ParameterizedTest
   @MethodSource("provideValidRequests")
-  public void testControllerRequestSettersAndGetters(double[] coefficients, double order) {
+  public void testControllerRequestSettersAndGetters(String polynomialExpression, double order) {
     ControllerRequest request = new ControllerRequest();
-    request.setCoefficients(coefficients);
+    request.setPolynomialExpression(polynomialExpression);
     request.setOrder(order);
 
-    assertArrayEquals(
-        coefficients, request.getCoefficients(), "Coefficients should be set correctly");
+    assertEquals(
+        polynomialExpression,
+        request.getPolynomialExpression(),
+        "Polynomial expression should be set correctly");
     assertEquals(order, request.getOrder(), "Order should be set correctly");
   }
 
-  /** Tests the ControllerRequest class with an empty array of coefficients. */
+  /** Tests the ControllerRequest class with an empty polynomial expression. */
   @Test
-  public void testControllerRequestEmptyCoefficients() {
+  public void testControllerRequestEmptyPolynomialExpression() {
     ControllerRequest request = new ControllerRequest();
-    double[] coefficients = {};
+    String polynomialExpression = "";
     double order = 2.0;
 
-    request.setCoefficients(coefficients);
+    request.setPolynomialExpression(polynomialExpression);
     request.setOrder(order);
 
-    assertArrayEquals(
-        coefficients, request.getCoefficients(), "Coefficients should handle empty array");
+    assertEquals(
+        polynomialExpression,
+        request.getPolynomialExpression(),
+        "Polynomial expression should handle empty string");
     assertEquals(order, request.getOrder(), "Order should handle normal values");
   }
 
@@ -85,45 +92,49 @@ public class ControllerRequestTest {
   @Test
   public void testControllerRequestNegativeOrder() {
     ControllerRequest request = new ControllerRequest();
-    double[] coefficients = {1.0, 2.0, 3.0};
+    String polynomialExpression = "1.0x^2 + 2.0x + 3.0";
     double order = -1.0;
 
-    request.setCoefficients(coefficients);
+    request.setPolynomialExpression(polynomialExpression);
     request.setOrder(order);
 
-    assertArrayEquals(
-        coefficients, request.getCoefficients(), "Coefficients should handle normal values");
+    assertEquals(
+        polynomialExpression,
+        request.getPolynomialExpression(),
+        "Polynomial expression should handle normal values");
     assertEquals(order, request.getOrder(), "Order should handle negative values");
   }
 
-  /** Tests the ControllerRequest class with large coefficient and order values. */
+  /** Tests the ControllerRequest class with large polynomial expression and order values. */
   @Test
   public void testControllerRequestLargeValues() {
     ControllerRequest request = new ControllerRequest();
-    double[] coefficients = {Double.MAX_VALUE, Double.MIN_VALUE};
+    String polynomialExpression = "1.0x^10 + 2.0x^5 + 3.0";
     double order = Double.MAX_VALUE;
 
-    request.setCoefficients(coefficients);
+    request.setPolynomialExpression(polynomialExpression);
     request.setOrder(order);
 
-    assertArrayEquals(
-        coefficients, request.getCoefficients(), "Coefficients should handle large values");
+    assertEquals(
+        polynomialExpression,
+        request.getPolynomialExpression(),
+        "Polynomial expression should handle large values");
     assertEquals(order, request.getOrder(), "Order should handle large values");
   }
 
   /**
    * Tests the validation of invalid ControllerRequest instances.
    *
-   * @param coefficients the coefficients of the polynomial.
+   * @param polynomialExpression the polynomial expression as a string.
    * @param order the order of the operation.
    * @param expectedMessage the expected validation error message.
    */
   @ParameterizedTest
   @MethodSource("provideInvalidRequests")
   public void testInvalidControllerRequests(
-      double[] coefficients, double order, String expectedMessage) {
+      String polynomialExpression, double order, String expectedMessage) {
     ControllerRequest request = new ControllerRequest();
-    request.setCoefficients(coefficients);
+    request.setPolynomialExpression(polynomialExpression);
     request.setOrder(order);
 
     Set<ConstraintViolation<ControllerRequest>> violations = validator.validate(request);

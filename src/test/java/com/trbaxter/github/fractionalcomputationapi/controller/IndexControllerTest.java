@@ -7,9 +7,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trbaxter.github.fractionalcomputationapi.model.ControllerRequest;
+import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import com.trbaxter.github.fractionalcomputationapi.service.derivation.caputo.CaputoDerivativeService;
 import com.trbaxter.github.fractionalcomputationapi.service.derivation.riemann_liouville.RiemannLiouvilleDerivativeService;
 import com.trbaxter.github.fractionalcomputationapi.service.integration.caputo.CaputoIntegrationService;
+import com.trbaxter.github.fractionalcomputationapi.utils.ExpressionParser;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -20,8 +23,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 /**
- * IndexControllerTest is a test class for the IndexController. It uses MockMvc to test the
- * endpoints as defined in that class.
+ * IndexControllerTest is a test class for the IndexController.<br>
+ * It uses MockMvc to test endpoints as defined in that class.
  */
 @WebMvcTest(IndexController.class)
 public class IndexControllerTest {
@@ -49,13 +52,14 @@ public class IndexControllerTest {
    */
   @Test
   public void testComputeCaputoDerivative() throws Exception {
-    double[] coefficients = {3.0, 2.0, 1.0};
+    String polynomialExpression = "3x^2 + 2x + 1";
     double alpha = 0.5;
     ControllerRequest request = new ControllerRequest();
-    request.setCoefficients(coefficients);
+    request.setPolynomialExpression(polynomialExpression);
     request.setOrder(alpha);
 
-    when(caputoDerivativeService.evaluateExpression(coefficients, alpha))
+    List<Term> terms = ExpressionParser.parse(polynomialExpression);
+    when(caputoDerivativeService.evaluateExpression(terms, alpha))
         .thenReturn("4.514x^1.5 + 2.257x^0.5");
 
     mockMvc
@@ -74,14 +78,15 @@ public class IndexControllerTest {
    */
   @Test
   public void testComputeRiemannLiouvilleDerivative() throws Exception {
-    double[] coefficients = {3.0, 2.0, 1.0};
+    String polynomialExpression = "3x^2 + 2x + 1";
     double alpha = 0.5;
     ControllerRequest request = new ControllerRequest();
-    request.setCoefficients(coefficients);
+    request.setPolynomialExpression(polynomialExpression);
     request.setOrder(alpha);
 
-    when(riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha))
-        .thenReturn("3.786x^1.5 + 1.893x^0.5");
+    List<Term> terms = ExpressionParser.parse(polynomialExpression);
+    when(riemannLiouvilleDerivativeService.evaluateExpression(terms, alpha))
+        .thenReturn("4.514x^1.5 + 2.257x^0.5 + 0.564x^-0.5");
 
     mockMvc
         .perform(
@@ -89,7 +94,7 @@ public class IndexControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isOk())
-        .andExpect(content().string("3.786x^1.5 + 1.893x^0.5"));
+        .andExpect(content().string("4.514x^1.5 + 2.257x^0.5 + 0.564x^-0.5"));
   }
 
   /**
@@ -99,14 +104,15 @@ public class IndexControllerTest {
    */
   @Test
   public void testComputeCaputoIntegral() throws Exception {
-    double[] coefficients = {3.0, 2.0, 1.0};
+    String polynomialExpression = "3x^2 + 2x + 1";
     double alpha = 0.5;
     ControllerRequest request = new ControllerRequest();
-    request.setCoefficients(coefficients);
+    request.setPolynomialExpression(polynomialExpression);
     request.setOrder(alpha);
 
-    when(caputoIntegrationService.evaluateExpression(coefficients, alpha))
-        .thenReturn("4.985x^2.5 + 2.695x^1.5 + 0.886x^0.5");
+    List<Term> terms = ExpressionParser.parse(polynomialExpression);
+    when(caputoIntegrationService.evaluateExpression(terms, alpha))
+        .thenReturn("1.805x^2.5 + 1.505x^1.5 + 1.128x^0.5 + C");
 
     mockMvc
         .perform(
@@ -114,7 +120,7 @@ public class IndexControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isOk())
-        .andExpect(content().string("4.985x^2.5 + 2.695x^1.5 + 0.886x^0.5"));
+        .andExpect(content().string("1.805x^2.5 + 1.505x^1.5 + 1.128x^0.5 + C"));
   }
 
   /**
@@ -125,7 +131,7 @@ public class IndexControllerTest {
   @Test
   public void testInvalidControllerRequest() throws Exception {
     ControllerRequest request = new ControllerRequest();
-    request.setCoefficients(null);
+    request.setPolynomialExpression(null);
     request.setOrder(0.5);
 
     mockMvc
@@ -143,13 +149,14 @@ public class IndexControllerTest {
    */
   @Test
   public void testCaputoDerivativeInternalServerError() throws Exception {
-    double[] coefficients = {3.0, 2.0, 1.0};
+    String polynomialExpression = "3x^2 + 2x + 1";
     double alpha = 0.5;
     ControllerRequest request = new ControllerRequest();
-    request.setCoefficients(coefficients);
+    request.setPolynomialExpression(polynomialExpression);
     request.setOrder(alpha);
 
-    when(caputoDerivativeService.evaluateExpression(coefficients, alpha))
+    List<Term> terms = ExpressionParser.parse(polynomialExpression);
+    when(caputoDerivativeService.evaluateExpression(terms, alpha))
         .thenThrow(new RuntimeException("Internal Server Error"));
 
     mockMvc
@@ -168,13 +175,14 @@ public class IndexControllerTest {
    */
   @Test
   public void testRiemannLiouvilleDerivativeInternalServerError() throws Exception {
-    double[] coefficients = {3.0, 2.0, 1.0};
+    String polynomialExpression = "3x^2 + 2x + 1";
     double alpha = 0.5;
     ControllerRequest request = new ControllerRequest();
-    request.setCoefficients(coefficients);
+    request.setPolynomialExpression(polynomialExpression);
     request.setOrder(alpha);
 
-    when(riemannLiouvilleDerivativeService.evaluateExpression(coefficients, alpha))
+    List<Term> terms = ExpressionParser.parse(polynomialExpression);
+    when(riemannLiouvilleDerivativeService.evaluateExpression(terms, alpha))
         .thenThrow(new RuntimeException("Internal Server Error"));
 
     mockMvc
@@ -193,13 +201,14 @@ public class IndexControllerTest {
    */
   @Test
   public void testCaputoIntegralInternalServerError() throws Exception {
-    double[] coefficients = {3.0, 2.0, 1.0};
+    String polynomialExpression = "3x^2 + 2x + 1";
     double alpha = 0.5;
     ControllerRequest request = new ControllerRequest();
-    request.setCoefficients(coefficients);
+    request.setPolynomialExpression(polynomialExpression);
     request.setOrder(alpha);
 
-    when(caputoIntegrationService.evaluateExpression(coefficients, alpha))
+    List<Term> terms = ExpressionParser.parse(polynomialExpression);
+    when(caputoIntegrationService.evaluateExpression(terms, alpha))
         .thenThrow(new RuntimeException("Internal Server Error"));
 
     mockMvc

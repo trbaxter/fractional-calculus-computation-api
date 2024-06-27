@@ -8,70 +8,68 @@ import com.trbaxter.github.fractionalcomputationapi.testdata.GammaTestData;
 import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * CaputoDerivativeServiceTest is a test class for the CaputoDerivativeService. It uses
  * SpringBootTest to test the service in a Spring Boot context.
  */
 @SpringBootTest
+@ExtendWith(SpringExtension.class)
 public class CaputoDerivativeServiceTest {
 
   @Autowired private CaputoDerivativeService derivativeService;
 
   /**
-   * Tests the Caputo derivative service with different coefficient combinations.
+   * Tests the Caputo derivative service with different polynomial expressions.
    *
-   * @param coefficientString the coefficients of the polynomial as a comma-separated string.
+   * @param polynomialExpression the polynomial expression as a string.
    * @param alpha the fractional order of the Caputo derivative.
    * @param expected the expected result of the derivative computation.
    */
   @ParameterizedTest
   @MethodSource(
       "com.trbaxter.github.fractionalcomputationapi.testdata.derivative"
-          + ".CaputoDerivativeTestData#coefficientCombinations")
-  public void testCaputoCoefficientCombinations(
-      String coefficientString, double alpha, String expected) {
-    double[] coefficients =
-        Arrays.stream(coefficientString.split(",")).mapToDouble(Double::parseDouble).toArray();
+          + ".CaputoDerivativeTestData#polynomialExpressions")
+  public void testCaputoPolynomialExpressions(
+      String polynomialExpression, double alpha, String expected) {
 
     try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
       GammaTestData.setupMathUtilsMock(utilities);
-      String result = derivativeService.evaluateExpression(coefficients, alpha);
+      String result = derivativeService.evaluateExpression(polynomialExpression, alpha);
       assertEquals(expected, result);
     }
   }
 
   /**
-   * Tests the Caputo derivative service with shared coefficient combinations.
+   * Tests the Caputo derivative service with shared polynomial expressions.
    *
-   * @param coefficientString the coefficients of the polynomial as a comma-separated string.
+   * @param polynomialExpression the polynomial expression as a string.
    * @param alpha the fractional order of the Caputo derivative.
    * @param expected the expected result of the derivative computation.
    */
   @ParameterizedTest
   @MethodSource(
       "com.trbaxter.github.fractionalcomputationapi.testdata.derivative"
-          + ".SharedDerivativeTestData#coefficientCombinations")
-  public void testSharedCoefficientCombinations(
-      String coefficientString, double alpha, String expected) {
-    double[] coefficients =
-        Arrays.stream(coefficientString.split(",")).mapToDouble(Double::parseDouble).toArray();
+          + ".SharedDerivativeTestData#polynomialExpressions")
+  public void testSharedPolynomialExpressions(
+      String polynomialExpression, double alpha, String expected) {
 
     try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
       GammaTestData.setupMathUtilsMock(utilities);
-      String result = derivativeService.evaluateExpression(coefficients, alpha);
+      String result = derivativeService.evaluateExpression(polynomialExpression, alpha);
       assertEquals(expected, result);
     }
   }
@@ -82,7 +80,7 @@ public class CaputoDerivativeServiceTest {
    */
   @Test
   public void testGammaFunctionException() {
-    double[] coefficients = {1, 2, 3};
+    String polynomialExpression = "x^2 + 2x + 3";
     double alpha = 0.5;
 
     Logger logger = Logger.getLogger(CaputoDerivativeComputationService.class.getName());
@@ -109,7 +107,7 @@ public class CaputoDerivativeServiceTest {
           .when(() -> MathUtils.gamma(any(BigDecimal.class)))
           .thenThrow(new ArithmeticException("Gamma function error"));
 
-      String result = derivativeService.evaluateExpression(coefficients, alpha);
+      String result = derivativeService.evaluateExpression(polynomialExpression, alpha);
       assertNotNull(result);
       assertTrue(logMessages.stream().anyMatch(msg -> msg.contains("Gamma function error")));
     } finally {
