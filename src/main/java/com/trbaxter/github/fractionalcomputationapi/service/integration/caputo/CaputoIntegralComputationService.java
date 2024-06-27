@@ -1,7 +1,5 @@
 package com.trbaxter.github.fractionalcomputationapi.service.integration.caputo;
 
-import static org.apache.commons.math3.special.Gamma.gamma;
-
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
 import java.math.BigDecimal;
@@ -21,95 +19,73 @@ public class CaputoIntegralComputationService {
   private static final Logger logger =
       Logger.getLogger(CaputoIntegralComputationService.class.getName());
 
-  /**
-   * Computes the terms of the Caputo fractional integral for the given polynomial coefficients and
-   * order alpha.
-   *
-   * @param coefficients the coefficients of the polynomial, must not be null.
-   * @param alpha the order of the Caputo fractional integral, must not be null.
-   * @return a list of computed terms of the Caputo fractional integral.
-   */
-  public List<Term> computeTerms(double[] coefficients, BigDecimal alpha) {
-    List<Term> terms = new ArrayList<>();
-    int degree = coefficients.length - 1;
+  public List<Term> computeTerms(List<Term> terms, BigDecimal alpha) {
+    List<Term> computedTerms = new ArrayList<>();
 
     if (alpha.compareTo(BigDecimal.ZERO) == 0) {
-      for (int i = 0; i <= degree; i++) {
-        BigDecimal coefficient = BigDecimal.valueOf(coefficients[i]);
-        BigDecimal power = BigDecimal.valueOf(degree - i);
-        terms.add(new Term(coefficient, power));
-      }
-    } else if (alpha.stripTrailingZeros().scale() <= 0) {
-      computeIntegerOrderTerms(coefficients, alpha.intValue(), terms, degree);
-    } else {
-      computeFractionalOrderTerms(coefficients, alpha, terms, degree);
+      return terms; // No change for alpha = 0
     }
 
-    terms.sort(Comparator.comparing(Term::power).reversed());
-    return terms;
-  }
+    boolean isIntegerAlpha = alpha.stripTrailingZeros().scale() <= 0;
 
-  /**
-   * Computes the terms of the integer-order integral for the given polynomial coefficients and
-   * order intAlpha.
-   *
-   * @param coefficients the coefficients of the polynomial, must not be null.
-   * @param intAlpha the integer order of the integral.
-   * @param terms the list to which computed terms will be added.
-   * @param degree the degree of the polynomial.
-   */
-  private void computeIntegerOrderTerms(
-      double[] coefficients, int intAlpha, List<Term> terms, int degree) {
-    for (int i = 0; i <= degree; i++) {
-      BigDecimal coefficient = BigDecimal.valueOf(coefficients[i]);
-      if (coefficient.compareTo(BigDecimal.ZERO) != 0) {
-        int newDegree = degree - i + intAlpha;
-        BigDecimal newCoefficient =
-            coefficient.divide(
-                BigDecimal.valueOf(gamma(newDegree + 1) / gamma(newDegree - intAlpha + 1)),
-                MathContext.DECIMAL128);
-        terms.add(new Term(newCoefficient, BigDecimal.valueOf(newDegree)));
-      }
-    }
-  }
+    for (Term term : terms) {
+      BigDecimal coefficient = term.coefficient();
+      BigDecimal k = term.power();
 
-  /**
-   * Computes the terms of the fractional-order integral for the given polynomial coefficients and
-   * order alpha.
-   *
-   * @param coefficients the coefficients of the polynomial, must not be null.
-   * @param alpha the fractional order of the integral, must not be null.
-   * @param terms the list to which computed terms will be added.
-   * @param degree the degree of the polynomial.
-   */
-  private void computeFractionalOrderTerms(
-      double[] coefficients, BigDecimal alpha, List<Term> terms, int degree) {
-    for (int i = 0; i <= degree; i++) {
-      BigDecimal coefficient = BigDecimal.valueOf(coefficients[i]);
       if (coefficient.compareTo(BigDecimal.ZERO) != 0) {
         try {
-          BigDecimal k = BigDecimal.valueOf(degree - i);
-          BigDecimal gammaNumerator = MathUtils.gamma(k.add(BigDecimal.ONE));
-          BigDecimal gammaDenominator = MathUtils.gamma(k.add(alpha).add(BigDecimal.ONE));
-          logger.info(
-              String.format(
-                  "Term %d: gammaNumerator = %s, gammaDenominator = %s",
-                  i, gammaNumerator, gammaDenominator));
-
-          if (gammaDenominator.compareTo(BigDecimal.ZERO) != 0) {
-            BigDecimal gammaCoefficient =
-                gammaNumerator.divide(gammaDenominator, MathContext.DECIMAL128);
-            BigDecimal newCoefficient = coefficient.multiply(gammaCoefficient);
-            BigDecimal newPower = k.add(alpha);
-            logger.info(
-                String.format(
-                    "Term %d: newCoefficient = %s, newPower = %s", i, newCoefficient, newPower));
-            terms.add(new Term(newCoefficient, newPower));
+          if (isIntegerAlpha) {
+            int intAlpha = alpha.intValue();
+            computeIntegerOrderTerms(coefficient, k, intAlpha, computedTerms);
+          } else {
+            computeFractionalOrderTerms(coefficient, k, alpha, computedTerms);
           }
+        } catch (ArithmeticException e) {
+          logger.severe(
+              String.format("Arithmetic error computing term %s: %s", term, e.getMessage()));
+          throw e; // Re-throw the ArithmeticException to ensure it is caught in the test
         } catch (Exception e) {
-          logger.severe(String.format("Error computing term %d: %s", i, e.getMessage()));
+          logger.severe(
+              String.format("Unexpected error computing term %s: %s", term, e.getMessage()));
+          throw e; // Re-throw the generic Exception to ensure it is caught in the test
         }
       }
+    }
+
+    computedTerms.sort(Comparator.comparing(Term::power).reversed());
+    return computedTerms;
+  }
+
+  private void computeIntegerOrderTerms(
+      BigDecimal coefficient, BigDecimal k, int intAlpha, List<Term> computedTerms) {
+    BigDecimal newCoefficient = coefficient;
+    BigDecimal newPower = k;
+
+    for (int i = 1; i <= intAlpha; i++) {
+      newPower = newPower.add(BigDecimal.ONE);
+      newCoefficient = newCoefficient.divide(newPower, MathContext.DECIMAL128);
+    }
+
+    computedTerms.add(new Term(newCoefficient, newPower));
+  }
+
+  private void computeFractionalOrderTerms(
+      BigDecimal coefficient, BigDecimal k, BigDecimal alpha, List<Term> computedTerms) {
+    BigDecimal gammaNumerator = MathUtils.gamma(k.add(BigDecimal.ONE));
+    BigDecimal gammaDenominator = MathUtils.gamma(k.add(alpha).add(BigDecimal.ONE));
+    logger.info(
+        String.format(
+            "Term %s: gammaNumerator = %s, gammaDenominator = %s",
+            k, gammaNumerator, gammaDenominator));
+
+    if (gammaDenominator.compareTo(BigDecimal.ZERO) != 0) {
+      BigDecimal gammaCoefficient = gammaNumerator.divide(gammaDenominator, MathContext.DECIMAL128);
+      BigDecimal newCoefficient = coefficient.multiply(gammaCoefficient);
+      BigDecimal newPower = k.add(alpha);
+      logger.info(
+          String.format(
+              "Term %s: newCoefficient = %s, newPower = %s", k, newCoefficient, newPower));
+      computedTerms.add(new Term(newCoefficient, newPower));
     }
   }
 }
