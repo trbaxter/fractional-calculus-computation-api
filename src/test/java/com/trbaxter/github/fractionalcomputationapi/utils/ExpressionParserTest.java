@@ -10,72 +10,84 @@ import org.junit.jupiter.api.Test;
 
 public class ExpressionParserTest {
 
-  @Test
-  public void testValidPolynomial() {
-    String polynomial = "3x^2.3543 + 2x^-0.005 + 1";
-    List<Term> terms = ExpressionParser.parse(polynomial);
+  private String polynomial;
+  private List<Term> terms;
 
-    assertEquals(3, terms.size());
-    assertEquals(new Term(new BigDecimal("3"), new BigDecimal("2.3543")), terms.get(0));
-    assertEquals(new Term(new BigDecimal("2"), new BigDecimal("-0.005")), terms.get(1));
-    assertEquals(new Term(new BigDecimal("1"), BigDecimal.ZERO), terms.get(2));
+  @Test
+  public void givenValidPolynomial_whenParsed_thenCorrectTermsReturned() {
+    polynomial = "3x^2.3543 + 2x^-0.005 + 1";
+    terms = ExpressionParser.parse(polynomial);
+
+    assertTerms(
+        terms,
+        new Term(new BigDecimal("3"), new BigDecimal("2.3543")),
+        new Term(new BigDecimal("2"), new BigDecimal("-0.005")),
+        new Term(new BigDecimal("1"), BigDecimal.ZERO));
   }
 
   @Test
-  public void testValidPolynomialWithParentheses() {
-    String polynomial = "3x^(2.3543) + 2x^(-0.005) + 1";
-    List<Term> terms = ExpressionParser.parse(polynomial);
+  public void givenValidPolynomialWithParentheses_whenParsed_thenCorrectTermsReturned() {
+    polynomial = "3x^(2.3543) + 2x^(-0.005) + 1";
+    terms = ExpressionParser.parse(polynomial);
 
-    assertEquals(3, terms.size());
-    assertEquals(new Term(new BigDecimal("3"), new BigDecimal("2.3543")), terms.get(0));
-    assertEquals(new Term(new BigDecimal("2"), new BigDecimal("-0.005")), terms.get(1));
-    assertEquals(new Term(new BigDecimal("1"), BigDecimal.ZERO), terms.get(2));
+    assertTerms(
+        terms,
+        new Term(new BigDecimal("3"), new BigDecimal("2.3543")),
+        new Term(new BigDecimal("2"), new BigDecimal("-0.005")),
+        new Term(new BigDecimal("1"), BigDecimal.ZERO));
   }
 
   @Test
-  public void testSingleTermPolynomial() {
-    String polynomial = "5x^3";
-    List<Term> terms = ExpressionParser.parse(polynomial);
+  public void givenSingleTermPolynomial_whenParsed_thenCorrectTermReturned() {
+    polynomial = "5x^3";
+    terms = ExpressionParser.parse(polynomial);
 
-    assertEquals(1, terms.size());
-    assertEquals(new Term(new BigDecimal("5"), new BigDecimal("3")), terms.getFirst());
+    assertTerms(terms, new Term(new BigDecimal("5"), new BigDecimal("3")));
   }
 
   @Test
-  public void testConstantPolynomial() {
-    String polynomial = "7";
-    List<Term> terms = ExpressionParser.parse(polynomial);
+  public void givenConstantPolynomial_whenParsed_thenCorrectTermReturned() {
+    polynomial = "7";
+    terms = ExpressionParser.parse(polynomial);
 
-    assertEquals(1, terms.size());
-    assertEquals(new Term(new BigDecimal("7"), BigDecimal.ZERO), terms.getFirst());
+    assertTerms(terms, new Term(new BigDecimal("7"), BigDecimal.ZERO));
   }
 
   @Test
-  public void testPolynomialWithNegativeCoefficients() {
-    String polynomial = "-4x^2 - 3x + 2";
-    List<Term> terms = ExpressionParser.parse(polynomial);
+  public void givenPolynomialWithNegativeCoefficients_whenParsed_thenCorrectTermsReturned() {
+    polynomial = "-4x^2 - 3x + 2";
+    terms = ExpressionParser.parse(polynomial);
 
-    assertEquals(3, terms.size());
-    assertEquals(new Term(new BigDecimal("-4"), new BigDecimal("2")), terms.get(0));
-    assertEquals(new Term(new BigDecimal("-3"), BigDecimal.ONE), terms.get(1));
-    assertEquals(new Term(new BigDecimal("2"), BigDecimal.ZERO), terms.get(2));
+    assertTerms(
+        terms,
+        new Term(new BigDecimal("-4"), new BigDecimal("2")),
+        new Term(new BigDecimal("-3"), BigDecimal.ONE),
+        new Term(new BigDecimal("2"), BigDecimal.ZERO));
   }
 
   @Test
-  public void testPolynomialWithSpaces() {
-    String polynomial = " 2x^2  + 3x - 4 ";
-    List<Term> terms = ExpressionParser.parse(polynomial);
+  public void givenPolynomialWithSpaces_whenParsed_thenCorrectTermsReturned() {
+    polynomial = " 2x^2  + 3x - 4 ";
+    terms = ExpressionParser.parse(polynomial);
 
-    assertEquals(3, terms.size());
-    assertEquals(new Term(new BigDecimal("2"), new BigDecimal("2")), terms.get(0));
-    assertEquals(new Term(new BigDecimal("3"), BigDecimal.ONE), terms.get(1));
-    assertEquals(new Term(new BigDecimal("-4"), BigDecimal.ZERO), terms.get(2));
+    assertTerms(
+        terms,
+        new Term(new BigDecimal("2"), new BigDecimal("2")),
+        new Term(new BigDecimal("3"), BigDecimal.ONE),
+        new Term(new BigDecimal("-4"), BigDecimal.ZERO));
   }
 
   @Test
-  public void testInvalidPolynomial() {
-    String polynomial = "2x^2 + 3y - 4";
+  public void givenInvalidPolynomial_whenParsed_thenExceptionThrown() {
+    polynomial = "2x^2 + 3y - 4";
 
     assertThrows(IllegalArgumentException.class, () -> ExpressionParser.parse(polynomial));
+  }
+
+  private void assertTerms(List<Term> actualTerms, Term... expectedTerms) {
+    assertEquals(expectedTerms.length, actualTerms.size());
+    for (int i = 0; i < expectedTerms.length; i++) {
+      assertEquals(expectedTerms[i], actualTerms.get(i));
+    }
   }
 }
