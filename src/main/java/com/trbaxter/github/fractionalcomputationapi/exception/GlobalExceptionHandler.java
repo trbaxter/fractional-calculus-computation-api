@@ -1,8 +1,6 @@
 package com.trbaxter.github.fractionalcomputationapi.exception;
 
 import com.trbaxter.github.fractionalcomputationapi.model.ComputationResponse;
-import java.util.HashMap;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -20,16 +18,14 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ComputationResponse> handleValidationExceptions(
       MethodArgumentNotValidException ex) {
-    Map<String, String> errors = new HashMap<>();
-    ex.getBindingResult()
-        .getAllErrors()
-        .forEach(
-            (error) -> {
-              String fieldName = ((FieldError) error).getField();
-              String errorMessage = error.getDefaultMessage();
-              errors.put(fieldName, errorMessage);
-            });
-    String errorMessage = errors.values().stream().findFirst().orElse("Validation error");
+    String errorMessage =
+        ex.getBindingResult().getAllErrors().stream()
+            .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
+            .findFirst()
+            .orElse("Validation error");
+
+    logger.warn("Validation error: {}", errorMessage);
+
     return new ResponseEntity<>(
         new ComputationResponse("Validation Error: " + errorMessage), HttpStatus.BAD_REQUEST);
   }
