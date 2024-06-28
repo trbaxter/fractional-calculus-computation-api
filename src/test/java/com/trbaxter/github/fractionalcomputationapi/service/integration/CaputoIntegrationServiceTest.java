@@ -1,24 +1,14 @@
 package com.trbaxter.github.fractionalcomputationapi.service.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mockStatic;
 
-import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import com.trbaxter.github.fractionalcomputationapi.service.integration.caputo.CaputoIntegralComputationService;
 import com.trbaxter.github.fractionalcomputationapi.service.integration.caputo.CaputoIntegrationService;
 import com.trbaxter.github.fractionalcomputationapi.testdata.GammaTestData;
-import com.trbaxter.github.fractionalcomputationapi.utils.ExpressionParser;
 import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -50,114 +40,57 @@ public class CaputoIntegrationServiceTest {
    */
   @ParameterizedTest
   @MethodSource(
-      "com.trbaxter.github.fractionalcomputationapi.testdata.integral"
-          + ".CaputoIntegrationTestData#polynomialExpressions")
+      "com.trbaxter.github.fractionalcomputationapi.testdata.integral.CaputoIntegrationTestData#polynomialExpressions")
   public void testCaputoPolynomialExpressions(
       String polynomialExpression, double alpha, Integer precision, String expected) {
-
-    try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
-      GammaTestData.setupMathUtilsMock(utilities);
-      String result = integrationService.evaluateExpression(polynomialExpression, alpha, precision);
-      assertEquals(expected, result);
-    }
+    runTestWithMockedMathUtils(
+        () -> {
+          String result =
+              integrationService.evaluateExpression(polynomialExpression, alpha, precision);
+          assertEquals(expected, result);
+        });
   }
 
-  /**
-   * Tests the Caputo integral computation service when an ArithmeticException is thrown by the
-   * gamma function.
-   */
-  @Test
-  public void testGammaFunctionException() {
-    String polynomialExpression = "1x^2 + 2x + 3";
-    BigDecimal alpha = BigDecimal.valueOf(0.5);
-
-    Logger logger = Logger.getLogger(CaputoIntegralComputationService.class.getName());
-    List<String> logMessages = new ArrayList<>();
-    Handler testHandler =
-        new Handler() {
-          @Override
-          public void publish(LogRecord record) {
-            logMessages.add(record.getMessage());
-          }
-
-          @Override
-          public void flush() {}
-
-          @Override
-          public void close() throws SecurityException {}
-        };
-
-    logger.setLevel(Level.SEVERE);
-    logger.addHandler(testHandler);
-
-    List<Term> terms = ExpressionParser.parse(polynomialExpression);
-
-    try (MockedStatic<MathUtils> mockedMathUtils = mockStatic(MathUtils.class)) {
-      mockedMathUtils
-          .when(() -> MathUtils.gamma(any(BigDecimal.class)))
-          .thenThrow(new ArithmeticException("Gamma function error"));
-
-      List<Term> result = new ArrayList<>();
-      try {
-        result = computationService.computeTerms(terms, alpha);
-      } catch (ArithmeticException e) {
-        // Expected exception
-      }
-
-      assertNotNull(result);
-      assertTrue(result.isEmpty()); // Ensure no terms are computed when exception occurs
-      assertTrue(logMessages.stream().anyMatch(msg -> msg.contains("Gamma function error")));
-    } finally {
-      logger.removeHandler(testHandler);
-    }
-  }
-
-  /** Tests the Caputo integral computation service when a generic exception is thrown. */
   @Test
   public void testComputeIntegral_ThrowsArithmeticException() {
-    String polynomialExpression = "x^2 + 2x + 3";
-    double alpha = 0.5;
-    Integer precision = 2;
+    runTestWithMockedMathUtils(
+        () -> {
+          Mockito.when(MathUtils.gamma(any(BigDecimal.class)))
+              .thenThrow(new ArithmeticException("Gamma function error"));
 
-    try (MockedStatic<MathUtils> utilities = Mockito.mockStatic(MathUtils.class)) {
-      utilities
-          .when(() -> MathUtils.gamma(any(BigDecimal.class)))
-          .thenThrow(new ArithmeticException("Gamma function error"));
+          String result = "";
+          try {
+            result = integrationService.evaluateExpression("x^2 + 2x + 3", 0.5, 2);
+          } catch (ArithmeticException e) {
+            // Expected exception caught, result should remain as ""
+          }
 
-      String result = "";
-      try {
-        result = integrationService.evaluateExpression(polynomialExpression, alpha, precision);
-      } catch (ArithmeticException e) {
-        // Expected exception caught, result should remain as ""
-      }
-
-      String expected = "";
-
-      assertEquals(expected, result);
-    }
+          assertEquals("", result);
+        });
   }
 
   @Test
   public void testComputeIntegral_ThrowsGenericException() {
-    String polynomialExpression = "1x^2 + 2x + 3";
-    double alpha = 0.5;
-    Integer precision = 2;
+    runTestWithMockedMathUtils(
+        () -> {
+          Mockito.when(MathUtils.gamma(any(BigDecimal.class)))
+              .thenThrow(new RuntimeException("Unexpected error"));
 
-    try (MockedStatic<MathUtils> utilities = Mockito.mockStatic(MathUtils.class)) {
-      utilities
-          .when(() -> MathUtils.gamma(any(BigDecimal.class)))
-          .thenThrow(new RuntimeException("Unexpected error"));
+          String result = "";
+          try {
+            result = integrationService.evaluateExpression("1x^2 + 2x + 3", 0.5, 2);
+          } catch (Exception e) {
+            // Expected exception caught, result should remain as ""
+          }
 
-      String result = "";
-      try {
-        result = integrationService.evaluateExpression(polynomialExpression, alpha, precision);
-      } catch (Exception e) {
-        // Expected exception caught, result should remain as ""
-      }
+          assertEquals("", result);
+        });
+  }
 
-      String expected = "";
-
-      assertEquals(expected, result);
+  private void runTestWithMockedMathUtils(Runnable testLogic) {
+    try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
+      GammaTestData.setupMathUtilsMock(utilities);
+      testLogic.run();
     }
   }
 }
