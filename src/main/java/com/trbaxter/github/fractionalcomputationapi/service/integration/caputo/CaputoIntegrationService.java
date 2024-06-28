@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CaputoIntegrationService implements FractionalCalculusService {
+  private static final int DEFAULT_PRECISION = 3;
   private final CaputoIntegralComputationService termComputationService;
   private final CaputoIntegralFormattingService termFormattingService;
 
@@ -28,7 +29,7 @@ public class CaputoIntegrationService implements FractionalCalculusService {
 
   @Override
   public String evaluateExpression(String polynomialExpression, double alpha, Integer precision) {
-    int actualPrecision = (precision != null) ? precision : 3;
+    int actualPrecision = (precision != null) ? precision : DEFAULT_PRECISION;
     List<Term> terms = ExpressionParser.parse(polynomialExpression);
     List<Term> computedTerms =
         termComputationService.computeTerms(terms, BigDecimal.valueOf(alpha));

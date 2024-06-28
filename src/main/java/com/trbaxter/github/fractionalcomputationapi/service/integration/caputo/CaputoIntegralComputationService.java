@@ -7,25 +7,25 @@ import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * CaputoIntegralComputationService provides methods to compute the terms of the Caputo fractional
- * integral for polynomial expressions.
+ * CaputoIntegralComputationService provides methods to compute the terms of the <br>
+ * Caputo fractional integral for polynomial expressions.
  */
 @Service
 public class CaputoIntegralComputationService {
   private static final Logger logger =
-      Logger.getLogger(CaputoIntegralComputationService.class.getName());
+      LoggerFactory.getLogger(CaputoIntegralComputationService.class);
 
   public List<Term> computeTerms(List<Term> terms, BigDecimal alpha) {
-    List<Term> computedTerms = new ArrayList<>();
-
     if (alpha.compareTo(BigDecimal.ZERO) == 0) {
-      return terms; // No change for alpha = 0
+      return terms;
     }
 
+    List<Term> computedTerms = new ArrayList<>();
     boolean isIntegerAlpha = alpha.stripTrailingZeros().scale() <= 0;
 
     for (Term term : terms) {
@@ -33,27 +33,33 @@ public class CaputoIntegralComputationService {
       BigDecimal k = term.power();
 
       if (coefficient.compareTo(BigDecimal.ZERO) != 0) {
-        try {
-          if (isIntegerAlpha) {
-            int intAlpha = alpha.intValue();
-            computeIntegerOrderTerms(coefficient, k, intAlpha, computedTerms);
-          } else {
-            computeFractionalOrderTerms(coefficient, k, alpha, computedTerms);
-          }
-        } catch (ArithmeticException e) {
-          logger.severe(
-              String.format("Arithmetic error computing term %s: %s", term, e.getMessage()));
-          throw e; // Re-throw the ArithmeticException to ensure it is caught in the test
-        } catch (Exception e) {
-          logger.severe(
-              String.format("Unexpected error computing term %s: %s", term, e.getMessage()));
-          throw e; // Re-throw the generic Exception to ensure it is caught in the test
-        }
+        computeTerm(alpha, isIntegerAlpha, computedTerms, coefficient, k);
       }
     }
 
     computedTerms.sort(Comparator.comparing(Term::power).reversed());
     return computedTerms;
+  }
+
+  private void computeTerm(
+      BigDecimal alpha,
+      boolean isIntegerAlpha,
+      List<Term> computedTerms,
+      BigDecimal coefficient,
+      BigDecimal k) {
+    try {
+      if (isIntegerAlpha) {
+        computeIntegerOrderTerms(coefficient, k, alpha.intValue(), computedTerms);
+      } else {
+        computeFractionalOrderTerms(coefficient, k, alpha, computedTerms);
+      }
+    } catch (ArithmeticException e) {
+      logger.error("Arithmetic error computing term {}: {}", k, e.getMessage());
+      throw e;
+    } catch (Exception e) {
+      logger.error("Unexpected error computing term {}: {}", k, e.getMessage());
+      throw e;
+    }
   }
 
   private void computeIntegerOrderTerms(
@@ -74,17 +80,13 @@ public class CaputoIntegralComputationService {
     BigDecimal gammaNumerator = MathUtils.gamma(k.add(BigDecimal.ONE));
     BigDecimal gammaDenominator = MathUtils.gamma(k.add(alpha).add(BigDecimal.ONE));
     logger.info(
-        String.format(
-            "Term %s: gammaNumerator = %s, gammaDenominator = %s",
-            k, gammaNumerator, gammaDenominator));
+        "Term {}: gammaNumerator = {}, gammaDenominator = {}", k, gammaNumerator, gammaDenominator);
 
     if (gammaDenominator.compareTo(BigDecimal.ZERO) != 0) {
       BigDecimal gammaCoefficient = gammaNumerator.divide(gammaDenominator, MathContext.DECIMAL128);
       BigDecimal newCoefficient = coefficient.multiply(gammaCoefficient);
       BigDecimal newPower = k.add(alpha);
-      logger.info(
-          String.format(
-              "Term %s: newCoefficient = %s, newPower = %s", k, newCoefficient, newPower));
+      logger.info("Term {}: newCoefficient = {}, newPower = {}", k, newCoefficient, newPower);
       computedTerms.add(new Term(newCoefficient, newPower));
     }
   }
