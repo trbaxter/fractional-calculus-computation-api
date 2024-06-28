@@ -26,7 +26,7 @@ user-submitted polynomial expressions using integer or fractional operational or
 
 ## Project Status
 
-This project is in active development with a current version of 1.0.0.  
+This project is in active development with a current version of 2.0.0.  
 Upcoming features include:
 
 - Support for other types of expressions (logarithms, trig identities, etc.)
@@ -113,13 +113,24 @@ All endpoints use the following request body format:
 
 ```json
 {
-  "coefficients": [],
-  "order": ""
+  "polynomialExpression": "",
+  "order": ,
+  "precision": 
 }
 ```
 
-`coefficients` - An array of polynomial coefficients of type double or integer.  
-`order` - Operation order value. Can be integer, zero, or non-integer of type double.
+<br />
+
+|       Parameter        |  Type   |                      Description                       | Required? |
+|:----------------------:|:-------:|:------------------------------------------------------:|:---------:|
+| `polynomialExpression` | String  | The polynomial expression to perform an operation on.  |    Yes    |
+|        `order`         | Double  |        The degree of the endpoint's operation.         |    Yes    |
+|      `precision`       | Integer | The number of decimal places each term should display. |    Yes    |
+
+> [!NOTE]
+> A default precision of 3 decimal places is used if `precision` is blank or missing from the 
+> request body. 
+
 
 <br />
 
@@ -158,7 +169,7 @@ Returns the closed-form expression of the Caputo fractional integral.
 
 <details>
 <summary>
-0.35724th Caputo Fractional Derivative of 4.27x² + 2.016x + 1
+0.35724th Caputo Fractional Derivative of $4.27x^2 + 2.016x + 1$
 </summary>
   
 <br />
@@ -171,8 +182,9 @@ Input:
 
 ```json
 {
-  "coefficients": [4.27, 2.016, 1],
-  "order": "0.35724"
+  "coefficients": "4.27x^2 + 2.016x + 1",
+  "order": 0.35724,
+  "precision": "2"
 }
 ```
 
@@ -182,7 +194,7 @@ API Output:
 
 ```json
 {
-  "expression": "5.782x^1.64276 + 2.242x^0.64276"
+  "expression": "5.78x^1.64276 + 2.24x^0.64276"
 }
 ```
 
@@ -197,7 +209,7 @@ Notice that the derivative of the constant term is 0 using the Caputo method.
 
 <details>
 <summary>
-3.14159th Riemann-Liouville Fractional Derivative of 3x² + 2x + 1
+3.14159th Riemann-Liouville Fractional Derivative of $-3x^(2.12) + 2x^(1.114) + 1$
 </summary>
   
 <br />
@@ -210,7 +222,7 @@ Input:
 
 ```json
 {
-  "coefficients": [3, 2, 1],
+  "coefficients": "3x^(2.12) + 2x^(1.114) + 1",
   "order": "3.14159"
 }
 ```
@@ -221,12 +233,12 @@ API Output:
 
 ```json
 {
-  "expression": "-0.769x^-1.14159 + 0.293x^-2.14159 - 0.313x^-3.14159"
+  "expression": "0.143x^-1.02159 + 0.059x^-2.02759 - 0.313x^-3.14159"
 }
 ```
 
-The derivative of a constant term using the Riemann-Liouville method does 
-<i><strong>not</strong></i> result in zero. It treats constants in the expression as 
+Be aware that the Riemann-Liouville derivative of a constant value does 
+<i><strong>not</strong></i> result in zero. <br /> It treats constants in the expression as 
 coefficients of 0th-power variables (e.g. 1x⁰ instead of just 1).
 
 </td>
@@ -251,8 +263,9 @@ Input:
 
 ```json
 {
-  "coefficients": [3, 0, -1, 12],
-  "order": "1.79"
+  "coefficients": "3x^3 - x + 12",
+  "order": "1.79",
+  "precision": 5
 }
 ```
 
@@ -262,7 +275,7 @@ Output:
 
 ```json
 {
-  "expression": "0.214x^4.79 - 0.216x^2.79 + 7.218x^1.79 + C"
+  "expression": "0.21376x^4.79 - 0.21559x^2.79 + 7.21807x^1.79 + C"
 }
 ```
 
@@ -383,7 +396,7 @@ the same amount. Why?</i>
 > <br/><br/>
 > Since $\Gamma(0)$ is undefined, this result would be omitted from the output expression. 
 > <br/>
-> This applies to negative values of the gamma function as well.
+> This applies to negative integer values of the gamma function as well.
 
 </details>
 
@@ -426,6 +439,25 @@ pull request template.
 <br />
 
 ## Changelog
+
+### Version [2.0.0] - Released 2024-06-27
+
+- Endpoints now accept strings of polynomial expressions instead of coefficient arrays, 
+expanding the API's ability to handle non-integer exponential values.
+
+
+- Exponents can be encapsulated using parentheses for visual clarity in the input 
+string if desired.
+
+
+- Users may also specify the decimal precision in the output if the default of 3 decimal 
+places is too much or too little.
+
+
+- Fixed an issue where outputs were displaying as simple strings, rather than strings within a 
+JSON object.
+
+<br />
 
 ### Version [1.0.0] - Released 2024-06-25
 

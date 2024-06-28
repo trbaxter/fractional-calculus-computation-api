@@ -18,12 +18,6 @@ public class CaputoDerivativeService implements FractionalCalculusService {
   private final CaputoDerivativeComputationService termComputationService;
   private final CaputoDerivativeFormattingService termFormattingService;
 
-  /**
-   * Constructs a CaputoDerivativeService with the specified computation and formatting services.
-   *
-   * @param termComputationService the service for computing the terms of the Caputo derivative.
-   * @param termFormattingService the service for formatting the terms of the Caputo derivative.
-   */
   @Autowired
   public CaputoDerivativeService(
       CaputoDerivativeComputationService termComputationService,
@@ -32,23 +26,12 @@ public class CaputoDerivativeService implements FractionalCalculusService {
     this.termFormattingService = termFormattingService;
   }
 
-  /**
-   * Evaluates the Caputo fractional derivative of a polynomial expression with the given
-   * coefficients and order alpha.
-   *
-   * @param terms the list of terms of the polynomial, must not be null.
-   * @param alpha the fractional order of the Caputo derivative, must be zero or positive.
-   * @return the result of the Caputo fractional derivative computation as a String.
-   */
   @Override
-  public String evaluateExpression(List<Term> terms, double alpha) {
+  public String evaluateExpression(String polynomialExpression, double alpha, Integer precision) {
+    int actualPrecision = (precision != null) ? precision : 3;
+    List<Term> terms = ExpressionParser.parse(polynomialExpression);
     List<Term> computedTerms =
         termComputationService.computeTerms(terms, BigDecimal.valueOf(alpha));
-    return termFormattingService.formatTerms(computedTerms);
-  }
-
-  public String evaluateExpression(String polynomialExpression, double alpha) {
-    List<Term> terms = ExpressionParser.parse(polynomialExpression);
-    return evaluateExpression(terms, alpha);
+    return termFormattingService.formatTerms(computedTerms, actualPrecision);
   }
 }

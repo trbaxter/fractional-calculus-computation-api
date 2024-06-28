@@ -10,15 +10,10 @@ import java.util.List;
  * polynomial terms. It includes methods to format the terms, check for zero coefficients, and
  * append terms to a result string.
  */
+@SuppressWarnings("RegExpSimplifiable")
 public abstract class BaseFormattingService {
 
-  /**
-   * Formats the given list of polynomial terms into a string representation.
-   *
-   * @param terms the list of polynomial terms to format.
-   * @return the formatted string representation of the polynomial terms.
-   */
-  public String formatTerms(List<Term> terms) {
+  public String formatTerms(List<Term> terms, int precision) {
     if (allZeroCoefficients(terms)) {
       return getZeroPolynomialResult();
     }
@@ -30,7 +25,7 @@ public abstract class BaseFormattingService {
         continue;
       }
 
-      String coefficientString = formatCoefficient(term.coefficient());
+      String coefficientString = formatCoefficient(term.coefficient(), precision);
       appendTerm(result, term, coefficientString);
     }
 
@@ -41,82 +36,69 @@ public abstract class BaseFormattingService {
     return result.toString();
   }
 
-  /**
-   * Checks if all the terms have zero coefficients.
-   *
-   * @param terms the list of polynomial terms to check.
-   * @return true if all terms have zero coefficients, false otherwise.
-   */
   private boolean allZeroCoefficients(List<Term> terms) {
     return terms.stream().allMatch(term -> term.coefficient().compareTo(BigDecimal.ZERO) == 0);
   }
 
-  /**
-   * Determines whether a term should be skipped based on its coefficient and power.
-   *
-   * @param term the term to be evaluated.
-   * @return true if the term should be skipped, false otherwise.
-   */
   protected abstract boolean shouldSkipTerm(Term term);
 
-  /**
-   * Provides the result for the derivative of a zero polynomial.
-   *
-   * @return a string representing the result for a zero polynomial.
-   */
   protected abstract String getZeroPolynomialResult();
 
-  /**
-   * Formats the coefficient by scaling it to three decimal places and stripping trailing zeros.
-   *
-   * @param coefficient the coefficient to format.
-   * @return the formatted coefficient as a string.
-   */
-  private String formatCoefficient(BigDecimal coefficient) {
-    BigDecimal scaledCoefficient = coefficient.setScale(3, RoundingMode.HALF_UP);
-    return scaledCoefficient.stripTrailingZeros().scale() <= 0
-        ? scaledCoefficient.stripTrailingZeros().toPlainString()
-        : scaledCoefficient.toPlainString().replaceAll("\\.000$", "");
-  }
+  private String formatCoefficient(BigDecimal coefficient, int precision) {
+    BigDecimal scaledCoefficient = coefficient.setScale(precision, RoundingMode.HALF_UP);
+    String coefficientString = scaledCoefficient.toPlainString();
 
-  /**
-   * Appends a term to the result string with appropriate formatting for the coefficient and power.
-   *
-   * @param result the StringBuilder to append the term to.
-   * @param term the term to append.
-   * @param coefficientString the formatted coefficient string.
-   */
-  private void appendTerm(StringBuilder result, Term term, String coefficientString) {
-    BigDecimal coefficient = term.coefficient().setScale(3, RoundingMode.HALF_UP);
+    if (coefficientString.contains(".")) {
+      String[] parts = coefficientString.split("\\.");
+      if (parts.length == 2) {
+        String integerPart = parts[0];
+        String decimalPart = parts[1];
 
-    if (coefficient.compareTo(BigDecimal.ZERO) == 0) {
-      return;
-    }
-
-    if (!result.isEmpty()) {
-      if (coefficient.compareTo(BigDecimal.ZERO) > 0) {
-        result.append(" + ");
-      } else if (coefficient.compareTo(BigDecimal.ZERO) < 0) {
-        result.append(" - ");
-        coefficientString = coefficient.abs().toPlainString().replaceAll("\\.000$", "");
+        // Check the condition for stripping zeros: only strip if decimal part matches "000..." up
+        // to precision length
+        if (decimalPart.matches("0{" + precision + "}")) {
+          return integerPart; // If decimal part is exactly "000" at the specified precision, strip
+          // it
+        }
       }
     }
 
+    return coefficientString;
+  }
+
+  private void appendTerm(StringBuilder result, Term term, String coefficientString) {
+    BigDecimal coefficient = new BigDecimal(coefficientString);
+
+    if (coefficient.compareTo(BigDecimal.ZERO) == 0) {
+      return; // Skip zero coefficients
+    }
+
+    // Handle appending of the term with correct spacing and signs
+    if (!result.isEmpty()) {
+      if (coefficient.compareTo(BigDecimal.ZERO) > 0) {
+        result.append(" + ");
+      } else {
+        result.append(" - ");
+        coefficientString = coefficient.abs().toPlainString();
+      }
+    }
+
+    // Handling coefficients like 1 or -1 specially, omitting them if they are 1 or -1 respectively
+    // with powers
     boolean omitCoefficient =
         coefficient.abs().compareTo(BigDecimal.ONE) == 0
             && term.power().compareTo(BigDecimal.ZERO) != 0;
-
     if (!omitCoefficient) {
       result.append(coefficientString);
     } else if (coefficient.compareTo(BigDecimal.ONE.negate()) == 0 && result.isEmpty()) {
       result.append("-");
     }
 
+    // Append the variable part
     if (term.power().compareTo(BigDecimal.ZERO) != 0) {
       result.append("x");
       if (term.power().compareTo(BigDecimal.ONE) != 0) {
-        String exponent = term.power().stripTrailingZeros().toPlainString();
-        result.append("^").append(exponent);
+        result.append("^").append(term.power().stripTrailingZeros().toPlainString());
       }
     }
   }

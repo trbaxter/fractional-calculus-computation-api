@@ -16,6 +16,7 @@ public final class GammaTestData {
           + "00000";
   public static final String gamma_11 = "3628800.000000000000000";
   public static final String gamma_6 = "120.000000000000000";
+  public static final String gamma_5 = "24.000000000000000";
   public static final String gamma_4_point_5 = "11.631728396567448";
   public static final String gamma_4 = "6.000000000000000";
   public static final String gamma_3_point_9 = "5.299329733809704";
@@ -79,6 +80,9 @@ public final class GammaTestData {
     utilities
         .when(() -> MathUtils.gamma(BigDecimal.valueOf(6)))
         .thenReturn(new BigDecimal(gamma_6));
+    utilities
+        .when(() -> MathUtils.gamma(BigDecimal.valueOf(5)))
+        .thenReturn(new BigDecimal(gamma_5));
     utilities
         .when(() -> MathUtils.gamma(BigDecimal.valueOf(4.5)))
         .thenReturn(new BigDecimal(gamma_4_point_5));

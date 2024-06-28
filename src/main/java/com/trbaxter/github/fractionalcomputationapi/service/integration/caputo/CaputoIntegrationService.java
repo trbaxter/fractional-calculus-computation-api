@@ -27,15 +27,11 @@ public class CaputoIntegrationService implements FractionalCalculusService {
   }
 
   @Override
-  public String evaluateExpression(String polynomialExpression, double alpha) {
+  public String evaluateExpression(String polynomialExpression, double alpha, Integer precision) {
+    int actualPrecision = (precision != null) ? precision : 3;
     List<Term> terms = ExpressionParser.parse(polynomialExpression);
-    return evaluateExpression(terms, alpha);
-  }
-
-  @Override
-  public String evaluateExpression(List<Term> terms, double alpha) {
     List<Term> computedTerms =
         termComputationService.computeTerms(terms, BigDecimal.valueOf(alpha));
-    return termFormattingService.formatTerms(computedTerms, alpha);
+    return termFormattingService.formatTerms(computedTerms, alpha, actualPrecision);
   }
 }
