@@ -23,13 +23,10 @@ public class RiemannLiouvilleDerivativeService implements FractionalCalculusServ
   }
 
   @Override
-  public String evaluateExpression(List<Term> terms, double alpha) {
-    List<Term> computedTerms = computationService.computeTerms(terms, BigDecimal.valueOf(alpha));
-    return formattingService.formatTerms(computedTerms);
-  }
-
-  public String evaluateExpression(String polynomialExpression, double alpha) {
+  public String evaluateExpression(String polynomialExpression, double alpha, Integer precision) {
+    int actualPrecision = (precision != null) ? precision : 3;
     List<Term> terms = ExpressionParser.parse(polynomialExpression);
-    return evaluateExpression(terms, alpha);
+    List<Term> computedTerms = computationService.computeTerms(terms, BigDecimal.valueOf(alpha));
+    return formattingService.formatTerms(computedTerms, actualPrecision);
   }
 }

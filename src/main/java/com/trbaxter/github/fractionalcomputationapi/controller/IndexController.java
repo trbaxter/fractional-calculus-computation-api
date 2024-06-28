@@ -1,13 +1,11 @@
 package com.trbaxter.github.fractionalcomputationapi.controller;
 
+import com.trbaxter.github.fractionalcomputationapi.model.ComputationResponse;
 import com.trbaxter.github.fractionalcomputationapi.model.ControllerRequest;
-import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import com.trbaxter.github.fractionalcomputationapi.service.derivation.caputo.CaputoDerivativeService;
 import com.trbaxter.github.fractionalcomputationapi.service.derivation.riemann_liouville.RiemannLiouvilleDerivativeService;
 import com.trbaxter.github.fractionalcomputationapi.service.integration.caputo.CaputoIntegrationService;
-import com.trbaxter.github.fractionalcomputationapi.utils.ExpressionParser;
 import jakarta.validation.Valid;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,14 +53,20 @@ public class IndexController {
    * @return result of the Caputo derivative computation or an error message.
    */
   @PostMapping("derivative/caputo")
-  public ResponseEntity<String> computeCaputoDerivative(
+  public ResponseEntity<ComputationResponse> computeCaputoDerivative(
       @Valid @RequestBody ControllerRequest request) {
     try {
-      List<Term> terms = ExpressionParser.parse(request.getPolynomialExpression());
-      String result = caputoDerivativeService.evaluateExpression(terms, request.getOrder());
-      return new ResponseEntity<>(result, HttpStatus.OK);
+      int precision =
+          (request.getPrecision() != null && request.getPrecision() > 0)
+              ? request.getPrecision()
+              : 3;
+      String result =
+          caputoDerivativeService.evaluateExpression(
+              request.getPolynomialExpression(), request.getOrder(), precision);
+      return new ResponseEntity<>(new ComputationResponse(result), HttpStatus.OK);
     } catch (Exception e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>(
+          new ComputationResponse("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -73,15 +77,20 @@ public class IndexController {
    * @return result of the Riemann-Liouville derivative computation or an error message.
    */
   @PostMapping("derivative/riemann-liouville")
-  public ResponseEntity<String> computeRiemannLiouvilleDerivative(
+  public ResponseEntity<ComputationResponse> computeRiemannLiouvilleDerivative(
       @Valid @RequestBody ControllerRequest request) {
     try {
-      List<Term> terms = ExpressionParser.parse(request.getPolynomialExpression());
+      int precision =
+          (request.getPrecision() != null && request.getPrecision() > 0)
+              ? request.getPrecision()
+              : 3;
       String result =
-          riemannLiouvilleDerivativeService.evaluateExpression(terms, request.getOrder());
-      return new ResponseEntity<>(result, HttpStatus.OK);
+          riemannLiouvilleDerivativeService.evaluateExpression(
+              request.getPolynomialExpression(), request.getOrder(), precision);
+      return new ResponseEntity<>(new ComputationResponse(result), HttpStatus.OK);
     } catch (Exception e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>(
+          new ComputationResponse("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -92,14 +101,20 @@ public class IndexController {
    * @return result of the Caputo integral computation or an error message.
    */
   @PostMapping("integral/caputo")
-  public ResponseEntity<String> computeCaputoIntegral(
+  public ResponseEntity<ComputationResponse> computeCaputoIntegral(
       @Valid @RequestBody ControllerRequest request) {
     try {
-      List<Term> terms = ExpressionParser.parse(request.getPolynomialExpression());
-      String result = caputoIntegrationService.evaluateExpression(terms, request.getOrder());
-      return new ResponseEntity<>(result, HttpStatus.OK);
+      int precision =
+          (request.getPrecision() != null && request.getPrecision() > 0)
+              ? request.getPrecision()
+              : 3;
+      String result =
+          caputoIntegrationService.evaluateExpression(
+              request.getPolynomialExpression(), request.getOrder(), precision);
+      return new ResponseEntity<>(new ComputationResponse(result), HttpStatus.OK);
     } catch (Exception e) {
-      return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>(
+          new ComputationResponse("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

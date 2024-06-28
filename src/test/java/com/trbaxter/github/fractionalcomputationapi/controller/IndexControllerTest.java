@@ -2,17 +2,13 @@ package com.trbaxter.github.fractionalcomputationapi.controller;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trbaxter.github.fractionalcomputationapi.model.ControllerRequest;
-import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import com.trbaxter.github.fractionalcomputationapi.service.derivation.caputo.CaputoDerivativeService;
 import com.trbaxter.github.fractionalcomputationapi.service.derivation.riemann_liouville.RiemannLiouvilleDerivativeService;
 import com.trbaxter.github.fractionalcomputationapi.service.integration.caputo.CaputoIntegrationService;
-import com.trbaxter.github.fractionalcomputationapi.utils.ExpressionParser;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -54,12 +50,14 @@ public class IndexControllerTest {
   public void testComputeCaputoDerivative() throws Exception {
     String polynomialExpression = "3x^2 + 2x + 1";
     double alpha = 0.5;
+    Integer precision = 3;
+
     ControllerRequest request = new ControllerRequest();
     request.setPolynomialExpression(polynomialExpression);
     request.setOrder(alpha);
+    request.setPrecision(precision);
 
-    List<Term> terms = ExpressionParser.parse(polynomialExpression);
-    when(caputoDerivativeService.evaluateExpression(terms, alpha))
+    when(caputoDerivativeService.evaluateExpression(polynomialExpression, alpha, precision))
         .thenReturn("4.514x^1.5 + 2.257x^0.5");
 
     mockMvc
@@ -68,7 +66,7 @@ public class IndexControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isOk())
-        .andExpect(content().string("4.514x^1.5 + 2.257x^0.5"));
+        .andExpect(jsonPath("$.expression").value("4.514x^1.5 + 2.257x^0.5"));
   }
 
   /**
@@ -80,12 +78,15 @@ public class IndexControllerTest {
   public void testComputeRiemannLiouvilleDerivative() throws Exception {
     String polynomialExpression = "3x^2 + 2x + 1";
     double alpha = 0.5;
+    Integer precision = 3;
+
     ControllerRequest request = new ControllerRequest();
     request.setPolynomialExpression(polynomialExpression);
     request.setOrder(alpha);
+    request.setPrecision(precision);
 
-    List<Term> terms = ExpressionParser.parse(polynomialExpression);
-    when(riemannLiouvilleDerivativeService.evaluateExpression(terms, alpha))
+    when(riemannLiouvilleDerivativeService.evaluateExpression(
+            polynomialExpression, alpha, precision))
         .thenReturn("4.514x^1.5 + 2.257x^0.5 + 0.564x^-0.5");
 
     mockMvc
@@ -94,7 +95,7 @@ public class IndexControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isOk())
-        .andExpect(content().string("4.514x^1.5 + 2.257x^0.5 + 0.564x^-0.5"));
+        .andExpect(jsonPath("$.expression").value("4.514x^1.5 + 2.257x^0.5 + 0.564x^-0.5"));
   }
 
   /**
@@ -106,12 +107,14 @@ public class IndexControllerTest {
   public void testComputeCaputoIntegral() throws Exception {
     String polynomialExpression = "3x^2 + 2x + 1";
     double alpha = 0.5;
+    Integer precision = 3;
+
     ControllerRequest request = new ControllerRequest();
     request.setPolynomialExpression(polynomialExpression);
     request.setOrder(alpha);
+    request.setPrecision(precision);
 
-    List<Term> terms = ExpressionParser.parse(polynomialExpression);
-    when(caputoIntegrationService.evaluateExpression(terms, alpha))
+    when(caputoIntegrationService.evaluateExpression(polynomialExpression, alpha, precision))
         .thenReturn("1.805x^2.5 + 1.505x^1.5 + 1.128x^0.5 + C");
 
     mockMvc
@@ -120,7 +123,7 @@ public class IndexControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isOk())
-        .andExpect(content().string("1.805x^2.5 + 1.505x^1.5 + 1.128x^0.5 + C"));
+        .andExpect(jsonPath("$.expression").value("1.805x^2.5 + 1.505x^1.5 + 1.128x^0.5 + C"));
   }
 
   /**
@@ -133,6 +136,7 @@ public class IndexControllerTest {
     ControllerRequest request = new ControllerRequest();
     request.setPolynomialExpression(null);
     request.setOrder(0.5);
+    request.setPrecision(3);
 
     mockMvc
         .perform(
@@ -151,12 +155,14 @@ public class IndexControllerTest {
   public void testCaputoDerivativeInternalServerError() throws Exception {
     String polynomialExpression = "3x^2 + 2x + 1";
     double alpha = 0.5;
+    Integer precision = 3;
+
     ControllerRequest request = new ControllerRequest();
     request.setPolynomialExpression(polynomialExpression);
     request.setOrder(alpha);
+    request.setPrecision(precision);
 
-    List<Term> terms = ExpressionParser.parse(polynomialExpression);
-    when(caputoDerivativeService.evaluateExpression(terms, alpha))
+    when(caputoDerivativeService.evaluateExpression(polynomialExpression, alpha, precision))
         .thenThrow(new RuntimeException("Internal Server Error"));
 
     mockMvc
@@ -165,7 +171,7 @@ public class IndexControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isInternalServerError())
-        .andExpect(content().string("Internal Server Error"));
+        .andExpect(content().json("{\"expression\": \"Internal Server Error\"}"));
   }
 
   /**
@@ -177,12 +183,14 @@ public class IndexControllerTest {
   public void testRiemannLiouvilleDerivativeInternalServerError() throws Exception {
     String polynomialExpression = "3x^2 + 2x + 1";
     double alpha = 0.5;
+    Integer precision = 3;
     ControllerRequest request = new ControllerRequest();
     request.setPolynomialExpression(polynomialExpression);
     request.setOrder(alpha);
+    request.setPrecision(3);
 
-    List<Term> terms = ExpressionParser.parse(polynomialExpression);
-    when(riemannLiouvilleDerivativeService.evaluateExpression(terms, alpha))
+    when(riemannLiouvilleDerivativeService.evaluateExpression(
+            polynomialExpression, alpha, precision))
         .thenThrow(new RuntimeException("Internal Server Error"));
 
     mockMvc
@@ -191,7 +199,7 @@ public class IndexControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isInternalServerError())
-        .andExpect(content().string("Internal Server Error"));
+        .andExpect(content().json("{\"expression\": \"Internal Server Error\"}"));
   }
 
   /**
@@ -203,12 +211,13 @@ public class IndexControllerTest {
   public void testCaputoIntegralInternalServerError() throws Exception {
     String polynomialExpression = "3x^2 + 2x + 1";
     double alpha = 0.5;
+    Integer precision = 3;
     ControllerRequest request = new ControllerRequest();
     request.setPolynomialExpression(polynomialExpression);
     request.setOrder(alpha);
+    request.setPrecision(3);
 
-    List<Term> terms = ExpressionParser.parse(polynomialExpression);
-    when(caputoIntegrationService.evaluateExpression(terms, alpha))
+    when(caputoIntegrationService.evaluateExpression(polynomialExpression, alpha, precision))
         .thenThrow(new RuntimeException("Internal Server Error"));
 
     mockMvc
@@ -217,6 +226,6 @@ public class IndexControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
         .andExpect(status().isInternalServerError())
-        .andExpect(content().string("Internal Server Error"));
+        .andExpect(content().json("{\"expression\": \"Internal Server Error\"}"));
   }
 }

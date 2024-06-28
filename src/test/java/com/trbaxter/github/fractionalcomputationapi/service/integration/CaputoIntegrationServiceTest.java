@@ -53,11 +53,11 @@ public class CaputoIntegrationServiceTest {
       "com.trbaxter.github.fractionalcomputationapi.testdata.integral"
           + ".CaputoIntegrationTestData#polynomialExpressions")
   public void testCaputoPolynomialExpressions(
-      String polynomialExpression, double alpha, String expected) {
+      String polynomialExpression, double alpha, Integer precision, String expected) {
 
     try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
       GammaTestData.setupMathUtilsMock(utilities);
-      String result = integrationService.evaluateExpression(polynomialExpression, alpha);
+      String result = integrationService.evaluateExpression(polynomialExpression, alpha, precision);
       assertEquals(expected, result);
     }
   }
@@ -117,6 +117,7 @@ public class CaputoIntegrationServiceTest {
   public void testComputeIntegral_ThrowsArithmeticException() {
     String polynomialExpression = "x^2 + 2x + 3";
     double alpha = 0.5;
+    Integer precision = 2;
 
     try (MockedStatic<MathUtils> utilities = Mockito.mockStatic(MathUtils.class)) {
       utilities
@@ -125,7 +126,7 @@ public class CaputoIntegrationServiceTest {
 
       String result = "";
       try {
-        result = integrationService.evaluateExpression(polynomialExpression, alpha);
+        result = integrationService.evaluateExpression(polynomialExpression, alpha, precision);
       } catch (ArithmeticException e) {
         // Expected exception caught, result should remain as ""
       }
@@ -140,6 +141,7 @@ public class CaputoIntegrationServiceTest {
   public void testComputeIntegral_ThrowsGenericException() {
     String polynomialExpression = "1x^2 + 2x + 3";
     double alpha = 0.5;
+    Integer precision = 2;
 
     try (MockedStatic<MathUtils> utilities = Mockito.mockStatic(MathUtils.class)) {
       utilities
@@ -148,7 +150,7 @@ public class CaputoIntegrationServiceTest {
 
       String result = "";
       try {
-        result = integrationService.evaluateExpression(polynomialExpression, alpha);
+        result = integrationService.evaluateExpression(polynomialExpression, alpha, precision);
       } catch (Exception e) {
         // Expected exception caught, result should remain as ""
       }

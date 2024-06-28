@@ -38,11 +38,11 @@ public class RiemannLiouvilleDerivativeServiceTest {
       "com.trbaxter.github.fractionalcomputationapi.testdata.derivative"
           + ".RiemannLiouvilleDerivativeTestData#polynomialExpressions")
   public void testPolynomialExpressions(
-      String polynomialExpression, double alpha, String expected) {
+      String polynomialExpression, double alpha, Integer precision, String expected) {
 
     try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
       GammaTestData.setupMathUtilsMock(utilities);
-      String result = derivativeService.evaluateExpression(polynomialExpression, alpha);
+      String result = derivativeService.evaluateExpression(polynomialExpression, alpha, precision);
       assertEquals(expected, result);
     }
   }
@@ -59,11 +59,11 @@ public class RiemannLiouvilleDerivativeServiceTest {
       "com.trbaxter.github.fractionalcomputationapi.testdata.derivative"
           + ".SharedDerivativeTestData#polynomialExpressions")
   public void testSharedPolynomialExpressions(
-      String polynomialExpression, double alpha, String expected) {
+      String polynomialExpression, double alpha, Integer precision, String expected) {
 
     try (MockedStatic<MathUtils> utilities = mockStatic(MathUtils.class)) {
       GammaTestData.setupMathUtilsMock(utilities);
-      String result = derivativeService.evaluateExpression(polynomialExpression, alpha);
+      String result = derivativeService.evaluateExpression(polynomialExpression, alpha, precision);
       assertEquals(expected, result);
     }
   }
@@ -73,6 +73,7 @@ public class RiemannLiouvilleDerivativeServiceTest {
   public void testComputeDerivative_ThrowsArithmeticException() {
     String polynomialExpression = "3x^2 + 2x + 1";
     double alpha = 0.5;
+    Integer precision = 2;
 
     try (MockedStatic<MathUtils> utilities = Mockito.mockStatic(MathUtils.class)) {
       utilities
@@ -84,7 +85,7 @@ public class RiemannLiouvilleDerivativeServiceTest {
 
       String result;
       try {
-        result = derivativeService.evaluateExpression(polynomialExpression, alpha);
+        result = derivativeService.evaluateExpression(polynomialExpression, alpha, precision);
       } catch (ArithmeticException e) {
         result = "";
       }
@@ -99,6 +100,7 @@ public class RiemannLiouvilleDerivativeServiceTest {
   public void testComputeDerivative_ThrowsGenericException() {
     String polynomialExpression = "x^2 + 2x + 3";
     double alpha = 0.5;
+    Integer precision = 2;
 
     try (MockedStatic<MathUtils> utilities = Mockito.mockStatic(MathUtils.class)) {
       utilities
@@ -107,7 +109,7 @@ public class RiemannLiouvilleDerivativeServiceTest {
 
       String result;
       try {
-        result = derivativeService.evaluateExpression(polynomialExpression, alpha);
+        result = derivativeService.evaluateExpression(polynomialExpression, alpha, precision);
       } catch (RuntimeException e) {
         result = "";
       }
