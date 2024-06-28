@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RiemannLiouvilleDerivativeService implements FractionalCalculusService {
+  private static final int DEFAULT_PRECISION = 3;
 
   private final RiemannLiouvilleComputationService computationService;
   private final RiemannLiouvilleFormattingService formattingService;
@@ -24,7 +25,7 @@ public class RiemannLiouvilleDerivativeService implements FractionalCalculusServ
 
   @Override
   public String evaluateExpression(String polynomialExpression, double alpha, Integer precision) {
-    int actualPrecision = (precision != null) ? precision : 3;
+    int actualPrecision = (precision != null) ? precision : DEFAULT_PRECISION;
     List<Term> terms = ExpressionParser.parse(polynomialExpression);
     List<Term> computedTerms = computationService.computeTerms(terms, BigDecimal.valueOf(alpha));
     return formattingService.formatTerms(computedTerms, actualPrecision);
