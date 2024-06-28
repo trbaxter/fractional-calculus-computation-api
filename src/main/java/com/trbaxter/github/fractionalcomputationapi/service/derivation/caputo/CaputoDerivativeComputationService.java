@@ -7,7 +7,8 @@ import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,16 +18,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CaputoDerivativeComputationService {
   private static final Logger logger =
-      Logger.getLogger(CaputoDerivativeComputationService.class.getName());
+      LoggerFactory.getLogger(CaputoDerivativeComputationService.class);
 
-  /**
-   * Computes the terms of the Caputo fractional derivative for the given polynomial terms and order
-   * alpha.
-   *
-   * @param terms the list of terms of the polynomial, must not be null.
-   * @param alpha the order of the Caputo fractional derivative, must not be null.
-   * @return a list of computed terms of the Caputo fractional derivative.
-   */
   public List<Term> computeTerms(List<Term> terms, BigDecimal alpha) {
     List<Term> computedTerms = new ArrayList<>();
 
@@ -42,14 +35,6 @@ public class CaputoDerivativeComputationService {
     return computedTerms;
   }
 
-  /**
-   * Computes the terms for an integer-order derivative for the given polynomial terms and order
-   * intAlpha.
-   *
-   * @param terms the list of terms of the polynomial, must not be null.
-   * @param intAlpha the integer order of the derivative.
-   * @param computedTerms the list to which computed terms will be added.
-   */
   private void computeIntegerOrderDerivativeTerms(
       List<Term> terms, int intAlpha, List<Term> computedTerms) {
     for (Term term : terms) {
@@ -70,14 +55,6 @@ public class CaputoDerivativeComputationService {
     }
   }
 
-  /**
-   * Computes the terms for a fractional-order derivative for the given polynomial terms and order
-   * alpha.
-   *
-   * @param terms the list of terms of the polynomial, must not be null.
-   * @param alpha the fractional order of the derivative, must not be null.
-   * @param computedTerms the list to which computed terms will be added.
-   */
   private void computeFractionalOrderDerivativeTerms(
       List<Term> terms, BigDecimal alpha, List<Term> computedTerms) {
     for (Term term : terms) {
@@ -89,9 +66,10 @@ public class CaputoDerivativeComputationService {
           BigDecimal gammaNumerator = MathUtils.gamma(k.add(BigDecimal.ONE));
           BigDecimal gammaDenominator = MathUtils.gamma(k.subtract(alpha).add(BigDecimal.ONE));
           logger.info(
-              String.format(
-                  "Term with power %s: gammaNumerator = %s, gammaDenominator = %s",
-                  k, gammaNumerator, gammaDenominator));
+              "Term with power {}: gammaNumerator = {}, gammaDenominator = {}",
+              k,
+              gammaNumerator,
+              gammaDenominator);
 
           if (gammaDenominator.compareTo(BigDecimal.ZERO) != 0) {
             BigDecimal gammaCoefficient =
@@ -99,12 +77,11 @@ public class CaputoDerivativeComputationService {
             BigDecimal newCoefficient = coefficient.multiply(gammaCoefficient);
             BigDecimal newPower = k.subtract(alpha);
             logger.info(
-                String.format(
-                    "Computed Term: newCoefficient = %s, newPower = %s", newCoefficient, newPower));
+                "Computed Term: newCoefficient = {}, newPower = {}", newCoefficient, newPower);
             computedTerms.add(new Term(newCoefficient, newPower));
           }
         } catch (Exception e) {
-          logger.severe(String.format("Error computing term with power %s: %s", k, e.getMessage()));
+          logger.error("Error computing term with power {}: {}", k, e.getMessage(), e);
         }
       }
     }
