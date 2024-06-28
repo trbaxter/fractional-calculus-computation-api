@@ -54,11 +54,8 @@ public abstract class BaseFormattingService {
         String integerPart = parts[0];
         String decimalPart = parts[1];
 
-        // Check the condition for stripping zeros: only strip if decimal part matches "000..." up
-        // to precision length
         if (decimalPart.matches("0{" + precision + "}")) {
-          return integerPart; // If decimal part is exactly "000" at the specified precision, strip
-          // it
+          return integerPart;
         }
       }
     }
@@ -70,10 +67,15 @@ public abstract class BaseFormattingService {
     BigDecimal coefficient = new BigDecimal(coefficientString);
 
     if (coefficient.compareTo(BigDecimal.ZERO) == 0) {
-      return; // Skip zero coefficients
+      return;
     }
 
-    // Handle appending of the term with correct spacing and signs
+    appendSignAndCoefficient(result, coefficient, coefficientString, term.power());
+    appendVariablePart(result, term);
+  }
+
+  private void appendSignAndCoefficient(
+      StringBuilder result, BigDecimal coefficient, String coefficientString, BigDecimal power) {
     if (!result.isEmpty()) {
       if (coefficient.compareTo(BigDecimal.ZERO) > 0) {
         result.append(" + ");
@@ -83,18 +85,19 @@ public abstract class BaseFormattingService {
       }
     }
 
-    // Handling coefficients like 1 or -1 specially, omitting them if they are 1 or -1 respectively
-    // with powers
-    boolean omitCoefficient =
-        coefficient.abs().compareTo(BigDecimal.ONE) == 0
-            && term.power().compareTo(BigDecimal.ZERO) != 0;
-    if (!omitCoefficient) {
+    if (shouldAppendCoefficient(coefficient, power)) {
       result.append(coefficientString);
     } else if (coefficient.compareTo(BigDecimal.ONE.negate()) == 0 && result.isEmpty()) {
       result.append("-");
     }
+  }
 
-    // Append the variable part
+  private boolean shouldAppendCoefficient(BigDecimal coefficient, BigDecimal power) {
+    return coefficient.abs().compareTo(BigDecimal.ONE) != 0
+        || power.compareTo(BigDecimal.ZERO) == 0;
+  }
+
+  private void appendVariablePart(StringBuilder result, Term term) {
     if (term.power().compareTo(BigDecimal.ZERO) != 0) {
       result.append("x");
       if (term.power().compareTo(BigDecimal.ONE) != 0) {
