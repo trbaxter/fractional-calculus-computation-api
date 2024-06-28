@@ -7,20 +7,22 @@ import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RiemannLiouvilleComputationService {
 
   private static final Logger logger =
-      Logger.getLogger(RiemannLiouvilleComputationService.class.getName());
+      LoggerFactory.getLogger(RiemannLiouvilleComputationService.class);
 
   public List<Term> computeTerms(List<Term> terms, BigDecimal alpha) {
     List<Term> computedTerms = new ArrayList<>();
 
-    // Differentiate if alpha is an integer
-    if (alpha.stripTrailingZeros().scale() <= 0) {
+    if (alpha.compareTo(BigDecimal.ZERO) == 0) {
+      computedTerms.addAll(terms);
+    } else if (alpha.stripTrailingZeros().scale() <= 0) {
       computeIntegerOrderDerivativeTerms(terms, alpha.intValue(), computedTerms);
     } else {
       computeFractionalOrderDerivativeTerms(terms, alpha, computedTerms);
@@ -28,8 +30,7 @@ public class RiemannLiouvilleComputationService {
 
     computedTerms.sort(Comparator.comparing(Term::power).reversed());
 
-    // If alpha is a whole number and no terms are left, return a zero term
-    if (alpha.stripTrailingZeros().scale() <= 0 && computedTerms.isEmpty()) {
+    if (alpha.compareTo(BigDecimal.ZERO) == 0 && computedTerms.isEmpty()) {
       computedTerms.add(new Term(BigDecimal.ZERO, BigDecimal.ZERO));
     }
 
@@ -65,11 +66,12 @@ public class RiemannLiouvilleComputationService {
       if (coefficient.compareTo(BigDecimal.ZERO) != 0) {
         try {
           BigDecimal gammaNumerator = MathUtils.gamma(k.add(BigDecimal.ONE));
-          BigDecimal gammaDenominator = MathUtils.gamma(k.add(BigDecimal.ONE).subtract(alpha));
+          BigDecimal gammaDenominator = MathUtils.gamma(k.subtract(alpha).add(BigDecimal.ONE));
           logger.info(
-              String.format(
-                  "Term with power %s: gammaNumerator = %s, gammaDenominator = %s",
-                  k, gammaNumerator, gammaDenominator));
+              "Term with power {}: gammaNumerator = {}, gammaDenominator = {}",
+              k,
+              gammaNumerator,
+              gammaDenominator);
 
           if (gammaDenominator.compareTo(BigDecimal.ZERO) != 0) {
             BigDecimal gammaCoefficient =
@@ -77,20 +79,11 @@ public class RiemannLiouvilleComputationService {
             BigDecimal newCoefficient = coefficient.multiply(gammaCoefficient);
             BigDecimal newPower = k.subtract(alpha);
             logger.info(
-                String.format(
-                    "Computed Term: newCoefficient = %s, newPower = %s", newCoefficient, newPower));
+                "Computed Term: newCoefficient = {}, newPower = {}", newCoefficient, newPower);
             computedTerms.add(new Term(newCoefficient, newPower));
           }
-        } catch (ArithmeticException e) {
-          logger.severe(
-              String.format(
-                  "Arithmetic error computing term with power %s: %s", k, e.getMessage()));
-          throw e;
         } catch (Exception e) {
-          logger.severe(
-              String.format(
-                  "Unexpected error computing term with power %s: %s", k, e.getMessage()));
-          throw new RuntimeException(e);
+          logger.error("Error computing term with power {}: {}", k, e.getMessage(), e);
         }
       }
     }
