@@ -45,10 +45,10 @@ public class ControllerRequestTest {
    */
   private static Stream<Arguments> provideInvalidRequests() {
     return Stream.of(
-        Arguments.of(null, 0.5, "Polynomial expression must not be empty or null"),
-        Arguments.of("", 0.5, "Polynomial expression must not be empty or null"),
-        Arguments.of("x + 1", -0.5, "Order must be zero or positive"),
-        Arguments.of("x + 1", Double.NaN, "Order must be zero or positive"));
+        Arguments.of(null, 0.5, "Polynomial expression cannot be null"),
+        Arguments.of("", 0.5, "Polynomial expression cannot be blank"),
+        Arguments.of("x + 1", -0.5, "Order must be positive or zero"),
+        Arguments.of("x + 1", Double.NaN, "Order must be positive or zero"));
   }
 
   /**
