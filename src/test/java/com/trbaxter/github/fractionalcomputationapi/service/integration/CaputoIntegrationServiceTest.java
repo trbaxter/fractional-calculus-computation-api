@@ -69,6 +69,7 @@ public class CaputoIntegrationServiceTest {
         });
   }
 
+  /** Tests the Caputo integral computation service when a generic exception is thrown. */
   @Test
   public void testComputeIntegral_ThrowsGenericException() {
     runTestWithMockedMathUtils(
