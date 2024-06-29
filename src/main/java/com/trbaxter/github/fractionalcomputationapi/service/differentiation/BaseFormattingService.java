@@ -1,4 +1,4 @@
-package com.trbaxter.github.fractionalcomputationapi.service.derivation;
+package com.trbaxter.github.fractionalcomputationapi.service.differentiation;
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import java.math.BigDecimal;
@@ -63,7 +63,7 @@ public abstract class BaseFormattingService {
     return coefficientString;
   }
 
-  private void appendTerm(StringBuilder result, Term term, String coefficientString) {
+  protected void appendTerm(StringBuilder result, Term term, String coefficientString) {
     BigDecimal coefficient = new BigDecimal(coefficientString);
 
     if (coefficient.compareTo(BigDecimal.ZERO) == 0) {
@@ -93,8 +93,7 @@ public abstract class BaseFormattingService {
   }
 
   private boolean shouldAppendCoefficient(BigDecimal coefficient, BigDecimal power) {
-    return coefficient.abs().compareTo(BigDecimal.ONE) != 0
-        || power.compareTo(BigDecimal.ZERO) == 0;
+    return coefficient.abs().compareTo(BigDecimal.ONE) != 0 || power.compareTo(BigDecimal.ZERO) == 0;
   }
 
   private void appendVariablePart(StringBuilder result, Term term) {
