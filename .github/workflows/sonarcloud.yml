@@ -44,7 +44,9 @@ jobs:
       - name: SonarCloud Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn sonar:sonar \
-          -Dsonar.projectKey=trbaxter_fractional-calculus-computation-api \
-          -Dsonar.organization=trbaxter \
-          -Dsonar.host.url=https://sonarcloud.io
+        run: |
+          mvn sonar:sonar \
+            -Dsonar.projectKey=trbaxter_fractional-calculus-computation-api \
+            -Dsonar.organization=trbaxter \
+            -Dsonar.host.url=https://sonarcloud.io
+        shell: bash
