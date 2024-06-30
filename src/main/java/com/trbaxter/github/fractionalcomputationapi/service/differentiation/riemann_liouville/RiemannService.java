@@ -1,4 +1,4 @@
-package com.trbaxter.github.fractionalcomputationapi.service.derivation.riemann_liouville;
+package com.trbaxter.github.fractionalcomputationapi.service.differentiation.riemann_liouville;
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import com.trbaxter.github.fractionalcomputationapi.service.FractionalCalculusService;
@@ -9,25 +9,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RiemannLiouvilleDerivativeService implements FractionalCalculusService {
-  private static final int DEFAULT_PRECISION = 3;
+public class RiemannService implements FractionalCalculusService {
 
-  private final RiemannLiouvilleComputationService computationService;
-  private final RiemannLiouvilleFormattingService formattingService;
+  private final RiemannComputationService computationService;
+  private final RiemannFormattingService formattingService;
 
   @Autowired
-  public RiemannLiouvilleDerivativeService(
-      RiemannLiouvilleComputationService computationService,
-      RiemannLiouvilleFormattingService formattingService) {
+  public RiemannService(
+      RiemannComputationService computationService, RiemannFormattingService formattingService) {
     this.computationService = computationService;
     this.formattingService = formattingService;
   }
 
   @Override
   public String evaluateExpression(String polynomialExpression, double alpha, Integer precision) {
-    int actualPrecision = (precision != null) ? precision : DEFAULT_PRECISION;
     List<Term> terms = ExpressionParser.parse(polynomialExpression);
     List<Term> computedTerms = computationService.computeTerms(terms, BigDecimal.valueOf(alpha));
-    return formattingService.formatTerms(computedTerms, actualPrecision);
+    return formattingService.formatTerms(computedTerms, precision);
   }
 }
