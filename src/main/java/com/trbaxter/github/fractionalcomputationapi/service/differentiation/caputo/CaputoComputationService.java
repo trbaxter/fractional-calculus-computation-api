@@ -1,4 +1,4 @@
-package com.trbaxter.github.fractionalcomputationapi.service.derivation.caputo;
+package com.trbaxter.github.fractionalcomputationapi.service.differentiation.caputo;
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
@@ -16,9 +16,8 @@ import org.springframework.stereotype.Service;
  * derivative for polynomial expressions.
  */
 @Service
-public class CaputoDerivativeComputationService {
-  private static final Logger logger =
-      LoggerFactory.getLogger(CaputoDerivativeComputationService.class);
+public class CaputoComputationService {
+  private static final Logger logger = LoggerFactory.getLogger(CaputoComputationService.class);
 
   public List<Term> computeTerms(List<Term> terms, BigDecimal alpha) {
     List<Term> computedTerms = new ArrayList<>();
