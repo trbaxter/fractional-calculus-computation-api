@@ -1,4 +1,4 @@
-package com.trbaxter.github.fractionalcomputationapi.service.integration.caputo;
+package com.trbaxter.github.fractionalcomputationapi.service.integration;
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
@@ -16,9 +16,8 @@ import org.springframework.stereotype.Service;
  * Caputo fractional integral for polynomial expressions.
  */
 @Service
-public class CaputoIntegralComputationService {
-  private static final Logger logger =
-      LoggerFactory.getLogger(CaputoIntegralComputationService.class);
+public class IntegralComputationService {
+  private static final Logger logger = LoggerFactory.getLogger(IntegralComputationService.class);
 
   public List<Term> computeTerms(List<Term> terms, BigDecimal alpha) {
     if (alpha.compareTo(BigDecimal.ZERO) == 0) {
