@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 /** TermTest tests the creation and behavior of Term instances. */
-public class TermTest {
+class TermTest {
 
   /**
    * Provides valid Term instances for parameterized tests.
@@ -33,7 +33,7 @@ public class TermTest {
    */
   @ParameterizedTest
   @MethodSource("provideValidTerms")
-  public void testTermRecord(BigDecimal coefficient, BigDecimal power) {
+  void testTermRecord(BigDecimal coefficient, BigDecimal power) {
     Term term = new Term(coefficient, power);
     assertEquals(coefficient, term.coefficient());
     assertEquals(power, term.power());
@@ -41,8 +41,12 @@ public class TermTest {
 
   /** Tests the creation of Term instances with null values. */
   @Test
-  public void testTermRecordNullValues() {
-    assertThrows(NullPointerException.class, () -> new Term(null, new BigDecimal("2.0")));
-    assertThrows(NullPointerException.class, () -> new Term(new BigDecimal("3.5"), null));
+  void testTermRecordNullValues() {
+    assertThrows(NullPointerException.class, () -> createTerm(null, new BigDecimal("2.0")));
+    assertThrows(NullPointerException.class, () -> createTerm(new BigDecimal("3.5"), null));
+  }
+
+  private void createTerm(BigDecimal coefficient, BigDecimal exponent) {
+    new Term(coefficient, exponent);
   }
 }
