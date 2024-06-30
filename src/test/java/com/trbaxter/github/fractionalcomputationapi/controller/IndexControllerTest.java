@@ -7,19 +7,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trbaxter.github.fractionalcomputationapi.model.ControllerRequest;
-import com.trbaxter.github.fractionalcomputationapi.service.derivation.caputo.CaputoDerivativeService;
-import com.trbaxter.github.fractionalcomputationapi.service.derivation.riemann_liouville.RiemannLiouvilleDerivativeService;
-import com.trbaxter.github.fractionalcomputationapi.service.integration.caputo.CaputoIntegrationService;
-import com.trbaxter.github.fractionalcomputationapi.testdata.UnknownService;
+import com.trbaxter.github.fractionalcomputationapi.service.differentiation.caputo.CaputoService;
+import com.trbaxter.github.fractionalcomputationapi.service.differentiation.riemann_liouville.RiemannService;
+import com.trbaxter.github.fractionalcomputationapi.service.integration.IntegrationService;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -28,21 +28,26 @@ import org.springframework.test.web.servlet.ResultActions;
  * It uses MockMvc to test endpoints as defined in that class.
  */
 @WebMvcTest(IndexController.class)
+@ExtendWith(SpringExtension.class)
 public class IndexControllerTest {
 
-  String polynomial = "3x^2 + 2x + 1";
-  double alpha = 0.5;
-  Integer precision = 3;
-  ControllerRequest request = createRequest(polynomial, alpha, precision);
   @Autowired private MockMvc mockMvc;
-  @MockBean private CaputoDerivativeService caputoDerivativeService;
-  @MockBean private RiemannLiouvilleDerivativeService riemannLiouvilleDerivativeService;
-  @MockBean private CaputoIntegrationService caputoIntegrationService;
+  @MockBean private CaputoService caputoDService;
+  @MockBean private RiemannService RLService;
+  @MockBean private IntegrationService integrationService;
   @Autowired private ObjectMapper objectMapper;
+
+  private String polynomial;
+  private double alpha;
+  private Integer precision;
+  private ControllerRequest request;
 
   @BeforeEach
   public void setUp() {
-    MockitoAnnotations.openMocks(this);
+    polynomial = "3x^2 + 2x + 1";
+    alpha = 0.5;
+    precision = 3;
+    request = createRequest(polynomial, alpha, precision);
   }
 
   private ControllerRequest createRequest(String polynomial, double alpha, Integer precision) {
@@ -62,7 +67,7 @@ public class IndexControllerTest {
 
   @Test
   public void testComputeCaputoDerivative() throws Exception {
-    when(caputoDerivativeService.evaluateExpression(
+    when(caputoDService.evaluateExpression(
             request.getPolynomialExpression(), request.getOrder(), request.getPrecision()))
         .thenReturn("4.514x^1.5 + 2.257x^0.5");
 
@@ -73,7 +78,7 @@ public class IndexControllerTest {
 
   @Test
   public void testComputeRiemannLiouvilleDerivative() throws Exception {
-    when(riemannLiouvilleDerivativeService.evaluateExpression(
+    when(RLService.evaluateExpression(
             request.getPolynomialExpression(), request.getOrder(), request.getPrecision()))
         .thenReturn("4.514x^1.5 + 2.257x^0.5 + 0.564x^-0.5");
 
@@ -84,7 +89,7 @@ public class IndexControllerTest {
 
   @Test
   public void testComputeCaputoIntegral() throws Exception {
-    when(caputoIntegrationService.evaluateExpression(
+    when(integrationService.evaluateExpression(
             request.getPolynomialExpression(), request.getOrder(), request.getPrecision()))
         .thenReturn("1.805x^2.5 + 1.505x^1.5 + 1.128x^0.5 + C");
 
@@ -102,8 +107,32 @@ public class IndexControllerTest {
   }
 
   @Test
+  public void testPrecisionMissing() throws Exception {
+    ControllerRequest request = createRequest(polynomial, alpha, null);
+
+    performPostRequest("/fractional-calculus-computation-api/derivative/caputo", request)
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void testPrecisionZero() throws Exception {
+    ControllerRequest request = createRequest(polynomial, alpha, 0);
+
+    performPostRequest("/fractional-calculus-computation-api/derivative/caputo", request)
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void testPrecisionNegative() throws Exception {
+    ControllerRequest request = createRequest(polynomial, alpha, -1);
+
+    performPostRequest("/fractional-calculus-computation-api/derivative/caputo", request)
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
   public void testCaputoDerivativeInternalServerError() throws Exception {
-    when(caputoDerivativeService.evaluateExpression(
+    when(caputoDService.evaluateExpression(
             request.getPolynomialExpression(), request.getOrder(), request.getPrecision()))
         .thenThrow(new RuntimeException("Internal Server Error"));
 
@@ -114,7 +143,7 @@ public class IndexControllerTest {
 
   @Test
   public void testRiemannLiouvilleDerivativeInternalServerError() throws Exception {
-    when(riemannLiouvilleDerivativeService.evaluateExpression(
+    when(RLService.evaluateExpression(
             request.getPolynomialExpression(), request.getOrder(), request.getPrecision()))
         .thenThrow(new RuntimeException("Internal Server Error"));
 
@@ -125,7 +154,7 @@ public class IndexControllerTest {
 
   @Test
   public void testCaputoIntegralInternalServerError() throws Exception {
-    when(caputoIntegrationService.evaluateExpression(
+    when(integrationService.evaluateExpression(
             request.getPolynomialExpression(), request.getOrder(), request.getPrecision()))
         .thenThrow(new RuntimeException("Internal Server Error"));
 
@@ -136,13 +165,11 @@ public class IndexControllerTest {
 
   @Test
   public void testUnknownServiceType() throws Exception {
-    IndexController controller =
-        new IndexController(
-            caputoDerivativeService, riemannLiouvilleDerivativeService, caputoIntegrationService);
+    IndexController controller = new IndexController(caputoDService, RLService, integrationService);
 
     Method method =
         IndexController.class.getDeclaredMethod(
-            "evaluateExpression", Object.class, String.class, double.class, int.class);
+            "evaluateExpression", Object.class, String.class, double.class, Integer.class);
     method.setAccessible(true);
 
     try {
@@ -154,4 +181,6 @@ public class IndexControllerTest {
       assertEquals("Unknown service type", cause.getMessage());
     }
   }
+
+  private static class UnknownService {}
 }
