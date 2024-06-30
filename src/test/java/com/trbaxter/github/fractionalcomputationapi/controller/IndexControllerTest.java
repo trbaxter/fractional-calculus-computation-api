@@ -40,14 +40,14 @@ class IndexControllerTest {
   private String polynomial;
   private double alpha;
   private Integer precision;
-  private ControllerRequest controllerRequest;
+  private ControllerRequest userRequest;
 
   @BeforeEach
   public void setUp() {
     polynomial = "3x^2 + 2x + 1";
     alpha = 0.5;
     precision = 3;
-    controllerRequest = createRequest(polynomial, alpha, precision);
+    userRequest = createRequest(polynomial, alpha, precision);
   }
 
   private ControllerRequest createRequest(String polynomial, double alpha, Integer precision) {
@@ -68,12 +68,12 @@ class IndexControllerTest {
   @Test
   void testComputeCaputoDerivative() throws Exception {
     when(caputoService.evaluateExpression(
-            controllerRequest.getPolynomialExpression(),
-            controllerRequest.getOrder(),
-            controllerRequest.getPrecision()))
+            userRequest.getPolynomialExpression(),
+            userRequest.getOrder(),
+            userRequest.getPrecision()))
         .thenReturn("4.514x^1.5 + 2.257x^0.5");
 
-    performPostRequest("/fractional-calculus-computation-api/derivative/caputo", controllerRequest)
+    performPostRequest("/fractional-calculus-computation-api/derivative/caputo", userRequest)
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.expression").value("4.514x^1.5 + 2.257x^0.5"));
   }
@@ -81,13 +81,13 @@ class IndexControllerTest {
   @Test
   void testComputeRiemannLiouvilleDerivative() throws Exception {
     when(riemannService.evaluateExpression(
-            controllerRequest.getPolynomialExpression(),
-            controllerRequest.getOrder(),
-            controllerRequest.getPrecision()))
+            userRequest.getPolynomialExpression(),
+            userRequest.getOrder(),
+            userRequest.getPrecision()))
         .thenReturn("4.514x^1.5 + 2.257x^0.5 + 0.564x^-0.5");
 
     performPostRequest(
-            "/fractional-calculus-computation-api/derivative/riemann-liouville", controllerRequest)
+            "/fractional-calculus-computation-api/derivative/riemann-liouville", userRequest)
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.expression").value("4.514x^1.5 + 2.257x^0.5 + 0.564x^-0.5"));
   }
@@ -95,12 +95,12 @@ class IndexControllerTest {
   @Test
   void testComputeCaputoIntegral() throws Exception {
     when(integrationService.evaluateExpression(
-            controllerRequest.getPolynomialExpression(),
-            controllerRequest.getOrder(),
-            controllerRequest.getPrecision()))
+            userRequest.getPolynomialExpression(),
+            userRequest.getOrder(),
+            userRequest.getPrecision()))
         .thenReturn("1.805x^2.5 + 1.505x^1.5 + 1.128x^0.5 + C");
 
-    performPostRequest("/fractional-calculus-computation-api/integral", controllerRequest)
+    performPostRequest("/fractional-calculus-computation-api/integral", userRequest)
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.expression").value("1.805x^2.5 + 1.505x^1.5 + 1.128x^0.5 + C"));
   }
@@ -140,12 +140,12 @@ class IndexControllerTest {
   @Test
   void testCaputoDerivativeInternalServerError() throws Exception {
     when(caputoService.evaluateExpression(
-            controllerRequest.getPolynomialExpression(),
-            controllerRequest.getOrder(),
-            controllerRequest.getPrecision()))
+            userRequest.getPolynomialExpression(),
+            userRequest.getOrder(),
+            userRequest.getPrecision()))
         .thenThrow(new RuntimeException("Internal Server Error"));
 
-    performPostRequest("/fractional-calculus-computation-api/derivative/caputo", controllerRequest)
+    performPostRequest("/fractional-calculus-computation-api/derivative/caputo", userRequest)
         .andExpect(status().isInternalServerError())
         .andExpect(content().json("{\"expression\": \"Internal Server Error\"}"));
   }
@@ -153,13 +153,13 @@ class IndexControllerTest {
   @Test
   void testRiemannLiouvilleDerivativeInternalServerError() throws Exception {
     when(riemannService.evaluateExpression(
-            controllerRequest.getPolynomialExpression(),
-            controllerRequest.getOrder(),
-            controllerRequest.getPrecision()))
+            userRequest.getPolynomialExpression(),
+            userRequest.getOrder(),
+            userRequest.getPrecision()))
         .thenThrow(new RuntimeException("Internal Server Error"));
 
     performPostRequest(
-            "/fractional-calculus-computation-api/derivative/riemann-liouville", controllerRequest)
+            "/fractional-calculus-computation-api/derivative/riemann-liouville", userRequest)
         .andExpect(status().isInternalServerError())
         .andExpect(content().json("{\"expression\": \"Internal Server Error\"}"));
   }
@@ -167,12 +167,12 @@ class IndexControllerTest {
   @Test
   void testCaputoIntegralInternalServerError() throws Exception {
     when(integrationService.evaluateExpression(
-            controllerRequest.getPolynomialExpression(),
-            controllerRequest.getOrder(),
-            controllerRequest.getPrecision()))
+            userRequest.getPolynomialExpression(),
+            userRequest.getOrder(),
+            userRequest.getPrecision()))
         .thenThrow(new RuntimeException("Internal Server Error"));
 
-    performPostRequest("/fractional-calculus-computation-api/integral", controllerRequest)
+    performPostRequest("/fractional-calculus-computation-api/integral", userRequest)
         .andExpect(status().isInternalServerError())
         .andExpect(content().json("{\"expression\": \"Internal Server Error\"}"));
   }
