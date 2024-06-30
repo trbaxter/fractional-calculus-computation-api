@@ -1,0 +1,11 @@
+spring:
+  main:
+    banner-mode: off
+  application:
+    name: fractional-calculus-computation-api-test
+
+logging:
+  level:
+    root: INFO
+    com.trbaxter.github.fractionalcomputationapi: INFO
+    org.springframework: WARN

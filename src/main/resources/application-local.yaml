@@ -1,0 +1,14 @@
+spring:
+  main:
+    banner-mode: off
+  application:
+    name: fractional-calculus-computation-api-local
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: DEBUG
+    com.trbaxter.github.fractionalcomputationapi: DEBUG
+    org.springframework: INFO

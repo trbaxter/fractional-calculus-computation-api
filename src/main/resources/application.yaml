@@ -1,13 +1,17 @@
-server:
-  port: 8080
-
 spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+
   main:
-    banner-mode: off  # Removes Spring title banner when API starts
-  application: fractional-calculus-computation-api
+    banner-mode: off
+  application:
+    name: fractional-calculus-computation-api
+
+server:
+  port: ${SERVER_PORT:8080}
 
 logging:
   level:
-    root: INFO  # Only logs messages at INFO level and above (WARN, ERROR, FATAL)
-    com.trbaxter.github.fractionalcomputationapi: DEBUG  # Logs DEBUG, INFO, WARN, ERROR, and FATAL messages
-    org.springframework: INFO  # Only logs messages at INFO level and above (WARN, ERROR, FATAL)
+    root: ${LOGGING_LEVEL_ROOT:INFO}
+    com.trbaxter.github.fractionalcomputationapi: ${LOGGING_LEVEL_CUSTOM:DEBUG}
+    org.springframework: ${LOGGING_LEVEL_SPRING:INFO}
