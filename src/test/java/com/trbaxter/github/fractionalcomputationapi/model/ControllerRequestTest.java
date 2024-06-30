@@ -19,7 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /** ControllerRequestTest tests the validation and behavior of the ControllerRequest class. */
 @ExtendWith(SpringExtension.class)
-public class ControllerRequestTest {
+class ControllerRequestTest {
 
   private static final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
   private static final Validator validator = factory.getValidator();
@@ -58,7 +58,7 @@ public class ControllerRequestTest {
    */
   @ParameterizedTest
   @MethodSource("provideValidRequests")
-  public void testControllerRequestSettersAndGetters(String polynomialExpression, double order) {
+  void testControllerRequestSettersAndGetters(String polynomialExpression, double order) {
     ControllerRequest request = new ControllerRequest();
     request.setPolynomialExpression(polynomialExpression);
     request.setOrder(order);
@@ -72,7 +72,7 @@ public class ControllerRequestTest {
 
   /** Tests the ControllerRequest class with an empty polynomial expression. */
   @Test
-  public void testControllerRequestEmptyPolynomialExpression() {
+  void testControllerRequestEmptyPolynomialExpression() {
     ControllerRequest request = new ControllerRequest();
     String polynomialExpression = "";
     double order = 2.0;
@@ -89,7 +89,7 @@ public class ControllerRequestTest {
 
   /** Tests the ControllerRequest class with a negative order value. */
   @Test
-  public void testControllerRequestNegativeOrder() {
+  void testControllerRequestNegativeOrder() {
     ControllerRequest request = new ControllerRequest();
     String polynomialExpression = "1.0x^2 + 2.0x + 3.0";
     double order = -1.0;
@@ -106,7 +106,7 @@ public class ControllerRequestTest {
 
   /** Tests the ControllerRequest class with large polynomial expression and order values. */
   @Test
-  public void testControllerRequestLargeValues() {
+  void testControllerRequestLargeValues() {
     ControllerRequest request = new ControllerRequest();
     String polynomialExpression = "1.0x^10 + 2.0x^5 + 3.0";
     double order = Double.MAX_VALUE;
@@ -130,7 +130,7 @@ public class ControllerRequestTest {
    */
   @ParameterizedTest
   @MethodSource("provideInvalidRequests")
-  public void testInvalidControllerRequests(
+  void testInvalidControllerRequests(
       String polynomialExpression, double order, String expectedMessage) {
     ControllerRequest request = new ControllerRequest();
     request.setPolynomialExpression(polynomialExpression);
