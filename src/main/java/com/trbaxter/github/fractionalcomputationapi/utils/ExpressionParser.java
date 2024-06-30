@@ -15,6 +15,7 @@ public class ExpressionParser {
   private static final Pattern TERM_PATTERN =
       Pattern.compile("([+-]?[^-+]*x(?:\\^\\(?-?[0-9.]+\\)?)?|[+-]?[^-+]+)");
   private static final String WHITESPACE_REGEX = "\\s+";
+  private static final String SPECIAL_CHARACTERS_REGEX = "[\\[\\]{}()]";
   private static final String X = "x";
   private static final String POWER = "x\\^?";
   private static final String PLUS = "+";
@@ -32,7 +33,11 @@ public class ExpressionParser {
     validateInput(polynomial);
 
     List<Term> terms = new ArrayList<>();
-    Matcher matcher = TERM_PATTERN.matcher(polynomial.replaceAll(WHITESPACE_REGEX, EMPTY_STRING));
+    Matcher matcher =
+        TERM_PATTERN.matcher(
+            polynomial
+                .replaceAll(WHITESPACE_REGEX, EMPTY_STRING)
+                .replaceAll(SPECIAL_CHARACTERS_REGEX, EMPTY_STRING));
 
     while (matcher.find()) {
       String termString = matcher.group(1);
