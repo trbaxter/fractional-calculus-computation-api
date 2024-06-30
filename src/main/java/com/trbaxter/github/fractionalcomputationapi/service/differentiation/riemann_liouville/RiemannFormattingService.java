@@ -1,13 +1,13 @@
-package com.trbaxter.github.fractionalcomputationapi.service.derivation.riemann_liouville;
+package com.trbaxter.github.fractionalcomputationapi.service.differentiation.riemann_liouville;
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
-import com.trbaxter.github.fractionalcomputationapi.service.derivation.BaseFormattingService;
+import com.trbaxter.github.fractionalcomputationapi.service.differentiation.BaseFormattingService;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RiemannLiouvilleFormattingService extends BaseFormattingService {
+public class RiemannFormattingService extends BaseFormattingService {
 
   @Override
   protected boolean shouldSkipTerm(Term term) {

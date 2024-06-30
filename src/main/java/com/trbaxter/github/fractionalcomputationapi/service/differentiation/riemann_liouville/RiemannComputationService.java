@@ -1,4 +1,4 @@
-package com.trbaxter.github.fractionalcomputationapi.service.derivation.riemann_liouville;
+package com.trbaxter.github.fractionalcomputationapi.service.differentiation.riemann_liouville;
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
@@ -12,10 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RiemannLiouvilleComputationService {
+public class RiemannComputationService {
 
-  private static final Logger logger =
-      LoggerFactory.getLogger(RiemannLiouvilleComputationService.class);
+  private static final Logger logger = LoggerFactory.getLogger(RiemannComputationService.class);
 
   public List<Term> computeTerms(List<Term> terms, BigDecimal alpha) {
     List<Term> computedTerms = new ArrayList<>();
