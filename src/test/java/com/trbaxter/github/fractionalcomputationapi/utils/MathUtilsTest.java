@@ -50,6 +50,14 @@ public class MathUtilsTest {
         BigDecimal.ONE, BigDecimal.ONE.setScale(SCALE, RoundingMode.HALF_UP), "special case");
   }
 
+  @Test
+  public void testGamma_NullInput() {
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> MathUtils.gamma(null),
+        "Input for gamma function must not be null");
+  }
+
   private void assertGammaFunction(BigDecimal input, BigDecimal expected, String message) {
     BigDecimal result = MathUtils.gamma(input).setScale(SCALE, RoundingMode.HALF_UP);
     assertEquals(expected, result, "Gamma function failed for " + message);
