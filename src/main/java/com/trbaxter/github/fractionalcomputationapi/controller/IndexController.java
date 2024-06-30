@@ -46,7 +46,7 @@ public class IndexController {
     return processRequest(request, RLService);
   }
 
-  @PostMapping("integral/caputo")
+  @PostMapping("integral")
   public ResponseEntity<Result> computeCaputoIntegral(@Valid @RequestBody ControllerRequest request) {
     return processRequest(request, integrationService);
   }
