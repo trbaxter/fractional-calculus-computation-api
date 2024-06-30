@@ -107,12 +107,14 @@
         </dependency>
 
         <dependency>
+            <!-- serves as a simple facade or abstraction for various logging frameworks. -->
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>2.0.13</version>
         </dependency>
 
         <dependency>
+            <!-- Implementation of the SLF4J API for Logback, a fast and flexible logging framework. -->
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.4.12</version>
@@ -120,6 +122,7 @@
         </dependency>
 
         <dependency>
+            <!-- Core implementation of Logback, a reliable, generic, fast and flexible logging framework. -->
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
             <version>1.4.14</version>
