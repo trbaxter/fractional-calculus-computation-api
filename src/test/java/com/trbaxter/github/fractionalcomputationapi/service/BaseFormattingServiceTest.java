@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class BaseFormattingServiceTest {
+class BaseFormattingServiceTest {
 
   private TestFormattingService formattingService;
 
@@ -18,7 +18,7 @@ public class BaseFormattingServiceTest {
   }
 
   @Test
-  public void testFormatTerms_AllTermsSkipped() {
+  void testFormatTerms_AllTermsSkipped() {
     List<Term> terms =
         List.of(
             new Term(BigDecimal.valueOf(1), BigDecimal.ONE),
@@ -30,7 +30,7 @@ public class BaseFormattingServiceTest {
   }
 
   @Test
-  public void testFormatTerms_AllZeroCoefficients() {
+  void testFormatTerms_AllZeroCoefficients() {
     List<Term> terms =
         List.of(
             new Term(BigDecimal.ZERO, BigDecimal.ONE), new Term(BigDecimal.ZERO, BigDecimal.TEN));
@@ -41,7 +41,7 @@ public class BaseFormattingServiceTest {
   }
 
   @Test
-  public void testAppendTerm_CoefficientZero() {
+  void testAppendTerm_CoefficientZero() {
     StringBuilder result = new StringBuilder();
     Term term = new Term(BigDecimal.ZERO, BigDecimal.ONE);
     String coefficientString = "0";
