@@ -1,7 +1,7 @@
-package com.trbaxter.github.fractionalcomputationapi.service.derivation.caputo;
+package com.trbaxter.github.fractionalcomputationapi.service.differentiation.caputo;
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
-import com.trbaxter.github.fractionalcomputationapi.service.derivation.BaseFormattingService;
+import com.trbaxter.github.fractionalcomputationapi.service.differentiation.BaseFormattingService;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * for Caputo derivatives.
  */
 @Service
-public class CaputoDerivativeFormattingService extends BaseFormattingService {
+public class CaputoFormattingService extends BaseFormattingService {
 
   /**
    * Determines whether a term should be skipped based on its coefficient and power.
