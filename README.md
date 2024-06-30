@@ -1,12 +1,17 @@
 <!-- @formatter:off -->
 # Fractional Calculus Computation API
 
-![Coverage](https://img.shields.io/codecov/c/github/trbaxter/fractional-calculus-computation-api)
+![Build Status](https://img.shields.io/github/actions/workflow/status/trbaxter/fractional-calculus-computation-api/ci.yml)
+[![codecov](https://codecov.io/gh/trbaxter/fractional-calculus-computation-api/graph/badge.svg?token=66FHCT5YPG)](https://codecov.io/gh/trbaxter/fractional-calculus-computation-api)
+![Java Version](https://img.shields.io/badge/Java-22.0.1-blue)
+![GitHub last commit](https://img.shields.io/github/last-commit/trbaxter/fractional-calculus-computation-api)
+![License](https://img.shields.io/github/license/trbaxter/fractional-calculus-computation-api)
+![GitHub release](https://img.shields.io/github/release/trbaxter/fractional-calculus-computation-api)
 
 ## Description
 
-This is a Java-based API that can produce expressions for derivatives or integrals of
-user-submitted polynomial expressions using integer or fractional operational orders.
+This API produces closed-form expressions for derivatives and integrals, to integer or fractional 
+order, of mathematical expressions.
 
 <br />
 
