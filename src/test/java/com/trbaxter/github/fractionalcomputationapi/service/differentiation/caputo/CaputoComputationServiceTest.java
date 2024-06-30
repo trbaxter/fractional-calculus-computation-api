@@ -14,12 +14,12 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class CaputoComputationServiceTest {
+class CaputoComputationServiceTest {
 
   @InjectMocks private CaputoComputationService service;
 
   @Test
-  public void testComputeFractionalOrderDerivativeTerms() {
+  void testComputeFractionalOrderDerivativeTerms() {
     List<Term> terms = List.of(new Term(BigDecimal.valueOf(1), BigDecimal.valueOf(2)));
     BigDecimal alpha = BigDecimal.valueOf(0.5);
 
