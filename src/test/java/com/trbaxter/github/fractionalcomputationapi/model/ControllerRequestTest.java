@@ -1,10 +1,9 @@
-package com.trbaxter.github.fractionalcomputationapi.service.model;
+package com.trbaxter.github.fractionalcomputationapi.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.trbaxter.github.fractionalcomputationapi.model.ControllerRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
