@@ -5,11 +5,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ComputationResponse {
+public class Result {
 
   private String expression;
 
-  public ComputationResponse(String expression) {
+  public Result(String expression) {
     this.expression = expression;
   }
 }
