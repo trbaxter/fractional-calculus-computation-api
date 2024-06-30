@@ -25,25 +25,27 @@ public class IndexController {
 
   private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
-  private final CaputoService caputoDService;
+  private final CaputoService caputoService;
   private final IntegrationService integrationService;
-  private final RiemannService RLService;
+  private final RiemannService riemannService;
 
   @Autowired
-  public IndexController(CaputoService caputoDService, RiemannService RLService, IntegrationService integrationService) {
-    this.caputoDService = caputoDService;
-    this.RLService = RLService;
+  public IndexController(CaputoService caputoService,
+                         RiemannService riemannService,
+                         IntegrationService integrationService) {
+    this.caputoService = caputoService;
+    this.riemannService = riemannService;
     this.integrationService = integrationService;
   }
 
   @PostMapping("derivative/caputo")
   public ResponseEntity<Result> computeCaputoDerivative(@Valid @RequestBody ControllerRequest request) {
-    return processRequest(request, caputoDService);
+    return processRequest(request, caputoService);
   }
 
   @PostMapping("derivative/riemann-liouville")
   public ResponseEntity<Result> computeRiemannLiouvilleDerivative(@Valid @RequestBody ControllerRequest request) {
-    return processRequest(request, RLService);
+    return processRequest(request, riemannService);
   }
 
   @PostMapping("integral")
