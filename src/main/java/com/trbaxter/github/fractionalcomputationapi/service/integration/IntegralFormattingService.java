@@ -1,7 +1,7 @@
-package com.trbaxter.github.fractionalcomputationapi.service.integration.caputo;
+package com.trbaxter.github.fractionalcomputationapi.service.integration;
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
-import com.trbaxter.github.fractionalcomputationapi.service.derivation.BaseFormattingService;
+import com.trbaxter.github.fractionalcomputationapi.service.differentiation.BaseFormattingService;
 import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * integrals.
  */
 @Service
-public class CaputoIntegralFormattingService extends BaseFormattingService {
+public class IntegralFormattingService extends BaseFormattingService {
 
   @Override
   protected boolean shouldSkipTerm(Term term) {
