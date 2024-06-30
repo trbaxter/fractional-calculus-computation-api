@@ -1,4 +1,4 @@
-package com.trbaxter.github.fractionalcomputationapi.service.integration.caputo;
+package com.trbaxter.github.fractionalcomputationapi.service.integration;
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import com.trbaxter.github.fractionalcomputationapi.service.FractionalCalculusService;
@@ -14,25 +14,23 @@ import org.springframework.stereotype.Service;
  * CaputoIntegralFormattingService to format the result.
  */
 @Service
-public class CaputoIntegrationService implements FractionalCalculusService {
-  private static final int DEFAULT_PRECISION = 3;
-  private final CaputoIntegralComputationService termComputationService;
-  private final CaputoIntegralFormattingService termFormattingService;
+public class IntegrationService implements FractionalCalculusService {
+  private final IntegralComputationService termComputationService;
+  private final IntegralFormattingService termFormattingService;
 
   @Autowired
-  public CaputoIntegrationService(
-      CaputoIntegralComputationService termComputationService,
-      CaputoIntegralFormattingService termFormattingService) {
+  public IntegrationService(
+      IntegralComputationService termComputationService,
+      IntegralFormattingService termFormattingService) {
     this.termComputationService = termComputationService;
     this.termFormattingService = termFormattingService;
   }
 
   @Override
   public String evaluateExpression(String polynomialExpression, double alpha, Integer precision) {
-    int actualPrecision = (precision != null) ? precision : DEFAULT_PRECISION;
     List<Term> terms = ExpressionParser.parse(polynomialExpression);
     List<Term> computedTerms =
         termComputationService.computeTerms(terms, BigDecimal.valueOf(alpha));
-    return termFormattingService.formatTerms(computedTerms, alpha, actualPrecision);
+    return termFormattingService.formatTerms(computedTerms, alpha, precision);
   }
 }

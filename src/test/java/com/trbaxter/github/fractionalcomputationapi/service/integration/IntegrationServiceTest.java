@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mockStatic;
 
-import com.trbaxter.github.fractionalcomputationapi.service.integration.caputo.CaputoIntegralComputationService;
-import com.trbaxter.github.fractionalcomputationapi.service.integration.caputo.CaputoIntegrationService;
 import com.trbaxter.github.fractionalcomputationapi.testdata.GammaTestData;
 import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
 import java.math.BigDecimal;
@@ -25,11 +23,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  */
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public class CaputoIntegrationServiceTest {
+public class IntegrationServiceTest {
 
-  @Autowired private CaputoIntegrationService integrationService;
+  @Autowired private IntegrationService integrationService;
 
-  @Autowired private CaputoIntegralComputationService computationService;
+  @Autowired private IntegralComputationService computationService;
 
   /**
    * Tests the Caputo integration service with different polynomial expressions.
