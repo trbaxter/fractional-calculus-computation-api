@@ -93,7 +93,7 @@ public class IndexControllerTest {
             request.getPolynomialExpression(), request.getOrder(), request.getPrecision()))
         .thenReturn("1.805x^2.5 + 1.505x^1.5 + 1.128x^0.5 + C");
 
-    performPostRequest("/fractional-calculus-computation-api/integral/caputo", request)
+    performPostRequest("/fractional-calculus-computation-api/integral", request)
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.expression").value("1.805x^2.5 + 1.505x^1.5 + 1.128x^0.5 + C"));
   }
@@ -158,7 +158,7 @@ public class IndexControllerTest {
             request.getPolynomialExpression(), request.getOrder(), request.getPrecision()))
         .thenThrow(new RuntimeException("Internal Server Error"));
 
-    performPostRequest("/fractional-calculus-computation-api/integral/caputo", request)
+    performPostRequest("/fractional-calculus-computation-api/integral", request)
         .andExpect(status().isInternalServerError())
         .andExpect(content().json("{\"expression\": \"Internal Server Error\"}"));
   }
