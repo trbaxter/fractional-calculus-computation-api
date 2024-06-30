@@ -58,6 +58,12 @@ Upcoming features include:
 
 - **JUnit**: JUnit 5 (JUnit Jupiter) Version 5.10.2
 - **Mockito**: Version 5.11.0
+- **AssertJ**: Version 3.24.2
+- **Awaitility**: Version 4.2.1
+- **JsonPath**: Version 2.9.0
+- **JSONassert**: Version 1.5.1
+- **Hamcrest**: Version 2.2
+- **XMLUnit**: Version 2.9.1
 
 ### Libraries
 
@@ -66,6 +72,15 @@ Upcoming features include:
 - **Logback**: Version 1.4.14
 - **SLF4J**: Version 2.0.13
 - **Hibernate Validator**: Version 8.0.1.Final
+- **Lombok**: Version 1.18.32
+
+### Additional Tools
+
+- **JaCoCo**: Version 0.8.12
+- **SnakeYAML**: Version 2.2
+- **Jakarta Annotation API**: Version 2.1.1
+- **Jakarta XML Bind API**: Version 4.0.2
+- **Jakarta Activation API**: Version 2.1.3
 
 <br />
 
@@ -109,6 +124,27 @@ Upon successful start, endpoints may be accessed by using cURL commands or API t
 
 ## Endpoint Information
 
+<strong>Caputo Fractional Derivative</strong>  
+HTTP Verb: POST  
+URL: `/fractional-calculus-computation-api/derivative/caputo`  
+Returns the closed-form expression of the Caputo fractional derivative.
+
+<br />
+
+<strong>Riemann-Liouville Fractional Derivative</strong>  
+HTTP Verb: POST  
+Endpoint URL: `/fractional-calculus-computation-api/derivative/riemann-liouville`  
+Returns the closed-form expression of the Riemann-Liouville fractional derivative.
+
+<br />
+
+<strong>Fractional Integral</strong>  
+HTTP Verb: POST  
+Endpoint URL: `/fractional-calculus-computation-api/integral`  
+Returns the closed-form expression of the fractional integral.
+
+<br />
+
 All endpoints use the following request body format:
 
 ```json
@@ -127,11 +163,6 @@ All endpoints use the following request body format:
 |        `order`         | Double  |        The degree of the endpoint's operation.         |    Yes    |
 |      `precision`       | Integer | The number of decimal places each term should display. |    Yes    |
 
-> [!NOTE]
-> A default precision of 3 decimal places is used if `precision` is blank or missing from the 
-> request body. 
-
-
 <br />
 
 The API response output is also the same for all endpoints: 
@@ -142,26 +173,9 @@ The API response output is also the same for all endpoints:
 }
 ```
 
-<br />
-
-<strong>Caputo Fractional Derivative</strong>  
-HTTP Verb: POST  
-URL: `/fractional-calculus-computation-api/derivative/caputo`  
-Returns the closed-form expression of the Caputo fractional derivative.
-
-<br />
-
-<strong>Riemann-Liouville Fractional Derivative</strong>  
-HTTP Verb: POST  
-Endpoint URL: `/fractional-calculus-computation-api/derivative/riemann-liouville`  
-Returns the closed-form expression of the Riemann-Liouville fractional derivative.
-
-<br />
-
-<strong>Caputo Fractional Integral Endpoint</strong>  
-HTTP Verb: POST  
-Endpoint URL: `/fractional-calculus-computation-api/integral/caputo`  
-Returns the closed-form expression of the Caputo fractional integral.
+|  Parameter   |  Type  |                                    Description                                     |
+|:------------:|:------:|:----------------------------------------------------------------------------------:|
+| `expression` | String | The closed-form expression of the derivative or integral of `polynomialExpression` |
 
 <br />
 
@@ -184,7 +198,7 @@ Input:
 {
   "coefficients": "4.27x^2 + 2.016x + 1",
   "order": 0.35724,
-  "precision": "2"
+  "precision": 2
 }
 ```
 
@@ -223,7 +237,8 @@ Input:
 ```json
 {
   "coefficients": "3x^(2.12) + 2x^(1.114) + 1",
-  "order": "3.14159"
+  "order": 3.14159,
+  "precision": 3
 }
 ```
 
@@ -264,7 +279,7 @@ Input:
 ```json
 {
   "coefficients": "3x^3 - x + 12",
-  "order": "1.79",
+  "order": 1.79,
   "precision": 5
 }
 ```
@@ -375,43 +390,18 @@ integral operations, please see the documentation folder.
 <br />
 
 <details>
-<summary>&nbsp;<i>There are multiple coefficients in my input, but the output doesn't show 
-the same amount. Why?</i>
-</summary>&nbsp;<br/>
-  
-> There are two reasons why this occurs:&nbsp;<br/>
->     
-> 1.) For an array with multiple coefficients, the right-most coefficient represents a 
-> constant term, and the fractional derivative of a constant is always zero for a Caputo 
-> derivative. If the fractional derivative of a constant is needed, use the 
-> Riemann-Liouville option.
-> <br /><br />
-> 
-> 2.) For a Caputo derivative, if the exponent value of the term minus the order value is a 
-> negative number, then that term's calculation will be omitted from the result. This is due to 
-> the way in which the Caputo derivative is designed to handle "well-behaved" finite functions. 
-> <br />
-> Consider the following example where $f(x) = x$ and $\alpha = 2$: <br/><br/>
-> ${}^{C} D^{2}{\text{&nbsp;}}[x] = \dfrac{\Gamma(2)}{\Gamma(2-2)}x^{1-2} = \dfrac{1}{\Gamma(0)}x^{-1}$
-> <br/><br/>
-> Since $\Gamma(0)$ is undefined, this result would be omitted from the output expression. 
-> <br/>
-> This applies to negative integer values of the gamma function as well.
-
-</details>
-
-<br />
-
-<details>
 <summary>&nbsp;<i>Why are there two derivative endpoints, but only one integration endpoint?</i>
 </summary>&nbsp;<br/>
   
 > This is because the Caputo and Riemann-Liouville techniques treat derivatives of constant 
-> values differently.
+> values differently.<br />  
+> 
+> Caputo derivatives of constants are always zero.  
+> Riemann-Liouville derivatives of constants are not zero.
 > <br />
 > 
-> That distinction is not present in the API integration process, and both methods lead to the 
-> same results. <br /> To avoid unnecessary code duplication, only the Caputo integral endpoint
+> That distinction is not present in the API integration process and both methods lead to the 
+> same results. <br /> Therefore, to avoid code duplication, only one integration endpoint
 > is provided.
 
 </details>
@@ -440,22 +430,24 @@ pull request template.
 
 ## Changelog
 
-### Version [2.0.0] - Released 2024-06-27
+### Version [2.0.0] - Released 2024-06-30
 
-- Endpoints now accept strings of polynomial expressions instead of coefficient arrays, 
-expanding the API's ability to handle non-integer exponential values.
-
-
-- Exponents can be encapsulated using parentheses for visual clarity in the input 
-string if desired.
+- Endpoints now accept strings of polynomial expressions instead of coefficient arrays.
 
 
-- Users may also specify the decimal precision in the output if the default of 3 decimal 
-places is too much or too little.
+- Exponents can be encapsulated using parentheses or brackets in the input string.
 
 
-- Fixed an issue where outputs were displaying as simple strings, rather than strings within a 
-JSON object.
+- Decimal place accuracy is now controlled by the user in the endpoint request.
+
+
+- Fixed an issue where outputs were displaying as strings instead of strings in a JSON object.
+
+
+- Vastly expanded logging capability using SLF4J.
+
+
+- Modified the integration endpoint to simply `/integral` for brevity. 
 
 <br />
 
@@ -489,17 +481,24 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 - <a href="https://spring.io/projects/spring-boot">Spring Boot</a>
 
-
 - <a href="https://maven.apache.org/">Maven</a>
-
 
 - <a href="https://commons.apache.org/proper/commons-math/">Apache Commons Math</a>
 
-
 - <a href="https://openai.com/">OpenAI GPT-4o</a>
+
+- <a href="https://www.baeldung.com/">Baeldung</a>
+
+- <a href="https://www.slf4j.org/">SLF4J</a>
+
+- <a href="https://site.mockito.org/">Mockito</a>
+
+- <a href="https://logback.qos.ch/">Logback</a>
 
 <br />
 
 ## Support
 
-For any questions or assistance, please reach out to the project creator.
+For any questions or assistance, please reach out to the project creator.   
+
+
