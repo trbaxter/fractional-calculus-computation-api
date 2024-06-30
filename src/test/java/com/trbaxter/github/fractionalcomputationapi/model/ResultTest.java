@@ -15,7 +15,7 @@ class ResultTest {
   }
 
   @Test
-  public void testSetExpression() {
+  void testSetExpression() {
     String newExpression = "newExpression";
     result.setExpression(newExpression);
     assertEquals(
