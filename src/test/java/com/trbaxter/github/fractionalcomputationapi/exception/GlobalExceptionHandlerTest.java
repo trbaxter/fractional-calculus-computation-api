@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Import(GlobalExceptionHandler.class)
 @WebMvcTest(GlobalExceptionHandlerTest.MockController.class)
-public class GlobalExceptionHandlerTest {
+class GlobalExceptionHandlerTest {
 
   @Autowired private MockMvc mockMvc;
 
   @Test
-  public void testHandleException() throws Exception {
+  void testHandleException() throws Exception {
     mockMvc
         .perform(get("/trigger-exception").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isInternalServerError())
