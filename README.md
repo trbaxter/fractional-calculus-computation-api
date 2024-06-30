@@ -1,6 +1,10 @@
 <!-- @formatter:off -->
 # Fractional Calculus Computation API
 
+![Coverage](https://img.shields.io/codecov/c/github/trbaxter/fractional-calculus-computation-api)
+
+## Description
+
 This is a Java-based API that can produce expressions for derivatives or integrals of
 user-submitted polynomial expressions using integer or fractional operational orders.
 
