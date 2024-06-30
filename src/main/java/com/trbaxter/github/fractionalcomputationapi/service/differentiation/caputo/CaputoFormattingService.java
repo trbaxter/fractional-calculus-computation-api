@@ -3,7 +3,6 @@ package com.trbaxter.github.fractionalcomputationapi.service.differentiation.cap
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import com.trbaxter.github.fractionalcomputationapi.service.differentiation.BaseFormattingService;
 import java.math.BigDecimal;
-import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,10 +33,5 @@ public class CaputoFormattingService extends BaseFormattingService {
   @Override
   protected String getZeroPolynomialResult() {
     return "0";
-  }
-
-  @Override
-  public String formatTerms(List<Term> terms, int precision) {
-    return super.formatTerms(terms, precision);
   }
 }
