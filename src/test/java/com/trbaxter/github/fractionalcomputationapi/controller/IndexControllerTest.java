@@ -29,11 +29,11 @@ import org.springframework.test.web.servlet.ResultActions;
  */
 @WebMvcTest(IndexController.class)
 @ExtendWith(SpringExtension.class)
-public class IndexControllerTest {
+class IndexControllerTest {
 
   @Autowired private MockMvc mockMvc;
-  @MockBean private CaputoService caputoDService;
-  @MockBean private RiemannService RLService;
+  @MockBean private CaputoService caputoService;
+  @MockBean private RiemannService riemannService;
   @MockBean private IntegrationService integrationService;
   @Autowired private ObjectMapper objectMapper;
 
@@ -51,11 +51,11 @@ public class IndexControllerTest {
   }
 
   private ControllerRequest createRequest(String polynomial, double alpha, Integer precision) {
-    ControllerRequest request = new ControllerRequest();
-    request.setPolynomialExpression(polynomial);
-    request.setOrder(alpha);
-    request.setPrecision(precision);
-    return request;
+    ControllerRequest controllerRequest = new ControllerRequest();
+    controllerRequest.setPolynomialExpression(polynomial);
+    controllerRequest.setOrder(alpha);
+    controllerRequest.setPrecision(precision);
+    return controllerRequest;
   }
 
   private ResultActions performPostRequest(String url, ControllerRequest request) throws Exception {
@@ -66,8 +66,8 @@ public class IndexControllerTest {
   }
 
   @Test
-  public void testComputeCaputoDerivative() throws Exception {
-    when(caputoDService.evaluateExpression(
+  void testComputeCaputoDerivative() throws Exception {
+    when(caputoService.evaluateExpression(
             request.getPolynomialExpression(), request.getOrder(), request.getPrecision()))
         .thenReturn("4.514x^1.5 + 2.257x^0.5");
 
@@ -77,8 +77,8 @@ public class IndexControllerTest {
   }
 
   @Test
-  public void testComputeRiemannLiouvilleDerivative() throws Exception {
-    when(RLService.evaluateExpression(
+  void testComputeRiemannLiouvilleDerivative() throws Exception {
+    when(riemannService.evaluateExpression(
             request.getPolynomialExpression(), request.getOrder(), request.getPrecision()))
         .thenReturn("4.514x^1.5 + 2.257x^0.5 + 0.564x^-0.5");
 
@@ -88,7 +88,7 @@ public class IndexControllerTest {
   }
 
   @Test
-  public void testComputeCaputoIntegral() throws Exception {
+  void testComputeCaputoIntegral() throws Exception {
     when(integrationService.evaluateExpression(
             request.getPolynomialExpression(), request.getOrder(), request.getPrecision()))
         .thenReturn("1.805x^2.5 + 1.505x^1.5 + 1.128x^0.5 + C");
@@ -99,7 +99,7 @@ public class IndexControllerTest {
   }
 
   @Test
-  public void testInvalidControllerRequest() throws Exception {
+  void testInvalidControllerRequest() throws Exception {
     ControllerRequest request = createRequest(null, 0.5, 3);
 
     performPostRequest("/fractional-calculus-computation-api/derivative/caputo", request)
@@ -107,7 +107,7 @@ public class IndexControllerTest {
   }
 
   @Test
-  public void testPrecisionMissing() throws Exception {
+  void testPrecisionMissing() throws Exception {
     ControllerRequest request = createRequest(polynomial, alpha, null);
 
     performPostRequest("/fractional-calculus-computation-api/derivative/caputo", request)
@@ -115,7 +115,7 @@ public class IndexControllerTest {
   }
 
   @Test
-  public void testPrecisionZero() throws Exception {
+  void testPrecisionZero() throws Exception {
     ControllerRequest request = createRequest(polynomial, alpha, 0);
 
     performPostRequest("/fractional-calculus-computation-api/derivative/caputo", request)
@@ -123,7 +123,7 @@ public class IndexControllerTest {
   }
 
   @Test
-  public void testPrecisionNegative() throws Exception {
+  void testPrecisionNegative() throws Exception {
     ControllerRequest request = createRequest(polynomial, alpha, -1);
 
     performPostRequest("/fractional-calculus-computation-api/derivative/caputo", request)
@@ -131,8 +131,8 @@ public class IndexControllerTest {
   }
 
   @Test
-  public void testCaputoDerivativeInternalServerError() throws Exception {
-    when(caputoDService.evaluateExpression(
+  void testCaputoDerivativeInternalServerError() throws Exception {
+    when(caputoService.evaluateExpression(
             request.getPolynomialExpression(), request.getOrder(), request.getPrecision()))
         .thenThrow(new RuntimeException("Internal Server Error"));
 
@@ -142,8 +142,8 @@ public class IndexControllerTest {
   }
 
   @Test
-  public void testRiemannLiouvilleDerivativeInternalServerError() throws Exception {
-    when(RLService.evaluateExpression(
+  void testRiemannLiouvilleDerivativeInternalServerError() throws Exception {
+    when(riemannService.evaluateExpression(
             request.getPolynomialExpression(), request.getOrder(), request.getPrecision()))
         .thenThrow(new RuntimeException("Internal Server Error"));
 
@@ -153,7 +153,7 @@ public class IndexControllerTest {
   }
 
   @Test
-  public void testCaputoIntegralInternalServerError() throws Exception {
+  void testCaputoIntegralInternalServerError() throws Exception {
     when(integrationService.evaluateExpression(
             request.getPolynomialExpression(), request.getOrder(), request.getPrecision()))
         .thenThrow(new RuntimeException("Internal Server Error"));
@@ -164,8 +164,9 @@ public class IndexControllerTest {
   }
 
   @Test
-  public void testUnknownServiceType() throws Exception {
-    IndexController controller = new IndexController(caputoDService, RLService, integrationService);
+  void testUnknownServiceType() throws Exception {
+    IndexController controller =
+        new IndexController(caputoService, riemannService, integrationService);
 
     Method method =
         IndexController.class.getDeclaredMethod(
