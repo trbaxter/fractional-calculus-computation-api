@@ -1,10 +1,10 @@
 package com.trbaxter.github.fractionalcomputationapi.controller;
 
-import com.trbaxter.github.fractionalcomputationapi.model.ComputationResponse;
 import com.trbaxter.github.fractionalcomputationapi.model.ControllerRequest;
-import com.trbaxter.github.fractionalcomputationapi.service.derivation.caputo.CaputoDerivativeService;
-import com.trbaxter.github.fractionalcomputationapi.service.derivation.riemann_liouville.RiemannLiouvilleDerivativeService;
-import com.trbaxter.github.fractionalcomputationapi.service.integration.caputo.CaputoIntegrationService;
+import com.trbaxter.github.fractionalcomputationapi.model.Result;
+import com.trbaxter.github.fractionalcomputationapi.service.differentiation.caputo.CaputoService;
+import com.trbaxter.github.fractionalcomputationapi.service.differentiation.riemann_liouville.RiemannService;
+import com.trbaxter.github.fractionalcomputationapi.service.integration.IntegrationService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * IndexController is a REST controller that handles requests for computing fractional calculus
- * operations including the Caputo derivative, Riemann-Liouville derivative, and the Caputo
- * integral.
+ * operations including the Caputo & Riemann-Liouville derivatives and integration.
  */
 @RestController
 @RequestMapping("fractional-calculus-computation-api/")
@@ -26,62 +25,53 @@ public class IndexController {
 
   private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
-  private final CaputoDerivativeService caputoDerivativeService;
-  private final CaputoIntegrationService caputoIntegrationService;
-  private final RiemannLiouvilleDerivativeService riemannLiouvilleDerivativeService;
+  private final CaputoService caputoDService;
+  private final IntegrationService integrationService;
+  private final RiemannService RLService;
 
   @Autowired
-  public IndexController(
-      CaputoDerivativeService caputoDerivativeService,
-      RiemannLiouvilleDerivativeService riemannLiouvilleDerivativeService,
-      CaputoIntegrationService caputoIntegrationService) {
-    this.caputoDerivativeService = caputoDerivativeService;
-    this.riemannLiouvilleDerivativeService = riemannLiouvilleDerivativeService;
-    this.caputoIntegrationService = caputoIntegrationService;
+  public IndexController(CaputoService caputoDService, RiemannService RLService, IntegrationService integrationService) {
+    this.caputoDService = caputoDService;
+    this.RLService = RLService;
+    this.integrationService = integrationService;
   }
 
   @PostMapping("derivative/caputo")
-  public ResponseEntity<ComputationResponse> computeCaputoDerivative(
-      @Valid @RequestBody ControllerRequest request) {
-    return processRequest(request, caputoDerivativeService);
+  public ResponseEntity<Result> computeCaputoDerivative(@Valid @RequestBody ControllerRequest request) {
+    return processRequest(request, caputoDService);
   }
 
   @PostMapping("derivative/riemann-liouville")
-  public ResponseEntity<ComputationResponse> computeRiemannLiouvilleDerivative(
-      @Valid @RequestBody ControllerRequest request) {
-    return processRequest(request, riemannLiouvilleDerivativeService);
+  public ResponseEntity<Result> computeRiemannLiouvilleDerivative(@Valid @RequestBody ControllerRequest request) {
+    return processRequest(request, RLService);
   }
 
   @PostMapping("integral/caputo")
-  public ResponseEntity<ComputationResponse> computeCaputoIntegral(
-      @Valid @RequestBody ControllerRequest request) {
-    return processRequest(request, caputoIntegrationService);
+  public ResponseEntity<Result> computeCaputoIntegral(@Valid @RequestBody ControllerRequest request) {
+    return processRequest(request, integrationService);
   }
 
-  private <T> ResponseEntity<ComputationResponse> processRequest(
-      ControllerRequest request, T service) {
+  private <T> ResponseEntity<Result> processRequest(ControllerRequest request, T service) {
     try {
-      int precision = (request.getPrecision() != null && request.getPrecision() > 0)
-          ? request.getPrecision()
-          : 3;
-      String result = evaluateExpression(service, request.getPolynomialExpression(), request.getOrder(), precision);
-      return new ResponseEntity<>(new ComputationResponse(result), HttpStatus.OK);
+      String result = evaluateExpression(
+      service, request.getPolynomialExpression(), request.getOrder(), request.getPrecision());
+      return new ResponseEntity<>(new Result(result), HttpStatus.OK);
     } catch (Exception e) {
       logger.error("Unhandled exception: ", e);
       return new ResponseEntity<>(
-          new ComputationResponse("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+          new Result("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  private <T> String evaluateExpression(T service, String polynomialExpression, double order, int precision) {
-      return switch (service) {
-          case CaputoDerivativeService derivativeService ->
-              derivativeService.evaluateExpression(polynomialExpression, order, precision);
-          case RiemannLiouvilleDerivativeService liouvilleDerivativeService ->
-              liouvilleDerivativeService.evaluateExpression(polynomialExpression, order, precision);
-          case CaputoIntegrationService integrationService ->
-              integrationService.evaluateExpression(polynomialExpression, order, precision);
-          case null, default -> throw new IllegalArgumentException("Unknown service type");
-      };
+  private <T> String evaluateExpression(T service, String polynomialExpression, double order, Integer precision) {
+    return switch (service) {
+      case CaputoService derivativeService ->
+          derivativeService.evaluateExpression(polynomialExpression, order, precision);
+      case RiemannService liouvilleDerivativeService ->
+          liouvilleDerivativeService.evaluateExpression(polynomialExpression, order, precision);
+      case IntegrationService integrationSvc -> // Renamed to integrationSvc to avoid name conflict
+          integrationSvc.evaluateExpression(polynomialExpression, order, precision);
+      case null, default -> throw new IllegalArgumentException("Unknown service type");
+    };
   }
 }
