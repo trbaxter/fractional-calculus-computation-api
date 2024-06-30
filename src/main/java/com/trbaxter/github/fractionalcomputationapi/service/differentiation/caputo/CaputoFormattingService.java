@@ -36,6 +36,7 @@ public class CaputoFormattingService extends BaseFormattingService {
     return "0";
   }
 
+  @Override
   public String formatTerms(List<Term> terms, int precision) {
     return super.formatTerms(terms, precision);
   }
