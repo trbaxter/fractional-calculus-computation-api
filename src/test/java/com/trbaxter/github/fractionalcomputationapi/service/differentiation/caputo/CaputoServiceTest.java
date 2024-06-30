@@ -24,7 +24,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  */
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public class CaputoServiceTest {
+class CaputoServiceTest {
 
   private CaputoService derivativeService;
 
@@ -37,7 +37,7 @@ public class CaputoServiceTest {
   @ParameterizedTest
   @MethodSource(
       "com.trbaxter.github.fractionalcomputationapi.testdata.derivative.CaputoDerivativeTestData#polynomialExpressions")
-  public void testCaputoPolynomialExpressions(
+  void testCaputoPolynomialExpressions(
       String polynomialExpression, double alpha, Integer precision, String expected) {
     testEvaluateExpression(polynomialExpression, alpha, precision, expected);
   }
@@ -45,7 +45,7 @@ public class CaputoServiceTest {
   @ParameterizedTest
   @MethodSource(
       "com.trbaxter.github.fractionalcomputationapi.testdata.derivative.SharedDerivativeTestData#polynomialExpressions")
-  public void testSharedPolynomialExpressions(
+  void testSharedPolynomialExpressions(
       String polynomialExpression, double alpha, Integer precision, String expected) {
     testEvaluateExpression(polynomialExpression, alpha, precision, expected);
   }
@@ -60,7 +60,7 @@ public class CaputoServiceTest {
   }
 
   @Test
-  public void testGammaDenominatorZero() {
+  void testGammaDenominatorZero() {
     List<Term> terms = List.of(new Term(BigDecimal.ONE, BigDecimal.valueOf(2)));
     BigDecimal alpha = BigDecimal.valueOf(1.1);
 
@@ -85,7 +85,7 @@ public class CaputoServiceTest {
   }
 
   @Test
-  public void testExceptionInGammaComputation() {
+  void testExceptionInGammaComputation() {
     List<Term> terms = List.of(new Term(BigDecimal.ONE, BigDecimal.valueOf(2)));
     BigDecimal alpha = BigDecimal.valueOf(1.1);
 
