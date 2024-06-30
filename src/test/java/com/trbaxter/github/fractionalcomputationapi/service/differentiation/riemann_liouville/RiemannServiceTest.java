@@ -22,7 +22,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public class RiemannServiceTest {
+class RiemannServiceTest {
 
   private RiemannService derivativeService;
 
@@ -35,7 +35,7 @@ public class RiemannServiceTest {
   @ParameterizedTest
   @MethodSource(
       "com.trbaxter.github.fractionalcomputationapi.testdata.derivative.RiemannLiouvilleDerivativeTestData#polynomialExpressions")
-  public void testPolynomialExpressions(
+  void testPolynomialExpressions(
       String polynomialExpression, double alpha, Integer precision, String expected) {
     testEvaluateExpression(polynomialExpression, alpha, precision, expected);
   }
@@ -43,7 +43,7 @@ public class RiemannServiceTest {
   @ParameterizedTest
   @MethodSource(
       "com.trbaxter.github.fractionalcomputationapi.testdata.derivative.SharedDerivativeTestData#polynomialExpressions")
-  public void testSharedPolynomialExpressions(
+  void testSharedPolynomialExpressions(
       String polynomialExpression, double alpha, Integer precision, String expected) {
     testEvaluateExpression(polynomialExpression, alpha, precision, expected);
   }
@@ -58,7 +58,7 @@ public class RiemannServiceTest {
   }
 
   @Test
-  public void testAlphaZeroAndEmptyComputedTerms() {
+  void testAlphaZeroAndEmptyComputedTerms() {
     List<Term> terms = new ArrayList<>();
     BigDecimal alpha = BigDecimal.ZERO;
 
@@ -71,7 +71,7 @@ public class RiemannServiceTest {
   }
 
   @Test
-  public void testAlphaZeroAndNonEmptyComputedTerms() {
+  void testAlphaZeroAndNonEmptyComputedTerms() {
     List<Term> terms = List.of(new Term(BigDecimal.valueOf(2), BigDecimal.ONE));
     BigDecimal alpha = BigDecimal.ZERO;
 
@@ -84,7 +84,7 @@ public class RiemannServiceTest {
   }
 
   @Test
-  public void testAlphaZeroAndSkippedTerms() {
+  void testAlphaZeroAndSkippedTerms() {
     List<Term> terms = List.of(new Term(BigDecimal.ZERO, BigDecimal.ONE));
     BigDecimal alpha = BigDecimal.ZERO;
 
@@ -97,7 +97,7 @@ public class RiemannServiceTest {
   }
 
   @Test
-  public void testGammaDenominatorZero() {
+  void testGammaDenominatorZero() {
     List<Term> terms = List.of(new Term(BigDecimal.ONE, BigDecimal.valueOf(2)));
     BigDecimal alpha = BigDecimal.valueOf(1.1);
 
@@ -122,7 +122,7 @@ public class RiemannServiceTest {
   }
 
   @Test
-  public void testExceptionInGammaComputation() {
+  void testExceptionInGammaComputation() {
     List<Term> terms = List.of(new Term(BigDecimal.ONE, BigDecimal.valueOf(2)));
     BigDecimal alpha = BigDecimal.valueOf(1.1);
 
