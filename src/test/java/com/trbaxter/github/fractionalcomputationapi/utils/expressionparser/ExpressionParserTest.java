@@ -1,9 +1,10 @@
-package com.trbaxter.github.fractionalcomputationapi.utils;
+package com.trbaxter.github.fractionalcomputationapi.utils.expressionparser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
+import com.trbaxter.github.fractionalcomputationapi.utils.ExpressionParser;
 import java.math.BigDecimal;
 import java.util.List;
 import org.junit.jupiter.api.Test;
