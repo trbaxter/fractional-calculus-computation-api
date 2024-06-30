@@ -41,12 +41,12 @@ class TermTest {
 
   /** Tests the creation of Term instances with null values. */
   @Test
-  void testTermRecordNullValues() {
-    assertThrows(NullPointerException.class, () -> createTerm(null, new BigDecimal("2.0")));
-    assertThrows(NullPointerException.class, () -> createTerm(new BigDecimal("3.5"), null));
+  void testTermRecordNullCoefficient() {
+    assertThrows(NullPointerException.class, () -> new Term(null, new BigDecimal("2.0")));
   }
 
-  private void createTerm(BigDecimal coefficient, BigDecimal exponent) {
-    new Term(coefficient, exponent);
+  @Test
+  void testTermRecordNullExponent() {
+    assertThrows(NullPointerException.class, () -> new Term(new BigDecimal("3.5"), null));
   }
 }
