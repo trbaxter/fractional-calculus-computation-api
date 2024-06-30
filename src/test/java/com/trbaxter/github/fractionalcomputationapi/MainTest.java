@@ -10,14 +10,14 @@ import org.springframework.boot.test.context.SpringBootTest;
  * application starts correctly.
  */
 @SpringBootTest
-public class MainTest {
+class MainTest {
 
   /**
    * Tests the main method of the Main class to verify that SpringApplication.run is called
    * correctly.
    */
   @Test
-  public void testMainMethod() {
+  void testMainMethod() {
     try (var mockedSpringApplication = Mockito.mockStatic(SpringApplication.class)) {
       String[] args = {};
       Main.main(args);
