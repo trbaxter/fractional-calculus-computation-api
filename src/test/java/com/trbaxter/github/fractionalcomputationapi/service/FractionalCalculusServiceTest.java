@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-public class FractionalCalculusServiceTest {
+class FractionalCalculusServiceTest {
 
   private TestFractionalCalculusService service;
 
@@ -19,8 +19,8 @@ public class FractionalCalculusServiceTest {
   }
 
   @Test
-  public void testParseExpressionThrowsBadRequestException() {
-    String invalidPolynomial = "3*x^2 + 2x + 1@"; // Invalid character '@'
+  void testParseExpressionThrowsBadRequestException() {
+    String invalidPolynomial = "3*x^2 + 2x + 1@";
 
     try (MockedStatic<ExpressionParser> mockedParser = Mockito.mockStatic(ExpressionParser.class)) {
       mockedParser
