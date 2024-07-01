@@ -22,6 +22,11 @@ public class ExpressionParser {
   private static final String MINUS = "-";
   private static final String EMPTY_STRING = "";
 
+  // Private constructor to prevent instantiation
+  private ExpressionParser() {
+    throw new UnsupportedOperationException("Utility class");
+  }
+
   /**
    * Parses a polynomial string into a list of terms.
    *
