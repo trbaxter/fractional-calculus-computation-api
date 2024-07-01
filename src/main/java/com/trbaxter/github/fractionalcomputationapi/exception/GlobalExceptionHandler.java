@@ -38,6 +38,13 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(new Result("Bad Request: " + errorMessage), HttpStatus.BAD_REQUEST);
   }
 
+  @ExceptionHandler(BadRequestException.class)
+  public ResponseEntity<Result> handleBadRequestException(BadRequestException ex) {
+    logger.warn("Bad request: {}", ex.getMessage());
+    return new ResponseEntity<>(
+        new Result("Bad Request: " + ex.getMessage()), HttpStatus.BAD_REQUEST);
+  }
+
   @ExceptionHandler(Exception.class)
   public ResponseEntity<Result> handleException(Exception e) {
     logger.error("Unhandled exception: ", e);

@@ -1,5 +1,6 @@
 package com.trbaxter.github.fractionalcomputationapi.controller;
 
+import com.trbaxter.github.fractionalcomputationapi.exception.BadRequestException;
 import com.trbaxter.github.fractionalcomputationapi.model.ControllerRequest;
 import com.trbaxter.github.fractionalcomputationapi.model.Result;
 import com.trbaxter.github.fractionalcomputationapi.service.differentiation.caputo.CaputoService;
@@ -56,8 +57,10 @@ public class IndexController {
   private <T> ResponseEntity<Result> processRequest(ControllerRequest request, T service) {
     try {
       String result = evaluateExpression(
-      service, request.getPolynomialExpression(), request.getOrder(), request.getPrecision());
+          service, request.getPolynomialExpression(), request.getOrder(), request.getPrecision());
       return new ResponseEntity<>(new Result(result), HttpStatus.OK);
+    } catch (BadRequestException e) {
+      throw e;
     } catch (Exception e) {
       logger.error("Unhandled exception: ", e);
       return new ResponseEntity<>(
@@ -71,7 +74,7 @@ public class IndexController {
           derivativeService.evaluateExpression(polynomialExpression, order, precision);
       case RiemannService liouvilleDerivativeService ->
           liouvilleDerivativeService.evaluateExpression(polynomialExpression, order, precision);
-      case IntegrationService integrationSvc -> // Renamed to integrationSvc to avoid name conflict
+      case IntegrationService integrationSvc ->
           integrationSvc.evaluateExpression(polynomialExpression, order, precision);
       case null, default -> throw new IllegalArgumentException("Unknown service type");
     };
