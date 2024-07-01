@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import com.trbaxter.github.fractionalcomputationapi.utils.ExpressionParser;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -83,6 +85,14 @@ class ExpressionParserTest {
     polynomial = "2x^2 + 3y - 4";
 
     assertThrows(IllegalArgumentException.class, () -> ExpressionParser.parse(polynomial));
+  }
+
+  @Test
+  void testPrivateConstructor() throws Exception {
+    Constructor<ExpressionParser> testConstructor = ExpressionParser.class.getDeclaredConstructor();
+    testConstructor.setAccessible(true);
+
+    assertThrows(InvocationTargetException.class, testConstructor::newInstance);
   }
 
   private void assertTerms(List<Term> actualTerms, Term... expectedTerms) {
