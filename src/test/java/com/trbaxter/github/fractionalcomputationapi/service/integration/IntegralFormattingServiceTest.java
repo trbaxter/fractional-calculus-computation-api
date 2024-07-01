@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class IntegralFormattingServiceTest {
+class IntegralFormattingServiceTest {
 
   @Test
   void testGetZeroPolynomialResult() {
