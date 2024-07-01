@@ -13,7 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 
-public class ExpressionParserLoggingTest {
+class ExpressionParserLoggingTest {
 
   private ListAppender<ILoggingEvent> listAppender;
 
@@ -26,7 +26,7 @@ public class ExpressionParserLoggingTest {
   }
 
   @Test
-  public void givenNullPolynomial_whenParsed_thenExceptionThrownAndLogged() {
+  void givenNullPolynomial_whenParsed_thenExceptionThrownAndLogged() {
     IllegalArgumentException exception =
         assertThrows(IllegalArgumentException.class, () -> ExpressionParser.parse(null));
     assertEquals("Polynomial expression cannot be null or empty.", exception.getMessage());
@@ -38,7 +38,7 @@ public class ExpressionParserLoggingTest {
   }
 
   @Test
-  public void givenEmptyPolynomial_whenParsed_thenExceptionThrownAndLogged() {
+  void givenEmptyPolynomial_whenParsed_thenExceptionThrownAndLogged() {
     IllegalArgumentException exception =
         assertThrows(IllegalArgumentException.class, () -> ExpressionParser.parse(""));
     assertEquals("Polynomial expression cannot be null or empty.", exception.getMessage());
