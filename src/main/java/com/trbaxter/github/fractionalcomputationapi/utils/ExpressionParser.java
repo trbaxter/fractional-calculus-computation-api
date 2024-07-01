@@ -13,8 +13,14 @@ import org.slf4j.LoggerFactory;
 public class ExpressionParser {
 
   private static final Logger logger = LoggerFactory.getLogger(ExpressionParser.class);
+
+  // Patterns for different parts of the polynomial terms
+  private static final Pattern TERM_WITH_X_PATTERN =
+      Pattern.compile("[+-]?[^-+]*x(?:\\^\\(?-?[0-9.]+\\)?)?");
+  private static final Pattern CONSTANT_TERM_PATTERN = Pattern.compile("[+-]?[^-+]+");
   private static final Pattern TERM_PATTERN =
-      Pattern.compile("([+-]?[^-+]*x(?:\\^\\(?-?[0-9.]+\\)?)?|[+-]?[^-+]+)");
+      Pattern.compile(String.format("%s|%s", TERM_WITH_X_PATTERN, CONSTANT_TERM_PATTERN));
+
   private static final String WHITESPACE_REGEX = "\\s+";
   private static final String SPECIAL_CHARACTERS_REGEX = "[\\[\\]{}()]";
   private static final String X = "x";
@@ -39,14 +45,15 @@ public class ExpressionParser {
     validateInput(polynomial);
 
     List<Term> terms = new ArrayList<>();
-    Matcher matcher =
-        TERM_PATTERN.matcher(
-            polynomial
-                .replaceAll(WHITESPACE_REGEX, EMPTY_STRING)
-                .replaceAll(SPECIAL_CHARACTERS_REGEX, EMPTY_STRING));
+    String cleanedPolynomial =
+        polynomial
+            .replaceAll(WHITESPACE_REGEX, EMPTY_STRING)
+            .replaceAll(SPECIAL_CHARACTERS_REGEX, EMPTY_STRING);
+
+    Matcher matcher = TERM_PATTERN.matcher(cleanedPolynomial);
 
     while (matcher.find()) {
-      String termString = matcher.group(1);
+      String termString = matcher.group();
       terms.add(parseTerm(termString));
     }
 
