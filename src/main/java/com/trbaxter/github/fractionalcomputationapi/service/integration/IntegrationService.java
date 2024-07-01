@@ -2,7 +2,6 @@ package com.trbaxter.github.fractionalcomputationapi.service.integration;
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import com.trbaxter.github.fractionalcomputationapi.service.FractionalCalculusService;
-import com.trbaxter.github.fractionalcomputationapi.utils.ExpressionParser;
 import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class IntegrationService implements FractionalCalculusService {
 
   @Override
   public String evaluateExpression(String polynomialExpression, double alpha, Integer precision) {
-    List<Term> terms = ExpressionParser.parse(polynomialExpression);
+    List<Term> terms = parseExpression(polynomialExpression);
     List<Term> computedTerms =
         termComputationService.computeTerms(terms, BigDecimal.valueOf(alpha));
     return termFormattingService.formatTerms(computedTerms, alpha, precision);
