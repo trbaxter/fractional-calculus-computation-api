@@ -9,13 +9,13 @@ import java.math.BigDecimal;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class ExpressionParserTest {
+class ExpressionParserTest {
 
   private String polynomial;
   private List<Term> terms;
 
   @Test
-  public void givenValidPolynomial_whenParsed_thenCorrectTermsReturned() {
+  void givenValidPolynomial_whenParsed_thenCorrectTermsReturned() {
     polynomial = "3x^2.3543 + 2x^-0.005 + 1";
     terms = ExpressionParser.parse(polynomial);
 
@@ -27,7 +27,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void givenValidPolynomialWithParentheses_whenParsed_thenCorrectTermsReturned() {
+  void givenValidPolynomialWithParentheses_whenParsed_thenCorrectTermsReturned() {
     polynomial = "3x^(2.3543) + 2x^(-0.005) + 1";
     terms = ExpressionParser.parse(polynomial);
 
@@ -39,7 +39,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void givenSingleTermPolynomial_whenParsed_thenCorrectTermReturned() {
+  void givenSingleTermPolynomial_whenParsed_thenCorrectTermReturned() {
     polynomial = "5x^3";
     terms = ExpressionParser.parse(polynomial);
 
@@ -47,7 +47,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void givenConstantPolynomial_whenParsed_thenCorrectTermReturned() {
+  void givenConstantPolynomial_whenParsed_thenCorrectTermReturned() {
     polynomial = "7";
     terms = ExpressionParser.parse(polynomial);
 
@@ -55,7 +55,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void givenPolynomialWithNegativeCoefficients_whenParsed_thenCorrectTermsReturned() {
+  void givenPolynomialWithNegativeCoefficients_whenParsed_thenCorrectTermsReturned() {
     polynomial = "-4x^2 - 3x + 2";
     terms = ExpressionParser.parse(polynomial);
 
@@ -67,7 +67,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void givenPolynomialWithSpaces_whenParsed_thenCorrectTermsReturned() {
+  void givenPolynomialWithSpaces_whenParsed_thenCorrectTermsReturned() {
     polynomial = " 2x^2  + 3x - 4 ";
     terms = ExpressionParser.parse(polynomial);
 
@@ -79,7 +79,7 @@ public class ExpressionParserTest {
   }
 
   @Test
-  public void givenInvalidPolynomial_whenParsed_thenExceptionThrown() {
+  void givenInvalidPolynomial_whenParsed_thenExceptionThrown() {
     polynomial = "2x^2 + 3y - 4";
 
     assertThrows(IllegalArgumentException.class, () -> ExpressionParser.parse(polynomial));
