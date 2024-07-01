@@ -3,6 +3,7 @@ package com.trbaxter.github.fractionalcomputationapi.utils.expressionparser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.trbaxter.github.fractionalcomputationapi.exception.BadRequestException;
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import com.trbaxter.github.fractionalcomputationapi.utils.ExpressionParser;
 import java.lang.reflect.Constructor;
@@ -84,7 +85,7 @@ class ExpressionParserTest {
   void givenInvalidPolynomial_whenParsed_thenExceptionThrown() {
     polynomial = "2x^2 + 3y - 4";
 
-    assertThrows(IllegalArgumentException.class, () -> ExpressionParser.parse(polynomial));
+    assertThrows(BadRequestException.class, () -> ExpressionParser.parse(polynomial));
   }
 
   @Test

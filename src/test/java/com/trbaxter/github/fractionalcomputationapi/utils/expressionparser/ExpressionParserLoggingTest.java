@@ -7,6 +7,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+import com.trbaxter.github.fractionalcomputationapi.exception.BadRequestException;
 import com.trbaxter.github.fractionalcomputationapi.utils.ExpressionParser;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,8 +28,8 @@ class ExpressionParserLoggingTest {
 
   @Test
   void givenNullPolynomial_whenParsed_thenExceptionThrownAndLogged() {
-    IllegalArgumentException exception =
-        assertThrows(IllegalArgumentException.class, () -> ExpressionParser.parse(null));
+    BadRequestException exception =
+        assertThrows(BadRequestException.class, () -> ExpressionParser.parse(null));
     assertEquals("Polynomial expression cannot be null or empty.", exception.getMessage());
 
     List<ILoggingEvent> logsList = listAppender.list;
@@ -39,8 +40,8 @@ class ExpressionParserLoggingTest {
 
   @Test
   void givenEmptyPolynomial_whenParsed_thenExceptionThrownAndLogged() {
-    IllegalArgumentException exception =
-        assertThrows(IllegalArgumentException.class, () -> ExpressionParser.parse(""));
+    BadRequestException exception =
+        assertThrows(BadRequestException.class, () -> ExpressionParser.parse(""));
     assertEquals("Polynomial expression cannot be null or empty.", exception.getMessage());
 
     List<ILoggingEvent> logsList = listAppender.list;

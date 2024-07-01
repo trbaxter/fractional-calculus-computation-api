@@ -1,5 +1,6 @@
 package com.trbaxter.github.fractionalcomputationapi.utils;
 
+import com.trbaxter.github.fractionalcomputationapi.exception.BadRequestException;
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -55,7 +56,12 @@ public class ExpressionParser {
   private static void validateInput(String polynomial) {
     if (polynomial == null || polynomial.trim().isEmpty()) {
       logger.error("Polynomial expression is null or empty.");
-      throw new IllegalArgumentException("Polynomial expression cannot be null or empty.");
+      throw new BadRequestException("Polynomial expression cannot be null or empty.");
+    }
+    // Check for invalid characters
+    if (!polynomial.matches("[0-9xX^+\\-*.()\\s]+")) {
+      logger.error("Polynomial expression contains invalid characters.");
+      throw new BadRequestException("Polynomial expression contains invalid characters.");
     }
   }
 
