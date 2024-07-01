@@ -46,18 +46,10 @@ public class IntegralComputationService {
       List<Term> computedTerms,
       BigDecimal coefficient,
       BigDecimal k) {
-    try {
-      if (isIntegerAlpha) {
-        computeIntegerOrderTerms(coefficient, k, alpha.intValue(), computedTerms);
-      } else {
-        computeFractionalOrderTerms(coefficient, k, alpha, computedTerms);
-      }
-    } catch (ArithmeticException e) {
-      logger.error("Arithmetic error computing term {}: {}", k, e.getMessage());
-      throw e;
-    } catch (Exception e) {
-      logger.error("Unexpected error computing term {}: {}", k, e.getMessage());
-      throw e;
+    if (isIntegerAlpha) {
+      computeIntegerOrderTerms(coefficient, k, alpha.intValue(), computedTerms);
+    } else {
+      computeFractionalOrderTerms(coefficient, k, alpha, computedTerms);
     }
   }
 
