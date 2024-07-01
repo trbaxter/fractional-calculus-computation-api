@@ -15,43 +15,43 @@ import org.junit.jupiter.api.function.Executable;
  * MathUtilsTest is a test class for the MathUtils utility class. It tests various cases for the
  * gamma function and ensures proper behavior of the MathUtils class.
  */
-public class MathUtilsTest {
+class MathUtilsTest {
 
   private static final int SCALE = 15;
 
   @Test
-  public void testGammaFunctionPositiveValues() {
+  void testGammaFunctionPositiveValues() {
     assertGammaFunction(
         new BigDecimal("5"), new BigDecimal("24.000000000000000"), "positive values");
   }
 
   @Test
-  public void testGammaFunctionHalfValues() {
+  void testGammaFunctionHalfValues() {
     BigDecimal expected =
         BigDecimal.valueOf(Math.sqrt(Math.PI)).setScale(SCALE, RoundingMode.HALF_UP);
     assertGammaFunction(new BigDecimal("0.5"), expected, "half values");
   }
 
   @Test
-  public void testGammaFunctionNegativeValues() {
+  void testGammaFunctionNegativeValues() {
     assertGammaFunction(
         new BigDecimal("-0.5"), new BigDecimal("-3.544907701811032"), "negative values");
   }
 
   @Test
-  public void testGammaFunctionNearZero() {
+  void testGammaFunctionNearZero() {
     assertGammaFunction(
         new BigDecimal("0.01"), new BigDecimal("99.432585119150600"), "values near zero");
   }
 
   @Test
-  public void testGammaFunctionSpecialCase() {
+  void testGammaFunctionSpecialCase() {
     assertGammaFunction(
         BigDecimal.ONE, BigDecimal.ONE.setScale(SCALE, RoundingMode.HALF_UP), "special case");
   }
 
   @Test
-  public void testGamma_NullInput() {
+  void testGamma_NullInput() {
     assertThrows(
         IllegalArgumentException.class,
         () -> MathUtils.gamma(null),
@@ -64,7 +64,7 @@ public class MathUtilsTest {
   }
 
   @Test
-  public void testMathUtilsConstructorThrowsException() {
+  void testMathUtilsConstructorThrowsException() {
     Constructor<MathUtils> constructor = null;
     try {
       constructor = MathUtils.class.getDeclaredConstructor();
@@ -93,7 +93,7 @@ public class MathUtilsTest {
   }
 
   @Test
-  public void testGammaFunctionWithInvalidInput() {
+  void testGammaFunctionWithInvalidInput() {
     BigDecimal invalidInput = mock(BigDecimal.class);
     when(invalidInput.doubleValue()).thenThrow(new NumberFormatException("Invalid input"));
 
