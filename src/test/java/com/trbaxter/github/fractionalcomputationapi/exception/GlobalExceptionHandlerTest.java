@@ -103,9 +103,9 @@ class GlobalExceptionHandlerTest {
     assertEquals(1, logEvents.size(), "Number of log events");
     assertEquals(
         "Bad request: Polynomial expression contains invalid characters.",
-        logEvents.get(0).getFormattedMessage(),
+        logEvents.getFirst().getFormattedMessage(),
         "Log message");
-    assertEquals(ch.qos.logback.classic.Level.WARN, logEvents.get(0).getLevel(), "Log level");
+    assertEquals(ch.qos.logback.classic.Level.WARN, logEvents.getFirst().getLevel(), "Log level");
   }
 
   @RestController
