@@ -64,7 +64,9 @@ public class IntegralFormattingService extends BaseFormattingService {
           MathUtils.gamma(BigDecimal.valueOf(alphaInt)), precision, RoundingMode.HALF_UP);
     } else {
       return BigDecimal.ONE.divide(
-          MathUtils.gamma(BigDecimal.valueOf(alphaInt - i)), precision, RoundingMode.HALF_UP);
+          MathUtils.gamma(BigDecimal.valueOf((double) alphaInt - i)),
+          precision,
+          RoundingMode.HALF_UP);
     }
   }
 
