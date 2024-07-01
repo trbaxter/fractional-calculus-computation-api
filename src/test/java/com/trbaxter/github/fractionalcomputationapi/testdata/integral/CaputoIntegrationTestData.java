@@ -136,10 +136,6 @@ public final class CaputoIntegrationTestData {
     }
   }
 
-  private static void addExpectedValue(String polynomial, double alpha, String result) {
-    expectedValues.computeIfAbsent(polynomial, k -> new HashMap<>()).put(alpha, result);
-  }
-
   /**
    * Provides a stream of arguments representing different combinations of polynomial coefficients
    * and fractional orders for testing Caputo integral computations.
