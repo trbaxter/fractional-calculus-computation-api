@@ -23,7 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  */
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public class IntegrationServiceTest {
+class IntegrationServiceTest {
 
   @Autowired private IntegrationService integrationService;
 
@@ -39,7 +39,7 @@ public class IntegrationServiceTest {
   @ParameterizedTest
   @MethodSource(
       "com.trbaxter.github.fractionalcomputationapi.testdata.integral.CaputoIntegrationTestData#polynomialExpressions")
-  public void testCaputoPolynomialExpressions(
+  void testCaputoPolynomialExpressions(
       String polynomialExpression, double alpha, Integer precision, String expected) {
     runTestWithMockedMathUtils(
         () -> {
@@ -50,7 +50,7 @@ public class IntegrationServiceTest {
   }
 
   @Test
-  public void testComputeIntegral_ThrowsArithmeticException() {
+  void testComputeIntegral_ThrowsArithmeticException() {
     runTestWithMockedMathUtils(
         () -> {
           Mockito.when(MathUtils.gamma(any(BigDecimal.class)))
@@ -69,7 +69,7 @@ public class IntegrationServiceTest {
 
   /** Tests the Caputo integral computation service when a generic exception is thrown. */
   @Test
-  public void testComputeIntegral_ThrowsGenericException() {
+  void testComputeIntegral_ThrowsGenericException() {
     runTestWithMockedMathUtils(
         () -> {
           Mockito.when(MathUtils.gamma(any(BigDecimal.class)))
