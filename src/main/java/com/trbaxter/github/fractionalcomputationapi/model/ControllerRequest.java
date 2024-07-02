@@ -3,7 +3,6 @@ package com.trbaxter.github.fractionalcomputationapi.model;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +19,6 @@ public class ControllerRequest {
   private String polynomialExpression;
 
   @NotNull(message = "Order cannot be null")
-  @PositiveOrZero(message = "Order must be positive or zero")
   private Double order;
 
   @NotNull(message = "Precision cannot be null")
