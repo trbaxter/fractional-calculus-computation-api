@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
   private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+  private static final String VALIDATION_ERROR = "Validation error";
+  private static final String BAD_REQUEST = "Bad Request: ";
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<Result> handleValidationExceptions(MethodArgumentNotValidException ex) {
     String errorMessage = extractErrorMessage(ex);
-    logWarning("Validation error", errorMessage, ex);
+    logWarning(VALIDATION_ERROR, errorMessage, ex);
     return buildResponseEntity("Validation Error: " + errorMessage, HttpStatus.BAD_REQUEST);
   }
 
@@ -28,20 +30,20 @@ public class GlobalExceptionHandler {
       HttpMessageNotReadableException ex) {
     String errorMessage = "Malformed JSON request body";
     logWarning("Malformed JSON request body", errorMessage, ex);
-    return buildResponseEntity("Bad Request: " + errorMessage, HttpStatus.BAD_REQUEST);
+    return buildResponseEntity(BAD_REQUEST + errorMessage, HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(UndefinedGammaFunctionException.class)
   public ResponseEntity<Result> handleUndefinedGammaFunctionException(
       UndefinedGammaFunctionException ex) {
     logWarning("Undefined gamma function input", ex.getMessage(), ex);
-    return buildResponseEntity("Bad Request: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+    return buildResponseEntity(BAD_REQUEST + ex.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(BadRequestException.class)
   public ResponseEntity<Result> handleBadRequestException(BadRequestException ex) {
     logWarning("Bad request", ex.getMessage(), ex);
-    return buildResponseEntity("Bad Request: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+    return buildResponseEntity(BAD_REQUEST + ex.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(Exception.class)
@@ -52,9 +54,9 @@ public class GlobalExceptionHandler {
 
   private String extractErrorMessage(MethodArgumentNotValidException ex) {
     return ex.getBindingResult().getAllErrors().stream()
-        .map(error -> Optional.ofNullable(error.getDefaultMessage()).orElse("Validation error"))
+        .map(error -> Optional.ofNullable(error.getDefaultMessage()).orElse(VALIDATION_ERROR))
         .findFirst()
-        .orElse("Validation error");
+        .orElse(VALIDATION_ERROR);
   }
 
   private void logWarning(String context, String message, Exception ex) {
