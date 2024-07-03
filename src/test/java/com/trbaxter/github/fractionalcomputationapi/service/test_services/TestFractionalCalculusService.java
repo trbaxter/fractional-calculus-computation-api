@@ -1,4 +1,6 @@
-package com.trbaxter.github.fractionalcomputationapi.service;
+package com.trbaxter.github.fractionalcomputationapi.service.test_services;
+
+import com.trbaxter.github.fractionalcomputationapi.service.FractionalCalculusService;
 
 public class TestFractionalCalculusService implements FractionalCalculusService {
 
