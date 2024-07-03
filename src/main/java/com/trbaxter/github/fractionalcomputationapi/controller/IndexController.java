@@ -1,14 +1,11 @@
 package com.trbaxter.github.fractionalcomputationapi.controller;
 
-import com.trbaxter.github.fractionalcomputationapi.exception.BadRequestException;
 import com.trbaxter.github.fractionalcomputationapi.model.ControllerRequest;
 import com.trbaxter.github.fractionalcomputationapi.model.Result;
 import com.trbaxter.github.fractionalcomputationapi.service.differentiation.caputo.CaputoService;
 import com.trbaxter.github.fractionalcomputationapi.service.differentiation.riemann_liouville.RiemannService;
 import com.trbaxter.github.fractionalcomputationapi.service.integration.IntegrationService;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +20,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("fractional-calculus-computation-api/")
 @Validated
 public class IndexController {
-
-  private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
   private final CaputoService caputoService;
   private final IntegrationService integrationService;
@@ -55,28 +50,21 @@ public class IndexController {
   }
 
   private <T> ResponseEntity<Result> processRequest(ControllerRequest request, T service) {
-    try {
-      String result = evaluateExpression(
-          service, request.getPolynomialExpression(), request.getOrder(), request.getPrecision());
-      return new ResponseEntity<>(new Result(result), HttpStatus.OK);
-    } catch (BadRequestException e) {
-      throw e;
-    } catch (Exception e) {
-      logger.error("Unhandled exception: ", e);
-      return new ResponseEntity<>(
-          new Result("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    String result = evaluateExpression(
+    service, request.getPolynomialExpression(), request.getOrder(), request.getPrecision());
+    return new ResponseEntity<>(new Result(result), HttpStatus.OK);
   }
 
   private <T> String evaluateExpression(T service, String polynomialExpression, double order, Integer precision) {
-    return switch (service) {
-      case CaputoService derivativeService ->
-          derivativeService.evaluateExpression(polynomialExpression, order, precision);
-      case RiemannService liouvilleDerivativeService ->
-          liouvilleDerivativeService.evaluateExpression(polynomialExpression, order, precision);
-      case IntegrationService integrationSvc ->
-          integrationSvc.evaluateExpression(polynomialExpression, order, precision);
-      case null, default -> throw new IllegalArgumentException("Unknown service type");
-    };
+      return switch (service) {
+          case CaputoService caputoService1 ->
+              caputoService1.evaluateExpression(polynomialExpression, order, precision);
+          case RiemannService riemannService1 ->
+              riemannService1.evaluateExpression(polynomialExpression, order, precision);
+          case IntegrationService integrationService1 ->
+              integrationService1.evaluateExpression(polynomialExpression, order, precision);
+          case null, default -> throw new IllegalArgumentException("Unknown service type");
+      };
   }
 }
+
