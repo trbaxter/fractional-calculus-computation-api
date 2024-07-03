@@ -50,6 +50,7 @@ class GlobalExceptionHandlerTest {
     logger.addAppender(listAppender);
   }
 
+  /** Tests the handling of a generic exception. */
   @Test
   void testHandleException() throws Exception {
     mockMvc
@@ -58,6 +59,7 @@ class GlobalExceptionHandlerTest {
         .andExpect(content().json("{\"expression\": \"Internal Server Error\"}"));
   }
 
+  /** Tests the handling of HttpMessageNotReadableException (malformed JSON). */
   @Test
   void testHandleHttpMessageNotReadableException() throws Exception {
     String malformedJson =
@@ -73,6 +75,7 @@ class GlobalExceptionHandlerTest {
             content().json("{\"expression\": \"Bad Request: Malformed JSON request body\"}"));
   }
 
+  /** Tests the handling of BadRequestException. */
   @Test
   void testHandleBadRequestException() throws Exception {
     String invalidRequest =
@@ -93,10 +96,6 @@ class GlobalExceptionHandlerTest {
                 .value("Bad Request: Polynomial expression contains invalid characters."));
 
     List<ILoggingEvent> logEvents = listAppender.list;
-    logEvents.forEach(
-        event ->
-            System.out.println(
-                "Log message: " + event.getFormattedMessage())); // Add this line to debug
     assertEquals(1, logEvents.size(), "Number of log events");
     assertEquals(
         "Bad request: Polynomial expression contains invalid characters.",
@@ -105,6 +104,7 @@ class GlobalExceptionHandlerTest {
     assertEquals(ch.qos.logback.classic.Level.WARN, logEvents.getFirst().getLevel(), "Log level");
   }
 
+  /** Tests the handling of UndefinedGammaFunctionException. */
   @Test
   void testHandleUndefinedGammaFunctionException() throws Exception {
     String request =
@@ -125,8 +125,6 @@ class GlobalExceptionHandlerTest {
                 .value("Bad Request: Gamma function is undefined for the given input."));
 
     List<ILoggingEvent> logEvents = listAppender.list;
-    logEvents.forEach(
-        event -> System.out.println("Log message: " + event.getFormattedMessage())); // Debug line
     assertEquals(1, logEvents.size(), "Number of log events");
     assertEquals(
         "Undefined gamma function input: Gamma function is undefined for the given input.",
@@ -135,6 +133,7 @@ class GlobalExceptionHandlerTest {
     assertEquals(ch.qos.logback.classic.Level.WARN, logEvents.getFirst().getLevel(), "Log level");
   }
 
+  /** Mock controller to trigger exceptions for testing purposes. */
   @RestController
   static class MockController {
     @GetMapping("/trigger-exception")

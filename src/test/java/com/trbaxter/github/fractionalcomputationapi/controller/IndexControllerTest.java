@@ -24,8 +24,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 /**
- * IndexControllerTest is a test class for the IndexController.<br>
- * It uses MockMvc to test endpoints as defined in that class.
+ * IndexControllerTest is a test class for the IndexController. It uses MockMvc to test endpoints as
+ * defined in that class.
  */
 @WebMvcTest(IndexController.class)
 @ExtendWith(SpringExtension.class)
@@ -42,6 +42,7 @@ class IndexControllerTest {
   private Integer precision;
   private ControllerRequest userRequest;
 
+  /** Sets up the test data before each test. */
   @BeforeEach
   public void setUp() {
     polynomial = "3x^2 + 2x + 1";
@@ -50,6 +51,14 @@ class IndexControllerTest {
     userRequest = createRequest(polynomial, alpha, precision);
   }
 
+  /**
+   * Creates a ControllerRequest with the given parameters.
+   *
+   * @param polynomial the polynomial expression
+   * @param alpha the order of the operation
+   * @param precision the precision of the result
+   * @return the created ControllerRequest
+   */
   private ControllerRequest createRequest(String polynomial, double alpha, Integer precision) {
     ControllerRequest controllerRequest = new ControllerRequest();
     controllerRequest.setPolynomialExpression(polynomial);
@@ -58,6 +67,14 @@ class IndexControllerTest {
     return controllerRequest;
   }
 
+  /**
+   * Performs a POST request with the given URL and request body.
+   *
+   * @param url the URL to send the request to
+   * @param request the request body
+   * @return the ResultActions to assert the response
+   * @throws Exception if an error occurs during the request
+   */
   private ResultActions performPostRequest(String url, ControllerRequest request) throws Exception {
     return mockMvc.perform(
         post(url)
@@ -65,6 +82,7 @@ class IndexControllerTest {
             .content(objectMapper.writeValueAsString(request)));
   }
 
+  /** Tests the Caputo derivative computation. */
   @Test
   void testComputeCaputoDerivative() throws Exception {
     when(caputoService.evaluateExpression(
@@ -78,6 +96,7 @@ class IndexControllerTest {
         .andExpect(jsonPath("$.expression").value("4.514x^1.5 + 2.257x^0.5"));
   }
 
+  /** Tests the Riemann-Liouville derivative computation. */
   @Test
   void testComputeRiemannLiouvilleDerivative() throws Exception {
     when(riemannService.evaluateExpression(
@@ -92,6 +111,7 @@ class IndexControllerTest {
         .andExpect(jsonPath("$.expression").value("4.514x^1.5 + 2.257x^0.5 + 0.564x^-0.5"));
   }
 
+  /** Tests the Caputo integral computation. */
   @Test
   void testComputeCaputoIntegral() throws Exception {
     when(integrationService.evaluateExpression(
@@ -105,6 +125,7 @@ class IndexControllerTest {
         .andExpect(jsonPath("$.expression").value("1.805x^2.5 + 1.505x^1.5 + 1.128x^0.5 + C"));
   }
 
+  /** Tests handling of invalid ControllerRequest. */
   @Test
   void testInvalidControllerRequest() throws Exception {
     ControllerRequest request = createRequest(null, 0.5, 3);
@@ -113,6 +134,7 @@ class IndexControllerTest {
         .andExpect(status().isBadRequest());
   }
 
+  /** Tests handling when precision is missing in ControllerRequest. */
   @Test
   void testPrecisionMissing() throws Exception {
     ControllerRequest request = createRequest(polynomial, alpha, null);
@@ -121,6 +143,7 @@ class IndexControllerTest {
         .andExpect(status().isBadRequest());
   }
 
+  /** Tests handling when precision is zero in ControllerRequest. */
   @Test
   void testPrecisionZero() throws Exception {
     ControllerRequest request = createRequest(polynomial, alpha, 0);
@@ -129,6 +152,7 @@ class IndexControllerTest {
         .andExpect(status().isBadRequest());
   }
 
+  /** Tests handling when precision is negative in ControllerRequest. */
   @Test
   void testPrecisionNegative() throws Exception {
     ControllerRequest request = createRequest(polynomial, alpha, -1);
@@ -137,6 +161,7 @@ class IndexControllerTest {
         .andExpect(status().isBadRequest());
   }
 
+  /** Tests handling of internal server error during Caputo derivative computation. */
   @Test
   void testCaputoDerivativeInternalServerError() throws Exception {
     when(caputoService.evaluateExpression(
@@ -150,6 +175,7 @@ class IndexControllerTest {
         .andExpect(content().json("{\"expression\": \"Internal Server Error\"}"));
   }
 
+  /** Tests handling of internal server error during Riemann-Liouville derivative computation. */
   @Test
   void testRiemannLiouvilleDerivativeInternalServerError() throws Exception {
     when(riemannService.evaluateExpression(
@@ -164,6 +190,7 @@ class IndexControllerTest {
         .andExpect(content().json("{\"expression\": \"Internal Server Error\"}"));
   }
 
+  /** Tests handling of internal server error during Caputo integral computation. */
   @Test
   void testCaputoIntegralInternalServerError() throws Exception {
     when(integrationService.evaluateExpression(
@@ -177,6 +204,7 @@ class IndexControllerTest {
         .andExpect(content().json("{\"expression\": \"Internal Server Error\"}"));
   }
 
+  /** Tests handling of unknown service type. */
   @Test
   void testUnknownServiceType() throws Exception {
     IndexController controller =
@@ -197,5 +225,6 @@ class IndexControllerTest {
     }
   }
 
+  /** Mock class for unknown service type. */
   private static class UnknownService {}
 }
