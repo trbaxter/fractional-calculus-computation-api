@@ -48,11 +48,6 @@ public final class MathUtils {
     BigDecimal gammaNumerator = gamma(numerator);
     BigDecimal gammaDenominator = gamma(denominator);
 
-    if (gammaDenominator.compareTo(BigDecimal.ZERO) == 0) {
-      throw new UndefinedGammaFunctionException(
-          "Gamma function is undefined for input: " + denominator);
-    }
-
     return gammaNumerator.divide(gammaDenominator, MathContext.DECIMAL128);
   }
 }
