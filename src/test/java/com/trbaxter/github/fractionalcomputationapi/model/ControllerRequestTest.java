@@ -54,6 +54,7 @@ class ControllerRequestTest {
    *
    * @param polynomialExpression the polynomial expression as a string.
    * @param order the order of the operation.
+   * @param precision the precision of the result.
    */
   @ParameterizedTest
   @MethodSource("provideValidRequests")
@@ -68,8 +69,8 @@ class ControllerRequestTest {
         polynomialExpression,
         request.getPolynomialExpression(),
         "Polynomial expression should be set correctly");
-    assertEquals(
-        order, request.getOrder(), request.getPrecision(), "Order should be set correctly");
+    assertEquals(order, request.getOrder(), "Order should be set correctly");
+    assertEquals(precision, request.getPrecision(), "Precision should be set correctly");
   }
 
   /** Tests the ControllerRequest class with an empty polynomial expression. */
@@ -88,8 +89,8 @@ class ControllerRequestTest {
         polynomialExpression,
         request.getPolynomialExpression(),
         "Polynomial expression should handle empty string");
-    assertEquals(
-        order, request.getOrder(), request.getPrecision(), "Order should handle normal values");
+    assertEquals(order, request.getOrder(), "Order should handle normal values");
+    assertEquals(precision, request.getPrecision(), "Precision should handle normal values");
   }
 
   /** Tests the ControllerRequest class with a negative order value. */
@@ -108,8 +109,8 @@ class ControllerRequestTest {
         polynomialExpression,
         request.getPolynomialExpression(),
         "Polynomial expression should handle normal values");
-    assertEquals(
-        order, request.getOrder(), request.getPrecision(), "Order should handle negative values");
+    assertEquals(order, request.getOrder(), "Order should handle negative values");
+    assertEquals(precision, request.getPrecision(), "Precision should handle normal values");
   }
 
   /** Tests the ControllerRequest class with large polynomial expression and order values. */
@@ -128,8 +129,8 @@ class ControllerRequestTest {
         polynomialExpression,
         request.getPolynomialExpression(),
         "Polynomial expression should handle large values");
-    assertEquals(
-        order, request.getOrder(), request.getPrecision(), "Order should handle large values");
+    assertEquals(order, request.getOrder(), "Order should handle large values");
+    assertEquals(precision, request.getPrecision(), "Precision should handle normal values");
   }
 
   /**
@@ -137,6 +138,7 @@ class ControllerRequestTest {
    *
    * @param polynomialExpression the polynomial expression as a string.
    * @param order the order of the operation.
+   * @param precision the precision of the result.
    * @param expectedMessage the expected validation error message.
    */
   @ParameterizedTest
@@ -149,7 +151,9 @@ class ControllerRequestTest {
     request.setPrecision(precision);
 
     Set<ConstraintViolation<ControllerRequest>> violations = validator.validate(request);
-    assertFalse(violations.isEmpty());
-    assertTrue(violations.stream().anyMatch(v -> v.getMessage().contains(expectedMessage)));
+    assertFalse(violations.isEmpty(), "There should be validation errors");
+    assertTrue(
+        violations.stream().anyMatch(v -> v.getMessage().contains(expectedMessage)),
+        "Validation error should match expected message");
   }
 }
