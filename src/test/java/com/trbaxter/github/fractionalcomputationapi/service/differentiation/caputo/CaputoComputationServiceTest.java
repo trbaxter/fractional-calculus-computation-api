@@ -25,22 +25,18 @@ class CaputoComputationServiceTest {
 
     try (MockedStatic<MathUtils> mathUtilsMockedStatic = mockStatic(MathUtils.class)) {
       mathUtilsMockedStatic
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(3)))
-          .thenReturn(BigDecimal.valueOf(2));
-      mathUtilsMockedStatic
-          .when(() -> MathUtils.gamma(BigDecimal.valueOf(2.5)))
-          .thenReturn(BigDecimal.valueOf(1.5));
+          .when(() -> MathUtils.computeGammaRatio(BigDecimal.valueOf(3), BigDecimal.valueOf(2.5)))
+          .thenReturn(BigDecimal.valueOf(1.333333333333333333333333333333333));
 
       List<Term> computedTerms = service.computeTerms(terms, alpha);
 
-      mathUtilsMockedStatic.verify(() -> MathUtils.gamma(BigDecimal.valueOf(3)), times(1));
-      mathUtilsMockedStatic.verify(() -> MathUtils.gamma(BigDecimal.valueOf(2.5)), times(1));
+      mathUtilsMockedStatic.verify(
+          () -> MathUtils.computeGammaRatio(BigDecimal.valueOf(3), BigDecimal.valueOf(2.5)),
+          times(1));
 
       assertFalse(computedTerms.isEmpty());
       assertEquals(1, computedTerms.size());
-      assertEquals(
-          new BigDecimal("1.333333333333333333333333333333333"),
-          computedTerms.getFirst().coefficient());
+      assertEquals(new BigDecimal("1.3333333333333333"), computedTerms.getFirst().coefficient());
       assertEquals(BigDecimal.valueOf(1.5), computedTerms.getFirst().power());
     }
   }
