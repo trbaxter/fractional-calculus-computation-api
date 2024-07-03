@@ -21,6 +21,7 @@ public class ExpressionParser {
   private static final Pattern TERM_PATTERN =
       Pattern.compile(String.format("%s|%s", TERM_WITH_X_PATTERN, CONSTANT_TERM_PATTERN));
 
+  // Regex patterns and constants for cleaning and parsing
   private static final String WHITESPACE_REGEX = "\\s+";
   private static final String SPECIAL_CHARACTERS_REGEX = "[\\[\\]{}()]";
   private static final String X = "x";
@@ -39,17 +40,13 @@ public class ExpressionParser {
    *
    * @param polynomial the polynomial string to parse.
    * @return a list of terms.
-   * @throws IllegalArgumentException if the input is invalid.
+   * @throws BadRequestException if the input is invalid.
    */
   public static List<Term> parse(String polynomial) {
     validateInput(polynomial);
 
+    String cleanedPolynomial = cleanPolynomial(polynomial);
     List<Term> terms = new ArrayList<>();
-    String cleanedPolynomial =
-        polynomial
-            .replaceAll(WHITESPACE_REGEX, EMPTY_STRING)
-            .replaceAll(SPECIAL_CHARACTERS_REGEX, EMPTY_STRING);
-
     Matcher matcher = TERM_PATTERN.matcher(cleanedPolynomial);
 
     while (matcher.find()) {
@@ -60,18 +57,41 @@ public class ExpressionParser {
     return terms;
   }
 
+  /**
+   * Validates the input polynomial string.
+   *
+   * @param polynomial the polynomial string to validate.
+   * @throws BadRequestException if the input is invalid.
+   */
   private static void validateInput(String polynomial) {
     if (polynomial == null || polynomial.trim().isEmpty()) {
       logger.error("Polynomial expression is null or empty.");
       throw new BadRequestException("Polynomial expression cannot be null or empty.");
     }
-    // Check for invalid characters
     if (!polynomial.matches("[0-9xX^+\\-*.()\\s]+")) {
       logger.error("Polynomial expression contains invalid characters.");
       throw new BadRequestException("Polynomial expression contains invalid characters.");
     }
   }
 
+  /**
+   * Cleans the input polynomial string by removing whitespace and special characters.
+   *
+   * @param polynomial the polynomial string to clean.
+   * @return the cleaned polynomial string.
+   */
+  private static String cleanPolynomial(String polynomial) {
+    return polynomial
+        .replaceAll(WHITESPACE_REGEX, EMPTY_STRING)
+        .replaceAll(SPECIAL_CHARACTERS_REGEX, EMPTY_STRING);
+  }
+
+  /**
+   * Parses a term string into a Term object.
+   *
+   * @param term the term string to parse.
+   * @return the parsed Term object.
+   */
   private static Term parseTerm(String term) {
     BigDecimal coefficient;
     BigDecimal power;
@@ -88,6 +108,12 @@ public class ExpressionParser {
     return new Term(coefficient, power);
   }
 
+  /**
+   * Parses the coefficient from the term parts.
+   *
+   * @param parts the parts of the term split by the power symbol.
+   * @return the parsed coefficient as BigDecimal.
+   */
   private static BigDecimal parseCoefficient(String[] parts) {
     if (parts.length == 0 || parts[0].isEmpty() || parts[0].equals(PLUS)) {
       return BigDecimal.ONE;
@@ -98,6 +124,12 @@ public class ExpressionParser {
     }
   }
 
+  /**
+   * Parses the power from the term parts.
+   *
+   * @param parts the parts of the term split by the power symbol.
+   * @return the parsed power as BigDecimal.
+   */
   private static BigDecimal parsePower(String[] parts) {
     String powerStr =
         (parts.length > 1) ? parts[1].replace("(", EMPTY_STRING).replace(")", EMPTY_STRING) : "1";
