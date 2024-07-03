@@ -55,10 +55,7 @@ class GlobalExceptionHandlerTest {
     mockMvc
         .perform(get("/trigger-exception").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isInternalServerError())
-        .andExpect(
-            content()
-                .json(
-                    "{\"expression\": \"Internal Server Error: No static resource trigger-exception.\"}"));
+        .andExpect(content().json("{\"expression\": \"Internal Server Error\"}"));
   }
 
   @Test
@@ -103,6 +100,36 @@ class GlobalExceptionHandlerTest {
     assertEquals(1, logEvents.size(), "Number of log events");
     assertEquals(
         "Bad request: Polynomial expression contains invalid characters.",
+        logEvents.getFirst().getFormattedMessage(),
+        "Log message");
+    assertEquals(ch.qos.logback.classic.Level.WARN, logEvents.getFirst().getLevel(), "Log level");
+  }
+
+  @Test
+  void testHandleUndefinedGammaFunctionException() throws Exception {
+    String request =
+        "{ \"polynomialExpression\": \"3*x^2 + 2x + 1\", \"order\": -0.5, \"precision\": 1 }";
+
+    doThrow(new UndefinedGammaFunctionException("Gamma function is undefined for the given input."))
+        .when(integrationService)
+        .evaluateExpression(any(String.class), any(double.class), any(Integer.class));
+
+    mockMvc
+        .perform(
+            post("/fractional-calculus-computation-api/integral")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request))
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            jsonPath("$.expression")
+                .value("Bad Request: Gamma function is undefined for the given input."));
+
+    List<ILoggingEvent> logEvents = listAppender.list;
+    logEvents.forEach(
+        event -> System.out.println("Log message: " + event.getFormattedMessage())); // Debug line
+    assertEquals(1, logEvents.size(), "Number of log events");
+    assertEquals(
+        "Undefined gamma function input: Gamma function is undefined for the given input.",
         logEvents.getFirst().getFormattedMessage(),
         "Log message");
     assertEquals(ch.qos.logback.classic.Level.WARN, logEvents.getFirst().getLevel(), "Log level");
