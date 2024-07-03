@@ -3,7 +3,6 @@ package com.trbaxter.github.fractionalcomputationapi.service.differentiation.cap
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -62,8 +61,8 @@ public class CaputoComputationService {
 
       if (coefficient.compareTo(BigDecimal.ZERO) != 0) {
         try {
-          BigDecimal gammaNumerator = MathUtils.gamma(k.add(BigDecimal.ONE));
-          BigDecimal gammaDenominator = MathUtils.gamma(k.subtract(alpha).add(BigDecimal.ONE));
+          BigDecimal gammaNumerator = k.add(BigDecimal.ONE);
+          BigDecimal gammaDenominator = k.subtract(alpha).add(BigDecimal.ONE);
           logger.info(
               "Term with power {}: gammaNumerator = {}, gammaDenominator = {}",
               k,
@@ -71,9 +70,8 @@ public class CaputoComputationService {
               gammaDenominator);
 
           if (gammaDenominator.compareTo(BigDecimal.ZERO) != 0) {
-            BigDecimal gammaCoefficient =
-                gammaNumerator.divide(gammaDenominator, MathContext.DECIMAL128);
-            BigDecimal newCoefficient = coefficient.multiply(gammaCoefficient);
+            BigDecimal gammaRatio = MathUtils.computeGammaRatio(gammaNumerator, gammaDenominator);
+            BigDecimal newCoefficient = coefficient.multiply(gammaRatio);
             BigDecimal newPower = k.subtract(alpha);
             logger.info(
                 "Computed Term: newCoefficient = {}, newPower = {}", newCoefficient, newPower);
