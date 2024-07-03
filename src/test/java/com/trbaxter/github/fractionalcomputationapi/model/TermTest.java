@@ -35,25 +35,34 @@ class TermTest {
   @MethodSource("provideValidTerms")
   void testTermRecord(BigDecimal coefficient, BigDecimal power) {
     Term term = new Term(coefficient, power);
-    assertEquals(coefficient, term.coefficient());
-    assertEquals(power, term.power());
+    assertEquals(coefficient, term.coefficient(), "Coefficient should be set correctly");
+    assertEquals(power, term.power(), "Power should be set correctly");
   }
 
-  /** Tests the creation of Term instances with null values. */
+  /** Tests the creation of Term instances with null coefficient. */
   @Test
   void testTermRecordNullCoefficient() {
-    assertThrows(NullPointerException.class, this::createTermWithNullCoefficient);
+    assertThrows(
+        NullPointerException.class,
+        this::createTermWithNullCoefficient,
+        "Should throw NullPointerException when coefficient is null");
   }
 
+  /** Tests the creation of Term instances with null power. */
   @Test
   void testTermRecordNullExponent() {
-    assertThrows(NullPointerException.class, this::createTermWithNullExponent);
+    assertThrows(
+        NullPointerException.class,
+        this::createTermWithNullExponent,
+        "Should throw NullPointerException when power is null");
   }
 
+  /** Helper method to create a Term with null coefficient. */
   private void createTermWithNullCoefficient() {
     new Term(null, new BigDecimal("2.0"));
   }
 
+  /** Helper method to create a Term with null power. */
   private void createTermWithNullExponent() {
     new Term(new BigDecimal("3.5"), null);
   }
