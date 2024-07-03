@@ -38,7 +38,7 @@ class IntegrationServiceTest {
    */
   @ParameterizedTest
   @MethodSource(
-      "com.trbaxter.github.fractionalcomputationapi.testdata.integral.CaputoIntegrationTestData#polynomialExpressions")
+      "com.trbaxter.github.fractionalcomputationapi.testdata.integral.IntegrationTestData#polynomialExpressions")
   void testCaputoPolynomialExpressions(
       String polynomialExpression, double alpha, Integer precision, String expected) {
     runTestWithMockedMathUtils(
