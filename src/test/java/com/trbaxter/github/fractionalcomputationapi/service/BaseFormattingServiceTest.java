@@ -3,6 +3,7 @@ package com.trbaxter.github.fractionalcomputationapi.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
+import com.trbaxter.github.fractionalcomputationapi.service.test_services.TestFormattingService;
 import java.math.BigDecimal;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
