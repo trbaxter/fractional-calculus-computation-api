@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
  * computations.<br>
  * It includes various combinations of polynomial coefficients and fractional orders.
  */
-public final class CaputoIntegrationTestData {
+public final class IntegrationTestData {
 
-  private static final Logger logger = LoggerFactory.getLogger(CaputoIntegrationTestData.class);
+  private static final Logger logger = LoggerFactory.getLogger(IntegrationTestData.class);
   private static final Map<String, Map<Double, String>> expectedValues = new HashMap<>();
 
   static {
@@ -102,7 +102,6 @@ public final class CaputoIntegrationTestData {
           "-0.500x^2 - x + C",
           "-0.301x^2.5 - 0.752x^1.5 + C"
         });
-    // Add other general cases similarly...
   }
 
   private static void addSpecificExpectedValues() {
@@ -123,7 +122,6 @@ public final class CaputoIntegrationTestData {
           "0.333x^3 + 0.500x^2 + x + C",
           "0.172x^3.5 + 0.301x^2.5 + 0.752x^1.5 + C"
         });
-    // Add other specific cases similarly...
   }
 
   private static void addExpectedValues(String polynomial, double[] alphas, String[] results) {
