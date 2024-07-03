@@ -55,11 +55,8 @@ class MathUtilsTest {
   }
 
   @Test
-  void testGamma_NullInput() {
-    assertThrowsWithMessage(
-        IllegalArgumentException.class,
-        () -> MathUtils.gamma(null),
-        "Input for gamma function must not be null");
+  void testGammaFunctionNullInput() {
+    assertThrowsIllegalArgumentExceptionWithMessage(() -> MathUtils.gamma(null));
   }
 
   @Test
@@ -192,9 +189,8 @@ class MathUtilsTest {
     assertEquals(expected, result, "Gamma function failed for " + message);
   }
 
-  private <T extends Throwable> void assertThrowsWithMessage(
-      Class<T> exceptionClass, Executable executable, String expectedMessage) {
-    T thrown = assertThrows(exceptionClass, executable);
-    assertTrue(thrown.getMessage().contains(expectedMessage));
+  private void assertThrowsIllegalArgumentExceptionWithMessage(Executable executable) {
+    IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, executable);
+    assertTrue(thrown.getMessage().contains("Input for gamma function must not be null"));
   }
 }
