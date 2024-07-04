@@ -2,11 +2,10 @@ name: SonarCloud
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
-    types: [ opened, synchronize, reopened ]
     branches:
-      - master
+      - main
 
 jobs:
   sonarcloud:
@@ -14,6 +13,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Set up OpenJDK 22
         uses: actions/setup-java@v2
@@ -40,8 +41,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=trbaxter_fractional-calculus-computation-api \
-            -Dsonar.organization=trbaxter \
+            -Dsonar.projectKey=your_project_key \
+            -Dsonar.organization=your_organization \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.sources=src/main/java \
