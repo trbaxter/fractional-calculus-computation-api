@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.lang.reflect.Constructor;
 import org.junit.jupiter.api.Test;
 
-public class ValidationOrderTest {
+class ValidationOrderTest {
 
   /** Tests that the constructor of the ValidationOrder class is private and not accessible. */
   @Test
