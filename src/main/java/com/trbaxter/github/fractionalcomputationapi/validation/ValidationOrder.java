@@ -1,7 +1,15 @@
 package com.trbaxter.github.fractionalcomputationapi.validation;
 
-public interface ValidationOrder {
-  interface First {}
+/** ValidationOrder contains nested static classes representing different validation groups. */
+public class ValidationOrder {
 
-  interface Second {}
+  private ValidationOrder() {
+    // Private constructor to prevent instantiation
+  }
+
+  /** First is the first group in the validation sequence. */
+  public interface First {}
+
+  /** Second is the second group in the validation sequence. */
+  public interface Second {}
 }
