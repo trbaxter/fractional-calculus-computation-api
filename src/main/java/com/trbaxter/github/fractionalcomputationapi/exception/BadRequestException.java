@@ -1,8 +1,6 @@
 package com.trbaxter.github.fractionalcomputationapi.exception;
 
-/**
- * Exception thrown when a bad request is made.
- */
+/** Exception thrown when a bad request is made. */
 public class BadRequestException extends RuntimeException {
 
   /**

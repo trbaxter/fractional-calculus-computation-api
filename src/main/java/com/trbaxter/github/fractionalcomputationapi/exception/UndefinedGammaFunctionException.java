@@ -1,8 +1,6 @@
 package com.trbaxter.github.fractionalcomputationapi.exception;
 
-/**
- * Exception thrown when a gamma function value is undefined.
- */
+/** Exception thrown when a gamma function value is undefined. */
 public class UndefinedGammaFunctionException extends RuntimeException {
 
   /**
