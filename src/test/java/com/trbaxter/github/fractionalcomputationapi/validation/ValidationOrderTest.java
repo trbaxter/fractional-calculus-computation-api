@@ -15,10 +15,7 @@ class ValidationOrderTest {
     assertFalse(constructor.canAccess(null), "Constructor should be private and not accessible.");
   }
 
-  /**
-   * Tests that an attempt to access the private constructor throws an InstantiationException or
-   * IllegalAccessException.
-   */
+  /** Tests that an attempt to access the private constructor throws an IllegalAccessException. */
   @Test
   void testPrivateConstructorThrowsException() throws NoSuchMethodException {
     Constructor<ValidationOrder> constructor = ValidationOrder.class.getDeclaredConstructor();
