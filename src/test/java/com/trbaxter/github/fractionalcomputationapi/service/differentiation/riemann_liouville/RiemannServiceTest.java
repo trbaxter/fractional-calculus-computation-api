@@ -9,7 +9,6 @@ import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import com.trbaxter.github.fractionalcomputationapi.testdata.GammaTestData;
 import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,19 +54,6 @@ class RiemannServiceTest {
       String result = derivativeService.evaluateExpression(polynomialExpression, alpha, precision);
       assertEquals(expected, result);
     }
-  }
-
-  @Test
-  void testAlphaZeroAndEmptyComputedTerms() {
-    List<Term> terms = new ArrayList<>();
-    BigDecimal alpha = BigDecimal.ZERO;
-
-    RiemannComputationService computationService = new RiemannComputationService();
-    List<Term> computedTerms = computationService.computeTerms(terms, alpha);
-
-    assertEquals(1, computedTerms.size());
-    assertEquals(BigDecimal.ZERO, computedTerms.getFirst().coefficient());
-    assertEquals(BigDecimal.ZERO, computedTerms.getFirst().power());
   }
 
   @Test

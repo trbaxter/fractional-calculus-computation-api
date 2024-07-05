@@ -28,11 +28,6 @@ public class RiemannComputationService {
     }
 
     computedTerms.sort(Comparator.comparing(Term::power).reversed());
-
-    if (alpha.compareTo(BigDecimal.ZERO) == 0 && computedTerms.isEmpty()) {
-      computedTerms.add(new Term(BigDecimal.ZERO, BigDecimal.ZERO));
-    }
-
     return computedTerms;
   }
 
