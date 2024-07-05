@@ -1,7 +1,7 @@
 package com.trbaxter.github.fractionalcomputationapi.service.test_services;
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
-import com.trbaxter.github.fractionalcomputationapi.service.differentiation.BaseFormattingService;
+import com.trbaxter.github.fractionalcomputationapi.service.BaseFormattingService;
 
 public class TestFormattingService extends BaseFormattingService {
 

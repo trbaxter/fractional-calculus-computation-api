@@ -1,4 +1,4 @@
-package com.trbaxter.github.fractionalcomputationapi.service.differentiation;
+package com.trbaxter.github.fractionalcomputationapi.service;
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
 import java.math.BigDecimal;

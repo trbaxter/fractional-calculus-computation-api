@@ -1,7 +1,7 @@
 package com.trbaxter.github.fractionalcomputationapi.service.integration;
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
-import com.trbaxter.github.fractionalcomputationapi.service.differentiation.BaseFormattingService;
+import com.trbaxter.github.fractionalcomputationapi.service.BaseFormattingService;
 import com.trbaxter.github.fractionalcomputationapi.utils.MathUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
