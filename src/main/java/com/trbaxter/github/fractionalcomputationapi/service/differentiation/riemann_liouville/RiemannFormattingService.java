@@ -1,7 +1,7 @@
 package com.trbaxter.github.fractionalcomputationapi.service.differentiation.riemann_liouville;
 
 import com.trbaxter.github.fractionalcomputationapi.model.Term;
-import com.trbaxter.github.fractionalcomputationapi.service.differentiation.BaseFormattingService;
+import com.trbaxter.github.fractionalcomputationapi.service.BaseFormattingService;
 import java.math.BigDecimal;
 import org.springframework.stereotype.Service;
 
