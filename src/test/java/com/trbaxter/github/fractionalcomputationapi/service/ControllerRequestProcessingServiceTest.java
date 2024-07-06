@@ -79,10 +79,11 @@ class ControllerRequestProcessingServiceTest {
 
   @Test
   void testEvaluateExpressionWithUnknownService() {
+    Object unknownService = new Object(); // Separate the object creation
     IllegalArgumentException exception =
         assertThrows(
             IllegalArgumentException.class,
-            () -> processingService.evaluateExpression(new Object(), "3x^2 + 2x + 1", 0.5, 3));
+            () -> processingService.evaluateExpression(unknownService, "3x^2 + 2x + 1", 0.5, 3));
 
     assertEquals("Unknown service type", exception.getMessage());
   }
