@@ -49,7 +49,7 @@ class ControllerRequestProcessingServiceTest {
     String result = processingService.evaluateExpression(caputoService, "3x^2 + 2x + 1", 0.5, 3);
 
     assertEquals("result", result);
-    verify(caputoService, times(1)).evaluateExpression(eq("3x^2 + 2x + 1"), eq(0.5), eq(3));
+    verify(caputoService, times(1)).evaluateExpression("3x^2 + 2x + 1", 0.5, 3);
   }
 
   @Test
@@ -61,7 +61,7 @@ class ControllerRequestProcessingServiceTest {
     String result = processingService.evaluateExpression(riemannService, "3x^2 + 2x + 1", 0.5, 3);
 
     assertEquals("result", result);
-    verify(riemannService, times(1)).evaluateExpression(eq("3x^2 + 2x + 1"), eq(0.5), eq(3));
+    verify(riemannService, times(1)).evaluateExpression("3x^2 + 2x + 1", 0.5, 3);
   }
 
   @Test
@@ -74,7 +74,7 @@ class ControllerRequestProcessingServiceTest {
         processingService.evaluateExpression(integrationService, "3x^2 + 2x + 1", 0.5, 3);
 
     assertEquals("result", result);
-    verify(integrationService, times(1)).evaluateExpression(eq("3x^2 + 2x + 1"), eq(0.5), eq(3));
+    verify(integrationService, times(1)).evaluateExpression("3x^2 + 2x + 1", 0.5, 3);
   }
 
   @Test
@@ -96,7 +96,7 @@ class ControllerRequestProcessingServiceTest {
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals("result", Objects.requireNonNull(response.getBody()).expression());
-    verify(caputoService, times(1)).evaluateExpression(eq("3x^2 + 2x + 1"), eq(0.5), eq(3));
+    verify(caputoService, times(1)).evaluateExpression("3x^2 + 2x + 1", 0.5, 3);
   }
 
   @Test
@@ -109,7 +109,7 @@ class ControllerRequestProcessingServiceTest {
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals("result", Objects.requireNonNull(response.getBody()).expression());
-    verify(riemannService, times(1)).evaluateExpression(eq("3x^2 + 2x + 1"), eq(0.5), eq(3));
+    verify(riemannService, times(1)).evaluateExpression("3x^2 + 2x + 1", 0.5, 3);
   }
 
   @Test
@@ -122,6 +122,6 @@ class ControllerRequestProcessingServiceTest {
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals("result", Objects.requireNonNull(response.getBody()).expression());
-    verify(integrationService, times(1)).evaluateExpression(eq("3x^2 + 2x + 1"), eq(0.5), eq(3));
+    verify(integrationService, times(1)).evaluateExpression("3x^2 + 2x + 1", 0.5, 3);
   }
 }
