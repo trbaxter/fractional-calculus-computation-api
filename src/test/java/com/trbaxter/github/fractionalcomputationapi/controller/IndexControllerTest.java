@@ -1,24 +1,27 @@
 package com.trbaxter.github.fractionalcomputationapi.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trbaxter.github.fractionalcomputationapi.model.ControllerRequest;
+import com.trbaxter.github.fractionalcomputationapi.model.Result;
+import com.trbaxter.github.fractionalcomputationapi.service.ControllerRequestProcessingService;
 import com.trbaxter.github.fractionalcomputationapi.service.differentiation.caputo.CaputoService;
 import com.trbaxter.github.fractionalcomputationapi.service.differentiation.riemann_liouville.RiemannService;
 import com.trbaxter.github.fractionalcomputationapi.service.integration.IntegrationService;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -35,11 +38,11 @@ class IndexControllerTest {
   @MockBean private CaputoService caputoService;
   @MockBean private RiemannService riemannService;
   @MockBean private IntegrationService integrationService;
+  @MockBean private ControllerRequestProcessingService processingService;
   @Autowired private ObjectMapper objectMapper;
 
   private String polynomial;
   private double alpha;
-  private Integer precision;
   private ControllerRequest userRequest;
 
   /** Sets up the test data before each test. */
@@ -47,7 +50,7 @@ class IndexControllerTest {
   public void setUp() {
     polynomial = "3x^2 + 2x + 1";
     alpha = 0.5;
-    precision = 3;
+    Integer precision = 3;
     userRequest = createRequest(polynomial, alpha, precision);
   }
 
@@ -85,11 +88,8 @@ class IndexControllerTest {
   /** Tests the Caputo derivative computation. */
   @Test
   void testComputeCaputoDerivative() throws Exception {
-    when(caputoService.evaluateExpression(
-            userRequest.getPolynomialExpression(),
-            userRequest.getOrder(),
-            userRequest.getPrecision()))
-        .thenReturn("4.514x^1.5 + 2.257x^0.5");
+    when(processingService.processRequest(any(ControllerRequest.class), eq(caputoService)))
+        .thenReturn(new ResponseEntity<>(new Result("4.514x^1.5 + 2.257x^0.5"), HttpStatus.OK));
 
     performPostRequest("/fractional-calculus-computation-api/derivative/caputo", userRequest)
         .andExpect(status().isOk())
@@ -99,11 +99,10 @@ class IndexControllerTest {
   /** Tests the Riemann-Liouville derivative computation. */
   @Test
   void testComputeRiemannLiouvilleDerivative() throws Exception {
-    when(riemannService.evaluateExpression(
-            userRequest.getPolynomialExpression(),
-            userRequest.getOrder(),
-            userRequest.getPrecision()))
-        .thenReturn("4.514x^1.5 + 2.257x^0.5 + 0.564x^-0.5");
+    when(processingService.processRequest(any(ControllerRequest.class), eq(riemannService)))
+        .thenReturn(
+            new ResponseEntity<>(
+                new Result("4.514x^1.5 + 2.257x^0.5 + 0.564x^-0.5"), HttpStatus.OK));
 
     performPostRequest(
             "/fractional-calculus-computation-api/derivative/riemann-liouville", userRequest)
@@ -114,11 +113,10 @@ class IndexControllerTest {
   /** Tests the Caputo integral computation. */
   @Test
   void testComputeCaputoIntegral() throws Exception {
-    when(integrationService.evaluateExpression(
-            userRequest.getPolynomialExpression(),
-            userRequest.getOrder(),
-            userRequest.getPrecision()))
-        .thenReturn("1.805x^2.5 + 1.505x^1.5 + 1.128x^0.5 + C");
+    when(processingService.processRequest(any(ControllerRequest.class), eq(integrationService)))
+        .thenReturn(
+            new ResponseEntity<>(
+                new Result("1.805x^2.5 + 1.505x^1.5 + 1.128x^0.5 + C"), HttpStatus.OK));
 
     performPostRequest("/fractional-calculus-computation-api/integral", userRequest)
         .andExpect(status().isOk())
@@ -164,10 +162,7 @@ class IndexControllerTest {
   /** Tests handling of internal server error during Caputo derivative computation. */
   @Test
   void testCaputoDerivativeInternalServerError() throws Exception {
-    when(caputoService.evaluateExpression(
-            userRequest.getPolynomialExpression(),
-            userRequest.getOrder(),
-            userRequest.getPrecision()))
+    when(processingService.processRequest(any(ControllerRequest.class), eq(caputoService)))
         .thenThrow(new RuntimeException("Internal Server Error"));
 
     performPostRequest("/fractional-calculus-computation-api/derivative/caputo", userRequest)
@@ -178,10 +173,7 @@ class IndexControllerTest {
   /** Tests handling of internal server error during Riemann-Liouville derivative computation. */
   @Test
   void testRiemannLiouvilleDerivativeInternalServerError() throws Exception {
-    when(riemannService.evaluateExpression(
-            userRequest.getPolynomialExpression(),
-            userRequest.getOrder(),
-            userRequest.getPrecision()))
+    when(processingService.processRequest(any(ControllerRequest.class), eq(riemannService)))
         .thenThrow(new RuntimeException("Internal Server Error"));
 
     performPostRequest(
@@ -193,38 +185,11 @@ class IndexControllerTest {
   /** Tests handling of internal server error during Caputo integral computation. */
   @Test
   void testCaputoIntegralInternalServerError() throws Exception {
-    when(integrationService.evaluateExpression(
-            userRequest.getPolynomialExpression(),
-            userRequest.getOrder(),
-            userRequest.getPrecision()))
+    when(processingService.processRequest(any(ControllerRequest.class), eq(integrationService)))
         .thenThrow(new RuntimeException("Internal Server Error"));
 
     performPostRequest("/fractional-calculus-computation-api/integral", userRequest)
         .andExpect(status().isInternalServerError())
         .andExpect(content().json("{\"expression\": \"Internal Server Error\"}"));
   }
-
-  /** Tests handling of unknown service type. */
-  @Test
-  void testUnknownServiceType() throws Exception {
-    IndexController controller =
-        new IndexController(caputoService, riemannService, integrationService);
-
-    Method method =
-        IndexController.class.getDeclaredMethod(
-            "evaluateExpression", Object.class, String.class, double.class, Integer.class);
-    method.setAccessible(true);
-
-    try {
-      method.invoke(controller, new UnknownService(), polynomial, alpha, precision);
-      fail("Expected IllegalArgumentException to be thrown");
-    } catch (InvocationTargetException e) {
-      Throwable cause = e.getCause();
-      assertInstanceOf(IllegalArgumentException.class, cause);
-      assertEquals("Unknown service type", cause.getMessage());
-    }
-  }
-
-  /** Mock class for unknown service type. */
-  private static class UnknownService {}
 }
