@@ -41,33 +41,39 @@ public class IndexController {
   /**
    * Computes the Caputo derivative for the given request.
    *
-   * @param request the controller request containing the polynomial expression, order, and precision.
+   * @param request the controller request containing the polynomial expression, order, and
+   *     precision.
    * @return a ResponseEntity containing the result.
    */
   @PostMapping("derivative/caputo")
-  public ResponseEntity<Result> computeCaputoDerivative(@Valid @RequestBody ControllerRequest request) {
+  public ResponseEntity<Result> computeCaputoDerivative(
+      @Valid @RequestBody ControllerRequest request) {
     return processingService.processRequest(request, caputoService);
   }
 
   /**
    * Computes the Riemann-Liouville derivative for the given request.
    *
-   * @param request the controller request containing the polynomial expression, order, and precision.
+   * @param request the controller request containing the polynomial expression, order, and
+   *     precision.
    * @return a ResponseEntity containing the result.
    */
   @PostMapping("derivative/riemann-liouville")
-  public ResponseEntity<Result> computeRiemannLiouvilleDerivative(@Valid @RequestBody ControllerRequest request) {
+  public ResponseEntity<Result> computeRiemannLiouvilleDerivative(
+      @Valid @RequestBody ControllerRequest request) {
     return processingService.processRequest(request, riemannService);
   }
 
   /**
    * Computes the integral for the given request.
    *
-   * @param request the controller request containing the polynomial expression, order, and precision.
+   * @param request the controller request containing the polynomial expression, order, and
+   *     precision.
    * @return a ResponseEntity containing the result.
    */
   @PostMapping("integral")
-  public ResponseEntity<Result> computeCaputoIntegral(@Valid @RequestBody ControllerRequest request) {
+  public ResponseEntity<Result> computeCaputoIntegral(
+      @Valid @RequestBody ControllerRequest request) {
     return processingService.processRequest(request, integrationService);
   }
 }

@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
   public ResponseEntity<Result> handleValidationExceptions(MethodArgumentNotValidException ex) {
     String errorMessage = extractErrorMessage(ex);
     logWarning(VALIDATION_ERROR, errorMessage, ex);
-    return buildResponseEntity("Validation Error: " + errorMessage, HttpStatus.BAD_REQUEST);
+    return buildBadRequestResponse("Validation Error: " + errorMessage);
   }
 
   /**
@@ -48,8 +48,8 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(HttpMessageNotReadableException.class)
   public ResponseEntity<Result> handleHttpMessageNotReadableException(
       HttpMessageNotReadableException ex) {
-    logWarning(MALFORMED_JSON, ex);
-    return buildResponseEntity(BAD_REQUEST + MALFORMED_JSON, HttpStatus.BAD_REQUEST);
+    logWarning(MALFORMED_JSON, ex.getMessage(), ex);
+    return buildBadRequestResponse(MALFORMED_JSON);
   }
 
   /**
@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
   public ResponseEntity<Result> handleUndefinedGammaFunctionException(
       UndefinedGammaFunctionException ex) {
     logWarning("Undefined gamma function input", ex.getMessage(), ex);
-    return buildResponseEntity(BAD_REQUEST + ex.getMessage(), HttpStatus.BAD_REQUEST);
+    return buildBadRequestResponse(ex.getMessage());
   }
 
   /**
@@ -74,7 +74,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(BadRequestException.class)
   public ResponseEntity<Result> handleBadRequestException(BadRequestException ex) {
     logWarning("Bad request", ex.getMessage(), ex);
-    return buildResponseEntity(BAD_REQUEST + ex.getMessage(), HttpStatus.BAD_REQUEST);
+    return buildBadRequestResponse(ex.getMessage());
   }
 
   /**
@@ -86,7 +86,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(Exception.class)
   public ResponseEntity<Result> handleException(Exception ex) {
     logError(ex);
-    return buildResponseEntity(INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+    return buildInternalServerErrorResponse();
   }
 
   /**
@@ -114,16 +114,6 @@ public class GlobalExceptionHandler {
   }
 
   /**
-   * Logs a warning message without a specific message.
-   *
-   * @param message the warning message.
-   * @param ex the exception instance.
-   */
-  private void logWarning(String message, Exception ex) {
-    logger.warn("{}: {}", message, ex.getMessage(), ex);
-  }
-
-  /**
    * Logs an error message.
    *
    * @param ex the exception instance.
@@ -132,13 +122,14 @@ public class GlobalExceptionHandler {
     logger.error("{}: ", UNHANDLED_EXCEPTION, ex);
   }
 
-  /**
-   * Builds a ResponseEntity with the given message and status.
-   *
-   * @param message the message to include in the response.
-   * @param status the HTTP status of the response.
-   * @return the built ResponseEntity.
-   */
+  private ResponseEntity<Result> buildBadRequestResponse(String message) {
+    return buildResponseEntity(BAD_REQUEST + message, HttpStatus.BAD_REQUEST);
+  }
+
+  private ResponseEntity<Result> buildInternalServerErrorResponse() {
+    return buildResponseEntity(INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
   private ResponseEntity<Result> buildResponseEntity(String message, HttpStatus status) {
     return new ResponseEntity<>(new Result(message), status);
   }

@@ -93,7 +93,8 @@ public abstract class BaseFormattingService {
   }
 
   private boolean shouldAppendCoefficient(BigDecimal coefficient, BigDecimal power) {
-    return coefficient.abs().compareTo(BigDecimal.ONE) != 0 || power.compareTo(BigDecimal.ZERO) == 0;
+    return coefficient.abs().compareTo(BigDecimal.ONE) != 0
+        || power.compareTo(BigDecimal.ZERO) == 0;
   }
 
   private void appendVariablePart(StringBuilder result, Term term) {
