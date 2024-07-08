@@ -1,6 +1,5 @@
 package com.trbaxter.github.fractionalcomputationapi.exception;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -9,20 +8,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import ch.qos.logback.classic.Logger;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.read.ListAppender;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trbaxter.github.fractionalcomputationapi.controller.IndexController;
 import com.trbaxter.github.fractionalcomputationapi.model.ControllerRequest;
 import com.trbaxter.github.fractionalcomputationapi.service.ControllerRequestProcessingService;
+import com.trbaxter.github.fractionalcomputationapi.service.ErrorLoggingService;
 import com.trbaxter.github.fractionalcomputationapi.service.differentiation.caputo.CaputoService;
 import com.trbaxter.github.fractionalcomputationapi.service.differentiation.riemann_liouville.RiemannService;
 import com.trbaxter.github.fractionalcomputationapi.service.integration.IntegrationService;
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -35,7 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Import({
   GlobalExceptionHandler.class,
   IndexController.class,
-  GlobalExceptionHandlerTest.MockController.class
+  GlobalExceptionHandlerTest.MockController.class,
+  ErrorLoggingService.class
 })
 @WebMvcTest(IndexController.class)
 class GlobalExceptionHandlerTest {
@@ -47,23 +42,16 @@ class GlobalExceptionHandlerTest {
   @MockBean private ControllerRequestProcessingService processorService;
   @Autowired private ObjectMapper objectMapper;
 
-  private ListAppender<ILoggingEvent> listAppender;
-
-  @BeforeEach
-  public void setUp() {
-    Logger logger = (Logger) LoggerFactory.getLogger(GlobalExceptionHandler.class);
-    listAppender = new ListAppender<>();
-    listAppender.start();
-    logger.addAppender(listAppender);
-  }
-
   /** Tests the handling of a generic exception. */
   @Test
   void testHandleException() throws Exception {
     mockMvc
         .perform(get("/trigger-exception").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isInternalServerError())
-        .andExpect(content().json("{\"expression\": \"Internal Server Error\"}"));
+        .andExpect(
+            content()
+                .json(
+                    "{\"message\": \"Internal Server Error\", \"details\": \"An unexpected error occurred\"}"));
   }
 
   /** Tests the handling of HttpMessageNotReadableException (malformed JSON). */
@@ -79,7 +67,9 @@ class GlobalExceptionHandlerTest {
                 .content(malformedJson))
         .andExpect(status().isBadRequest())
         .andExpect(
-            content().json("{\"expression\": \"Bad Request: Malformed JSON request body\"}"));
+            content()
+                .json(
+                    "{\"message\": \"Malformed JSON request body\", \"details\": \"Bad Request\"}"));
   }
 
   /** Tests the handling of BadRequestException. */
@@ -99,16 +89,8 @@ class GlobalExceptionHandlerTest {
                 .content(invalidRequest))
         .andExpect(status().isBadRequest())
         .andExpect(
-            jsonPath("$.expression")
-                .value("Bad Request: Polynomial expression contains invalid characters."));
-
-    List<ILoggingEvent> logEvents = listAppender.list;
-    assertEquals(1, logEvents.size(), "Number of log events");
-    assertEquals(
-        "Bad request: Polynomial expression contains invalid characters.",
-        logEvents.getFirst().getFormattedMessage(),
-        "Log message");
-    assertEquals(ch.qos.logback.classic.Level.WARN, logEvents.getFirst().getLevel(), "Log level");
+            jsonPath("$.message").value("Polynomial expression contains invalid characters."))
+        .andExpect(jsonPath("$.details").value("Bad Request"));
   }
 
   /** Tests the handling of UndefinedGammaFunctionException. */
@@ -127,17 +109,8 @@ class GlobalExceptionHandlerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
         .andExpect(status().isBadRequest())
-        .andExpect(
-            jsonPath("$.expression")
-                .value("Bad Request: Gamma function is undefined for the given input."));
-
-    List<ILoggingEvent> logEvents = listAppender.list;
-    assertEquals(1, logEvents.size(), "Number of log events");
-    assertEquals(
-        "Undefined gamma function input: Gamma function is undefined for the given input.",
-        logEvents.getFirst().getFormattedMessage(),
-        "Log message");
-    assertEquals(ch.qos.logback.classic.Level.WARN, logEvents.getFirst().getLevel(), "Log level");
+        .andExpect(jsonPath("$.message").value("Gamma function is undefined for the given input."))
+        .andExpect(jsonPath("$.details").value("Bad Request"));
   }
 
   /** Mock controller to trigger exceptions for testing purposes. */
