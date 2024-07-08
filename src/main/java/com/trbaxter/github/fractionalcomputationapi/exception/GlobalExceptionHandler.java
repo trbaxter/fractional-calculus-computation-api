@@ -50,7 +50,6 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(BadRequestException.class)
   public ResponseEntity<ErrorResponse> handleBadRequestException(BadRequestException ex) {
     errorLoggingService.logWarning("Bad request", ex.getMessage(), ex);
-    System.out.println("Debug: Logging bad request"); // Add this line for debugging
     return ResponseEntityBuilder.buildBadRequestResponse(ex.getMessage());
   }
 
