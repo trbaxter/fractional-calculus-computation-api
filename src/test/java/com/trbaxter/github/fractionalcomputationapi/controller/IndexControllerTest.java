@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.trbaxter.github.fractionalcomputationapi.model.ControllerRequest;
 import com.trbaxter.github.fractionalcomputationapi.model.Result;
 import com.trbaxter.github.fractionalcomputationapi.service.ControllerRequestProcessingService;
+import com.trbaxter.github.fractionalcomputationapi.service.ErrorLoggingService;
 import com.trbaxter.github.fractionalcomputationapi.service.differentiation.caputo.CaputoService;
 import com.trbaxter.github.fractionalcomputationapi.service.differentiation.riemann_liouville.RiemannService;
 import com.trbaxter.github.fractionalcomputationapi.service.integration.IntegrationService;
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,7 @@ import org.springframework.test.web.servlet.ResultActions;
  */
 @WebMvcTest(IndexController.class)
 @ExtendWith(SpringExtension.class)
+@Import(ErrorLoggingService.class)
 class IndexControllerTest {
 
   @Autowired private MockMvc mockMvc;
@@ -129,7 +132,9 @@ class IndexControllerTest {
     ControllerRequest request = createRequest(null, 0.5, 3);
 
     performPostRequest("/fractional-calculus-computation-api/derivative/caputo", request)
-        .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            jsonPath("$.message").value("Validation Error: Polynomial expression cannot be null"));
   }
 
   /** Tests handling when precision is missing in ControllerRequest. */
@@ -138,7 +143,8 @@ class IndexControllerTest {
     ControllerRequest request = createRequest(polynomial, alpha, null);
 
     performPostRequest("/fractional-calculus-computation-api/derivative/caputo", request)
-        .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message").value("Validation Error: Precision cannot be null"));
   }
 
   /** Tests handling when precision is zero in ControllerRequest. */
@@ -147,7 +153,9 @@ class IndexControllerTest {
     ControllerRequest request = createRequest(polynomial, alpha, 0);
 
     performPostRequest("/fractional-calculus-computation-api/derivative/caputo", request)
-        .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            jsonPath("$.message").value("Validation Error: Precision must be a positive integer"));
   }
 
   /** Tests handling when precision is negative in ControllerRequest. */
@@ -156,7 +164,9 @@ class IndexControllerTest {
     ControllerRequest request = createRequest(polynomial, alpha, -1);
 
     performPostRequest("/fractional-calculus-computation-api/derivative/caputo", request)
-        .andExpect(status().isBadRequest());
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            jsonPath("$.message").value("Validation Error: Precision must be a positive integer"));
   }
 
   /** Tests handling of internal server error during Caputo derivative computation. */
@@ -167,7 +177,8 @@ class IndexControllerTest {
 
     performPostRequest("/fractional-calculus-computation-api/derivative/caputo", userRequest)
         .andExpect(status().isInternalServerError())
-        .andExpect(content().json("{\"expression\": \"Internal Server Error\"}"));
+        .andExpect(jsonPath("$.message").value("Internal Server Error"))
+        .andExpect(jsonPath("$.details").value("An unexpected error occurred"));
   }
 
   /** Tests handling of internal server error during Riemann-Liouville derivative computation. */
@@ -179,7 +190,8 @@ class IndexControllerTest {
     performPostRequest(
             "/fractional-calculus-computation-api/derivative/riemann-liouville", userRequest)
         .andExpect(status().isInternalServerError())
-        .andExpect(content().json("{\"expression\": \"Internal Server Error\"}"));
+        .andExpect(jsonPath("$.message").value("Internal Server Error"))
+        .andExpect(jsonPath("$.details").value("An unexpected error occurred"));
   }
 
   /** Tests handling of internal server error during Caputo integral computation. */
@@ -190,6 +202,7 @@ class IndexControllerTest {
 
     performPostRequest("/fractional-calculus-computation-api/integral", userRequest)
         .andExpect(status().isInternalServerError())
-        .andExpect(content().json("{\"expression\": \"Internal Server Error\"}"));
+        .andExpect(jsonPath("$.message").value("Internal Server Error"))
+        .andExpect(jsonPath("$.details").value("An unexpected error occurred"));
   }
 }
